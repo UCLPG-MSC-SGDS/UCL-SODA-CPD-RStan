@@ -1,5 +1,4 @@
-# UCL-SODA-CPD-RStan
-Introduction to Bayesian Inference &amp; Modelling
+# Introduction to Bayesian Inference &amp; Modelling
 
 This four-day course introduces Bayesian inference and modelling. It is suitable for academics and professionals alike from diverse backgrounds ranging from industry to research fields such as population health, social sciences, disaster risk reduction, and many more. The focus will be on teaching the Stan interface, which works with statistical software packages to perform state-of-the-art statistical modelling within a Bayesian framework. The focus of this workshop will be on using Stan with R, although Stan can also be used with Python, Julia, Stata, and MATLAB. We will show you to develop and compile Stan scripts for Bayesian inference through RStudio to perform basic parameter estimation, as well as a wide range of regression-based techniques. This will begin with the simplest univariable linear models and its different families, moving up to Bayesian generalised linear models, hierarchical models and spatial intrinsic conditional autoregression models.
 
