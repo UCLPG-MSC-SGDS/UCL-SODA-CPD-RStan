@@ -11,5 +11,5 @@ By the end of the workshop, the participants will:
  
 Each day will include a lecture, a live walkthrough demonstration of applying the methods, and a computer seminar class where participants will get hands-on experience of Bayesian estimation. For those that have not used R before, introductory materials to learn the basics of R programming will be provided before the course, making it suitable for users of all software packages.  
 
-Course instructor: Anwar Musah </br>
-Email address: a.musah@ucl.ac.uk
+Course instructor: **Anwar Musah** </br>
+Email address: **a.musah@ucl.ac.uk**
