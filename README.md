@@ -10,3 +10,5 @@ By the end of the workshop, the participants will:
 4. Acquire new programming language skills in Stan (interfaced with RStudio)
  
 Each day will include a lecture, a live walkthrough demonstration of applying the methods, and a computer seminar class where participants will get hands-on experience of Bayesian estimation. For those that have not used R before, introductory materials to learn the basics of R programming will be provided before the course, making it suitable for users of all software packages.  
+
+Contact: Anwar Musah (a.musah@ucl.ac.uk)
