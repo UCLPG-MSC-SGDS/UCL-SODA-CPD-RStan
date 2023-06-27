@@ -1,0 +1,14 @@
+book_filename: "RStan-CPD"
+rmd_files:
+- index.rmd
+#- Intro_to_RStan.Rmd
+#- Intro_to_Bayesian_Regression_in_Stan.Rmd
+#- Intro_to_Bayesian_Hierarchicals.Rmd
+#- Intro_to_Bayesian_ICAR_Regression.Rmd
+#- Reading_list_for_workshop.Rmd
+
+language:
+  ui:
+    chapter_name: ""
+delete_merged_file: true
+output_dir: "docs"
