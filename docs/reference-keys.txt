@@ -1,0 +1,5 @@
+getting-started
+what-is-stan
+installation-of-r-and-rstudio-window-and-mac
+additional-installation-steps-mac-users-only
+additional-installation-steps-windows-users-only
