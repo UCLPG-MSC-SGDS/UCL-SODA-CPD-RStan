@@ -7,7 +7,9 @@ installation-of-rstan-or-stan
 installation-of-other-relevant-r-packages
 introduction-to-bayesian-inference-using-stan
 introduction
+lecture-video-length-12617
 learning-outcomes
+live-walk-through-demonstration-video-length-12356
 datasets-setting-up-the-work-directory
 loading-packages
 basic-building-blocks-i-about-stan-programming
