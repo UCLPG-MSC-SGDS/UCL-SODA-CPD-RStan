@@ -102,7 +102,7 @@ model {
 
 Do not worry about that - it is just some formalities put there by default by the developers behind `rstan`. You can delete everything you see in this script as we will build our own basic script from scratch. 
 
-Once you have deleted the default information save the empty file in the **Week 1** folder naming it `Predicting a proportion.stan`. Whenever you are saving Stan programme in RStudio always make sure to save it with a `.stan` ending. 
+Once you have deleted the default information save the empty file in the **Day 1** folder naming it `Predicting a proportion.stan`. Whenever you are saving Stan programme in RStudio always make sure to save it with a `.stan` ending. 
 
 ### Basic structure of a Stan script in RStudio
 
@@ -285,7 +285,7 @@ Some notes on the above code's arguments:
 The resulting output can be printed with the function `print()`. Here, we are going to print the mean, standard error in mean, SD and the IQR ranges with 95% limits (i.e., 2.5% and 97.5%):
 
 ```{r, eval=FALSE}
-print(predicting.passes, probs=c(0.025, 0.25, 0.5, 0.75, 0.975))
+print(prediction.passes, probs=c(0.025, 0.25, 0.5, 0.75, 0.975))
 ```
 
 We obtain this summary table:
@@ -315,7 +315,7 @@ At this point, let us extract the posterior samples and graph them to understand
 
 ```{r, eval=FALSE}
 # extracting the samples (it should be 4500)
-theta.pass_draws <- extract(predicting.passes, 'theta')[[1]]
+theta.pass_draws <- rstan::extract(prediction.passes, 'theta')[[1]]
 # create a graph i.e., histogram
 hist(theta.pass_draws, xlim = c(0,0.8), ylim = c(0,800), 
 		 main= "Posterior samples", ylab = "Posterior Density", xlab = expression(paste("Probability of Parameter: ", theta, " [%]")))
@@ -408,7 +408,7 @@ convergence, Rhat=1).
 
 ```{r, eval=FALSE}
 # extracting the samples (it should be 4500)
-theta.pass_draws.new <- extract(predicting.passes.updated, 'theta')[[1]] 
+theta.pass_draws.new <- rstan::extract(predicting.passes.updated, 'theta')[[1]] 
 
 # create a graph i.e., histogram
 hist(theta.pass_draws.new, xlim = c(0,1), 
