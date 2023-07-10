@@ -278,7 +278,7 @@ model {
   y ~ normal(mu, sigma);
 }</code></pre>
 <p>Do not worry about that - it is just some formalities put there by default by the developers behind <code>rstan</code>. You can delete everything you see in this script as we will build our own basic script from scratch.</p>
-<p>Once you have deleted the default information save the empty file in the <strong>Week 1</strong> folder naming it <code>Predicting a proportion.stan</code>. Whenever you are saving Stan programme in RStudio always make sure to save it with a <code>.stan</code> ending.</p>
+<p>Once you have deleted the default information save the empty file in the <strong>Day 1</strong> folder naming it <code>Predicting a proportion.stan</code>. Whenever you are saving Stan programme in RStudio always make sure to save it with a <code>.stan</code> ending.</p>
 </div>
 <div id="basic-structure-of-a-stan-script-in-rstudio" class="section level3 hasAnchor" number="2.3.2">
 <h3><span class="header-section-number">2.3.2</span> Basic structure of a Stan script in RStudio<a href="introduction-to-bayesian-inference-using-stan.html#basic-structure-of-a-stan-script-in-rstudio" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -411,7 +411,7 @@ model {
 <li><code>chains=</code> we are asking the <code>stan()</code> function to perform 3 chains (i.e., any of these algorithms can be stated in the function: i.e., <strong>MCMC</strong>, <strong>NUTS</strong> &amp; <strong>HMC</strong>)</li>
 </ul>
 <p>The resulting output can be printed with the function <code>print()</code>. Here, we are going to print the mean, standard error in mean, SD and the IQR ranges with 95% limits (i.e., 2.5% and 97.5%):</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="introduction-to-bayesian-inference-using-stan.html#cb19-1" tabindex="-1"></a><span class="fu">print</span>(predicting.passes, <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.975</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="introduction-to-bayesian-inference-using-stan.html#cb19-1" tabindex="-1"></a><span class="fu">print</span>(prediction.passes, <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.975</span>))</span></code></pre></div>
 <p>We obtain this summary table:</p>
 <pre class="text"><code>Inference for Stan model: Predicting a proportion.
 3 chains, each with iter=3000; warmup=1500; thin=1; 
@@ -433,7 +433,7 @@ convergence, Rhat=1).</code></pre>
 <h2><span class="header-section-number">2.7</span> Basic building blocks V: Extract posterior samples and interpretation<a href="introduction-to-bayesian-inference-using-stan.html#basic-building-blocks-v-extract-posterior-samples-and-interpretation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>At this point, let us extract the posterior samples and graph them to understand it posterior distribution. We use the <code>extract()</code> function from the <code>rstan</code> package, and graph them:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="introduction-to-bayesian-inference-using-stan.html#cb21-1" tabindex="-1"></a><span class="co"># extracting the samples (it should be 4500)</span></span>
-<span id="cb21-2"><a href="introduction-to-bayesian-inference-using-stan.html#cb21-2" tabindex="-1"></a>theta.pass_draws <span class="ot">&lt;-</span> <span class="fu">extract</span>(predicting.passes, <span class="st">&#39;theta&#39;</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb21-2"><a href="introduction-to-bayesian-inference-using-stan.html#cb21-2" tabindex="-1"></a>theta.pass_draws <span class="ot">&lt;-</span> rstan<span class="sc">::</span><span class="fu">extract</span>(prediction.passes, <span class="st">&#39;theta&#39;</span>)[[<span class="dv">1</span>]]</span>
 <span id="cb21-3"><a href="introduction-to-bayesian-inference-using-stan.html#cb21-3" tabindex="-1"></a><span class="co"># create a graph i.e., histogram</span></span>
 <span id="cb21-4"><a href="introduction-to-bayesian-inference-using-stan.html#cb21-4" tabindex="-1"></a><span class="fu">hist</span>(theta.pass_draws, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.8</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">800</span>), </span>
 <span id="cb21-5"><a href="introduction-to-bayesian-inference-using-stan.html#cb21-5" tabindex="-1"></a>         <span class="at">main=</span> <span class="st">&quot;Posterior samples&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Posterior Density&quot;</span>, <span class="at">xlab =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Probability of Parameter: &quot;</span>, theta, <span class="st">&quot; [%]&quot;</span>)))</span></code></pre></div>
@@ -498,7 +498,7 @@ and Rhat is the potential scale reduction factor on split chains (at
 convergence, Rhat=1).</code></pre>
 <p><strong>Histogram of posterior samples’ distribution</strong></p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="introduction-to-bayesian-inference-using-stan.html#cb27-1" tabindex="-1"></a><span class="co"># extracting the samples (it should be 4500)</span></span>
-<span id="cb27-2"><a href="introduction-to-bayesian-inference-using-stan.html#cb27-2" tabindex="-1"></a>theta.pass_draws.new <span class="ot">&lt;-</span> <span class="fu">extract</span>(predicting.passes.updated, <span class="st">&#39;theta&#39;</span>)[[<span class="dv">1</span>]] </span>
+<span id="cb27-2"><a href="introduction-to-bayesian-inference-using-stan.html#cb27-2" tabindex="-1"></a>theta.pass_draws.new <span class="ot">&lt;-</span> rstan<span class="sc">::</span><span class="fu">extract</span>(predicting.passes.updated, <span class="st">&#39;theta&#39;</span>)[[<span class="dv">1</span>]] </span>
 <span id="cb27-3"><a href="introduction-to-bayesian-inference-using-stan.html#cb27-3" tabindex="-1"></a></span>
 <span id="cb27-4"><a href="introduction-to-bayesian-inference-using-stan.html#cb27-4" tabindex="-1"></a><span class="co"># create a graph i.e., histogram</span></span>
 <span id="cb27-5"><a href="introduction-to-bayesian-inference-using-stan.html#cb27-5" tabindex="-1"></a><span class="fu">hist</span>(theta.pass_draws.new, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), </span>
