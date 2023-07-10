@@ -2,11 +2,15 @@
 
 ## Introduction
 
-**[PLACEHOLDER FOR LECTURE VIDEO]**
+### Lecture video (Length: 1:26:17)
 
-**[PLACEHOLDER FOR WALKTHROUGH VIDEO]**
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('P0XttSki1jQ', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/P0XttSki1jQ)
 
-## Learning outcomes
+### Learning outcomes
 
 Today’s session aims to introduce you to the basic Stan programming etiquette for Bayesian analysis in RStudio using Stan as an Interface, and producing output and interpreting it's results. By the end of this session, you should be able to perform the following:
 
@@ -15,6 +19,13 @@ Today’s session aims to introduce you to the basic Stan programming etiquette 
 3. Know how to interpret the results churned from a Stan
 
 You can follow the live walkthrough demonstration delivered in the first 1-hour of the practical, and then use the practical session to try the practical tutorials yourself by following the instructions and trying out the tasks.
+
+### Live walk-through demonstration video (Length: 1:23:56)
+
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+embed_youtube('N_P_EtT1MZk', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/N_P_EtT1MZk)
 
 ### Datasets & setting up the work directory 
 
@@ -447,7 +458,7 @@ What is the predicted posterior prevalence of arsenic poisoning in Cornwall and 
 
 ### Task 2 - Body mass index (BMI) problem
 
-**Try this second problem in Stan**: The mean BMI value is 23 with SD of 1.2. Simulate sample of 1000 with BMI values based on this distribution `N(23, 2.6)` and perform Bayesian inference. 
+**Try this second problem in Stan**: The mean BMI value is 23 with SD of 1.2. Simulate sample of 1000 with BMI values based on this distribution `N(23, 1.2)` and perform Bayesian inference. 
 
 What is the posterior mean BMI and its 95% Credibility intervals?
 
@@ -460,5 +471,5 @@ What is the posterior mean BMI and its 95% Credibility intervals?
 5. In the Stan script, use the parameter block, and make sure to code your `mu` (mean) and `sigma` (standard deviation) as real (non-negative) numbers 
 
 <div class="note">
-**Note:** Solutions will be made available next week as soon as **Day 2** materials are released
+**Note:** Solutions for task 1 and 2 will be made available later today
 </div>
