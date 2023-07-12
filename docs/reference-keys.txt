@@ -25,9 +25,9 @@ task-1---low-level-arsenic-poisoning-in-cornwall-uk
 task-2---body-mass-index-bmi-problem
 bayesian-generalised-linear-models-glms
 introduction-1
-lecture-video-length-tbc
+lecture-video-length-11658
 learning-outcomes-1
-live-walk-through-demonstration-video-length-tbc
+live-walk-through-demonstration-video-length-14415
 datasets-setting-up-the-work-directory-1
 loading-and-installing-packages
 poisson-regression-modelling
@@ -39,3 +39,11 @@ computing-the-exceedance-probabilities
 tasks-1
 task-1---obesity-and-fastfoods-in-london
 task-2---factors-affecting-house-prices-in-london-2015
+bayesian-hierarchical-regression-models
+introduction-2
+datasets-setting-up-the-work-directory-2
+loading-packages-1
+data-preparation-and-set-up-for-bayesian-analysis-in-stan-1
+creating-a-script-to-run-a-2-level-multilevel-linear-regression-in-stan
+compiling-our-stan-code-for-hierarchical-modelling
+task---maternal-access-to-adequate-delivery-services
