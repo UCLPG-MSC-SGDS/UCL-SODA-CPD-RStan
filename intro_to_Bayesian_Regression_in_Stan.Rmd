@@ -2,8 +2,13 @@
 
 ## Introduction
 
-### Lecture video (Length: TBC)
-**[PLACEHOLDER]**
+### Lecture video (Length: 1:16:58)
+
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('BXuppKiEHXU', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/BXuppKiEHXU)
 
 We will learn how to perform Generalised Linear Modelling (GLMs) within a **Bayesian** framework using different model types based whether an outcome variable is continuous, binary, binomial, count or categorical. We will show you how one can use [**Stan**](https://mc-stan.org) to encode various regression model types for likelihood functions that follows either a **Normal**, **Binomial** or **Poisson** distribution. 
 
@@ -18,7 +23,12 @@ Today’s session aims to formally introduce you to **Stan** programming for **B
 You can follow the live walkthrough demonstration, and then use the practical sessions to try the practical tutorials yourself by following the instructions and trying out the tasks.
 
 ###  Live walk-through demonstration video (Length: TBC)
-**[PLACEHOLDER]**
+
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('cE9DEZAZnsY', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/cE9DEZAZnsY)
 
 ### Datasets & setting up the work directory 
 
