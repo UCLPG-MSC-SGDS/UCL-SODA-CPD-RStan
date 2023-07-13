@@ -2,6 +2,23 @@
 
 ## Introduction
 
+### Lecture video
+
+```{r echo=FALSE, out.width = "100%", fig.align='center', cache=TRUE,}
+knitr::include_graphics('images/general/Video_handle.png') 
+```
+**Parts:** [**[1]**](https://youtu.be/hP86-T_k38k) | [**[2]**](https://youtu.be/r1RPPAtFV0w)
+
+
+###  Live walk-through demonstration video
+
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('DFi_ao4TbAQ', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/DFi_ao4TbAQ)
+
+
 We will learn how to perform hierarchical regression modelling within a Bayesian framework. These models are useful and robust especially if there's a hierarchical structure in the dataset. This artefact must be taken into account to ensure statistical robustness. We will focus on implementing 2-level hierarchical regressions with examples on **random-intercept-only** and **slope** model as these are quite simple to pull off in Stan. 
 
 Let us begin.
