@@ -1,0 +1,66 @@
+---
+title: "Introduction to Bayesian Inference and Modelling (2022/23)"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+link-citations: yes
+github-repo: "UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan"
+description: "Introduction to Bayesian Inference and Modelling"
+#bibliography: [book.bib, packages.bib]
+---
+
+# Welcome {.unnumbered}
+
+```{r echo=FALSE, out.width = "100%", fig.align='center', cache=TRUE,}
+knitr::include_graphics('images/general/Welcome_image_5.png') 
+```
+
+[**UCL Social Data Institute (SODA)**](https://www.ucl.ac.uk/social-data/home/social-data-institute) is hosting this 4-day course on Bayesian inference. The aim is to introduce academics and professional data analysts to the basics of Bayesian inference using RStudio and Stan. The atmosphere of the course will be friendly and supportive, with the goal to teach the absolute basics of Bayesian inference in Stan for academics and professionals alike from diverse backgrounds ranging from industry to research fields such as population health, social sciences, disaster risk reduction, and many more.
+
+## Content  {.unnumbered}
+
+The course will cover the following topics:
+
+| **Date**        |**Downloadables**        | **Topics**                                          |
+|:----------------|:------------------------|:----------------------------------------------------|
+|                 | Not Applicable          | Installation                                        |
+| 10/06/2023      | [**Slides**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Day%201%20Lecture%20-%20Introduction%20to%20Bayesian%20Inference.pdf); [**No Data**]  | **Introduction to Bayesian Inference**              |
+| 11/06/2023      | [**Slides**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Day%202%20Lecture%20-%20Bayesian%20Generalised%20Linear%20Regression%20Models.pdf); [**Data**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Datasets%20for%20session%202.zip) | **Bayesian Generalised Linear Models**              |
+| 12/06/2023      | [**Slides**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Day%203%20Lecture%20-%20Bayesian%20Hierarchical%20Models.pdf); [**Data**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Datasets%20for%20session%203.zip) | **Bayesian Hierarchical Regression Models**         |
+| 13/06/2023      | [**Slides**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Day%204%20Lecture%20-%20Spatial%20Bayesian%20Risk%20Models.pdf); [**Data**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Dataset%20for%20session%204.zip) | **Spatial Bayesian Risk Modelling**                 |
+
+**Solutions**: [**[Day 1]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Solutions%20for%20Task%201%20and%202.zip) | [**[Day 2]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Solutions%20for%20Tasks%201%20and%202.zip) | [**[Day 3]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Solutions%20for%20Task.zip) | [**[Day 4]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Solutions%20for%20Tasks.zip)
+
+By the end of the workshop, the participants should: 
+
+- Acquire the foundation and advanced knowledge on key principles of statistical modelling within a Bayesian framework; 
+- Be able to perform inferential statistics on spatial and non-spatial data to carry out hypothesis testing for evidence-based research using the diverse types of regression-based models from a Bayesian framework; 
+- Be able to perform spatial risk prediction for areal data as well as quantify levels of uncertainty using exceedance probabilities; 
+- Acquire new programming language skills such as Stan (interfaced with RStudio).
+
+## Structure {.unnumbered}
+
+Throughout the course, each day will consist of a lecture, a walkthrough demonstration and computer seminar session. Here is the information on the programme structure:
+
+| **Times**                                  |**Format**                                                           |
+|:-------------------------------------------|:--------------------------------------------------------------------|
+| 11:00am-12:00pm (1h)                       | Lecture                                                             |
+| 12:00pm-01:00pm (1h)                       | Lunch Break                                                         |
+| 01:00pm-02:00pm (1h)                       | Live Walkthrough and Demonstration                                  |
+| 02:00pm-02:15pm (0h15mins)                 | Short Break                                                         |
+| 02:15pm-03:45pm (1h30mins)                 | Computer Practical Session                                          |
+| 03:45pm-04:00pm (0h15mins)                 | Wrap-up                                                             |
+
+All sessions are delivered in-person at the [**Charles Bell House G11 Seminar Room 4, 43–45 Foley Street, W1W 7TY**](http://www.ucl.ac.uk/maps/charles-bell-house). **Please bring your own laptops with you to the computer practicals**.
+
+## People & Contact Details {.unnumbered}
+
+Feel free to contact the course instructor via email for technical support. 
+
+For information on other Continuing Professional Courses hosted at [**UCL SODA**](https://www.ucl.ac.uk/social-data/home/social-data-institute); please feel free to contact Moira Hague or Tom O'Grady. See our contact information here:
+
+| **Name**                                                        | **Email**                                                 |
+|-----------------------------------------------------------------|-----------------------------------------------------------|
+| Anwar Musah (Instructor, UCL Geography)                         | [**a.musah\@ucl.ac.uk**](a.musah@ucl.ac.uk)               |
+| Moira Hague (Institute Manager, UCL SODA)                       | [**m.hague\@ucl.ac.uk**](m.hague@ucl.ac.uk)               |
+| Tom O'Grady (Deputy Director, UCL SODA)                         | [**t.o'grady\@ucl.ac.uk**](t.o'grady@ucl.ac.uk)           |
