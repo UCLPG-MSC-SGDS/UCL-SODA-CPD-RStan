@@ -1,11 +1,12 @@
 book_filename: "RStan-CPD"
 rmd_files:
 - index.rmd
-#- Intro_to_RStan.Rmd
-#- Intro_to_Bayesian_Regression_in_Stan.Rmd
-#- Intro_to_Bayesian_Hierarchicals.Rmd
-#- Intro_to_Bayesian_ICAR_Regression.Rmd
-#- Reading_list_for_workshop.Rmd
+- Readings.Rmd
+- installation.Rmd
+- intro_to_RStan.Rmd
+- intro_to_Bayesian_Regression_in_Stan.Rmd
+- intro_to_Bayesian_Hierarchicals.Rmd
+- intro_to_Bayesian_ICAR_Regression.Rmd
 
 language:
   ui:
