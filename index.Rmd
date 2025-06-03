@@ -45,7 +45,7 @@ Throughout the course, each day will consist of a lecture, a walkthrough demonst
 |:-------------------------------------------------|:--------------------------------------------------------------------|
 | 10:30am-12:00pm (1h30mins)                       | Lecture                                                             |
 | 12:00pm-01:00pm (1h)                             | Lunch Break                                                         |
-| 01:00pm-02:00pm (1h)                             | Live Demonstration Walkthrough                                      |
+| 01:00pm-02:00pm (1h)                             | Live Demonstration Walk-through                                      |
 | 02:00pm-02:15pm (0h15mins)                       | Short Break                                                         |
 | 02:15pm-04:15pm (2h)                             | Computer Practical Session                                          |
 | 04:15pm-04:30pm (0h15mins)                       | Wrap-up                                                             |
