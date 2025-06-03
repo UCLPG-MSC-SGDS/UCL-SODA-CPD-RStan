@@ -1,0 +1,149 @@
+# Getting started
+
+## What is Stan?
+
+```{r echo=FALSE, out.width = "100%", fig.align='center', cache=TRUE,}
+knitr::include_graphics('images/general/Stan_logo.png', error = FALSE) 
+```
+
+[**Stan**](https://mc-stan.org) is an interface for several statistical software packages (e.g., RStudio, Python, Julia, Stata, and MATLAB) which allows the user to perform state-of-the-art statistical modelling within a Bayesian framework. For R users, the package is called `rstan` which interfaces Stan and RStudio.  
+
+The focus will be solely on Stan and RStudio. We will show you how one can develop and compile Stan scripts for Bayesian inference through RStudio to perform basic parameter estimation, as well as a wide range of regression-based techniques starting with the simplest univariable linear models and its different families (logistic and Poisson) to the more advanced multivariable spatial risk models.
+
+Before all that, let us install the appropriate software and their latest version (as of **June 3rd 2025**). The next section will guide you through the installation process.
+
+## Installation of R & RStudio
+
+```{r echo=FALSE, out.width = "100%", fig.align='center', cache=TRUE,}
+knitr::include_graphics('images/general/RBase_RStudio_logo.png', error = FALSE) 
+```
+
+This section takes you through the installation process for [**R (Base)**](https://www.r-project.org) and [**RStudio**](https://www.rstudio.com) on MAC and Windows.
+
+If you are a **MAC** user, please jump to [**section 1.2.1**]()
+
+If you are a **Windows** user, please jump to [**section 1.2.2**]()
+
+### Installation process for MAC users
+
+You will need to have the following software installed for the `rstan` package to work on MAC. It is recommended to have the latest version of **R** and **RStudio**
+
+1. R (version 4.5.0) and RStudio (version 2025.05.0+496)
+2. XQuartz (version 2.8.5)
+3. XCode (version 16.4)
+4. GNU Fortran (version 14.2)
+
+**[1] Installation of R (4.4.2) and RStudio (2024.12.0-427) on MAC:**
+
+For **R (Base)**, please ensure you have installed the correct version for your MAC (**Mac Intel**) or MAC (**Apple silicon M1, M2 or M3**) OS. 
+
+**OS User type**| **R (Base)** | **RStudio Desktop**
+------------ | ------------- | -------------
+MAC (Intel) | [**R-4.5.0-x86_64.pkg**](https://cran.rstudio.com/bin/macosx/big-sur-x86_64/base/R-4.5.0-x86_64.pkg)| [**RStudio-2025.05.0-496.dmg**](https://download1.rstudio.org/electron/macos/RStudio-2025.05.0-496.dmg)
+MAC (M1, M2 or M3) | [**R-4.5.0-arm64.pkg**](https://cran.rstudio.com/bin/macosx/big-sur-arm64/base/R-4.5.0-arm64.pkg)| [**RStudio-2025.05.0-496.dmg**](https://download1.rstudio.org/electron/macos/RStudio-2025.05.0-496.dmg)
+
+- Download the correct version of **R (Base)** for your system. 
+- Double-click on the downloaded file (i.e., **R-4.5.0-x86_64.pkg** or **R-4.5.0-arm64.pkg**) and follow the steps to complete the installation.
+- Now, we can download the file (i.e., `.dmg`) for **RStudio** from the link provided in the above table.
+- Double-click the downloaded file (i.e., **RStudio-2025.05.0-496.dmg**) and then drag and drop the RStudio icon into the **Applications** folder to complete the installation.
+
+**[2] Installation of XQuartz (2.8.5):**
+
+Some functions in **R (Base)** and **Stan** require some of the libraries from **XQuartz** in order to function smoothly on your MAC OS.
+
+- Download the latest version of **XQuartz** (**XQuartz-2.8.5.pkg**) by clicking on this [**LINK**](https://github.com/XQuartz/XQuartz/releases/download/XQuartz-2.8.5/XQuartz-2.8.5.pkg) and simply complete the installation process by following the steps on your system.
+
+**[3] Installation of XCode (16.4):**
+
+Some functions in **R (Base)** and **Stan** require some of the external developer tools from the **XCode** application to function properly on your MAC OS.
+
+- Go to the **App Store** application and get the **XCode** app downloaded on to your system by clicking this [**LINK**](https://apps.apple.com/us/app/xcode/id497799835?mt=12).
+- Once it has downloaded, you can click on the "OPEN" button to verify it's been downloaded. A window will prompt you to complete the installation.
+
+**[4] GNU Fortran (version 14.2):**
+
+**R (Base)** and some packages require the **GNU Fortran 14.2** compiler in order to function smoothly on your MAC OS.
+
+- Download the latest version of **GNU Fortran 14.4** (**gfortran-14.2-universal.pkg**) by clicking on this [**LINK**](https://mac.r-project.org/tools/gfortran-14.2-universal.pkg) and simply complete the installation process by following the steps on your system.
+
+::: note
+**IMPORTANT NOTE**: The above four steps should complete the installation process for R and RStudio on MAC.
+:::
+
+### Installation process for Windows users
+
+You will need to have the following software installed for the `rstan` package to work on Windows.
+
+1. R (version 4.5.0)
+2. RTools45 (version 4.5.0)
+2. RStudio (version 2025.05.0+496)
+
+**[1] Installation of R (4.3.2) and RStudio (2023.06.0-421) on Windows:**
+
+**OS User type**| **R (Base)** | **RStudio Desktop**
+------------ | ------------- | -------------
+Windows | [**R-4.5.0-win.exe**](https://cran.rstudio.com/bin/windows/base/R-4.5.0-win.exe)| [**RStudio-2025.05.0-496.exe**](https://download1.rstudio.org/electron/windows/RStudio-2025.05.0-496.exe)
+
+1. Download the file for **R-4.5.0-win.exe** attached in the table above. 
+2. Double-click the downloaded file (i.e., **R-4.5.0-win.exe**) and follow the steps to complete the installation on your system.
+3. Now, we can download the file (i.e., `.exe`) for **RStudio** from the link provided in the above table.
+4. Double-click the downloaded file (i.e., **RStudio-2025.05.0-496.exe**) and follow the steps from the installer to complete the installation.
+
+**[2] Installation of Rtools 4.5.0**
+
+For Windows users, after you have completed the installation for **R (Base)** and **RStudio**, you are required to install the [**RTools45 package**](https://cran.rstudio.com/bin/windows/Rtools/rtools45/rtools.html) as it contains some libraries and developer tools for R function properly.
+
+1. Download the latest version of **RTools45** by clicking on this [**LINK**](https://cran.rstudio.com/bin/windows/Rtools/rtools45/files/rtools45-6536-6492.exe) to initiate the download of the **Rtools45 installer**. 
+2. Double-click the downloaded **rtools45-6536-6492.exe** file and follow the steps to complete the installation.
+
+::: note
+**IMPORTANT NOTE**: The above two steps should complete the installation process for R and RStudio on Windows.
+:::
+
+
+## Installation of `rstan` (or Stan) & other important r-packages
+
+When opening the RStudio application on your Windows or MAC PC. You will be greeted with its interface. The window is usual split into three panels: 1.) **R Console**, 2.) **Environments** and 3.) **Files, Help, Outputs etc.,**
+
+```{r echo=FALSE, out.width = "100%", fig.align='center', cache=TRUE,}
+knitr::include_graphics('images/general/RStudio_Panels.png', error = FALSE) 
+```
+
+The above section is the **Menu Bar**. You can access other functions for saving, editing, and opening a new R and Stan script files for writing and compiling codes. Let us opening a new **R script** by clicking on the **File** **>** **New File** **>** **R Script**. This should open a new script file titled “**Untitled 1**”.
+
+Now we are going to latest version of `rstan` 2.36.0.9000 (as of **June 3rd 2025**). Using the `install.packages()` function, we can finally install this package. You can use the code chunk below:
+
+```{r, eval=FALSE}
+install.packages("rstan", repos = c('https://stan-dev.r-universe.dev', getOption("repos")))
+```
+
+After installation, use the following code chunk to test if its work:
+
+```{r, eval=FALSE}
+example(stan_model, package = "rstan", run.dontrun = TRUE)
+```
+
+You will first see some gibberish running through your console - don't be alarmed - it means that its working. You will know `rstan` has been successfully installed, and working, when you see some iterations for four chains displayed in console. You will also see the objects `fit`, `fit2`, `mod` and `stancode` stored in the **Environments** panel when its done.
+
+This completes the installation process for `rstan`. Finally, we install other relevant R-packages needed for these sessions. It includes the following:
+
+- `sf`: “Simply Features” package that allows the user to load shapefiles into RStudio’s memory.
+- `tmap`: this package gives access to various functions for users to generate maps.
+- `stars`: this package for handling SpatioTemporal Arrays, Raster and vector data.
+- `SpatialEpi`: grants access to the `expected()` function needed for calculating expected numbers.
+- `geostan`: grants access to further functions that we need to compute the adjacency matrix that can be handled in Stan. We will use the two functions `shape2mat()` and `prep_icar_data()` to create the adjacency matrix as nodes and edges.
+- `tidybayes`: grants access to further functions for managing posterior estimates. We will need it calculating the exceedance probabilities. Load this alongside `tidyverse` package.
+- `loo`: this package allows the user to perform model validation and comparison
+
+```{r, eval=FALSE}
+install.packages("sf")
+install.packages("tmap")
+install.packages("Stars")
+install.packages("SpatialEpi")
+install.packages("geostan")
+install.packages("loo")
+install.packages("tidybayes")
+install.packages("tidyverse")
+```
+
+This concludes the installation section and sets you computer up for the course, if you encounter any problems please contact me.

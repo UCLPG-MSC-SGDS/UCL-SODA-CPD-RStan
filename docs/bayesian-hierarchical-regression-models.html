@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Bayesian Hierarchical Regression Models | Introduction to Bayesian Inference and Modelling (June 2025)</title>
+  <meta name="description" content="Introduction to Bayesian Inference and Modelling" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Bayesian Hierarchical Regression Models | Introduction to Bayesian Inference and Modelling (June 2025)" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Introduction to Bayesian Inference and Modelling" />
+  <meta name="github-repo" content="UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Bayesian Hierarchical Regression Models | Introduction to Bayesian Inference and Modelling (June 2025)" />
+  
+  <meta name="twitter:description" content="Introduction to Bayesian Inference and Modelling" />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="bayesian-generalised-linear-models-glms.html"/>
+<link rel="next" href="bayesian-spatial-modelling-for-areal-data-in-stan.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="assets/custom.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="toc-logo">
+<a href="https://www.ucl.ac.uk/social-data/home/social-data-institute"><img src="images/general/SODA_logo_only.jpg">
+</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#content"><i class="fa fa-check"></i>Content</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#structure"><i class="fa fa-check"></i>Structure</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#people-contact-details"><i class="fa fa-check"></i>People &amp; Contact Details</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="reading-list.html"><a href="reading-list.html"><i class="fa fa-check"></i>Reading List</a>
+<ul>
+<li class="chapter" data-level="" data-path="reading-list.html"><a href="reading-list.html#day-1-introduction-to-bayesian-inference"><i class="fa fa-check"></i>Day 1: Introduction to Bayesian Inference</a></li>
+<li class="chapter" data-level="" data-path="reading-list.html"><a href="reading-list.html#day-2-bayesian-generalised-linear-models-glms"><i class="fa fa-check"></i>Day 2: Bayesian Generalised Linear Models (GLMs)</a></li>
+<li class="chapter" data-level="" data-path="reading-list.html"><a href="reading-list.html#day-3-bayesian-hierarchical-regression-models"><i class="fa fa-check"></i>Day 3: Bayesian Hierarchical Regression Models</a></li>
+<li class="chapter" data-level="" data-path="reading-list.html"><a href="reading-list.html#day-4-bayesian-spatial-modelling-for-areal-data-in-stan"><i class="fa fa-check"></i>Day 4: Bayesian Spatial Modelling for Areal Data in Stan</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="getting-started.html"><a href="getting-started.html#what-is-stan"><i class="fa fa-check"></i><b>1.1</b> What is Stan?</a></li>
+<li class="chapter" data-level="1.2" data-path="getting-started.html"><a href="getting-started.html#installation-of-r-rstudio"><i class="fa fa-check"></i><b>1.2</b> Installation of R &amp; RStudio</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="getting-started.html"><a href="getting-started.html#installation-process-for-mac-users"><i class="fa fa-check"></i><b>1.2.1</b> Installation process for MAC users</a></li>
+<li class="chapter" data-level="1.2.2" data-path="getting-started.html"><a href="getting-started.html#installation-process-for-windows-users"><i class="fa fa-check"></i><b>1.2.2</b> Installation process for Windows users</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="getting-started.html"><a href="getting-started.html#installation-of-rstan-or-stan"><i class="fa fa-check"></i><b>1.3</b> Installation of <code>rstan</code> (or Stan)</a></li>
+<li class="chapter" data-level="1.4" data-path="getting-started.html"><a href="getting-started.html#installation-of-other-relevant-r-packages"><i class="fa fa-check"></i><b>1.4</b> Installation of other relevant R-packages</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html"><i class="fa fa-check"></i><b>2</b> Introduction to Bayesian Inference using Stan</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#lecture-video-length-12617"><i class="fa fa-check"></i><b>2.1.1</b> Lecture video (Length: 1:26:17)</a></li>
+<li class="chapter" data-level="2.1.2" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#learning-outcomes"><i class="fa fa-check"></i><b>2.1.2</b> Learning outcomes</a></li>
+<li class="chapter" data-level="2.1.3" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#live-walk-through-demonstration-video-length-12356"><i class="fa fa-check"></i><b>2.1.3</b> Live walk-through demonstration video (Length: 1:23:56)</a></li>
+<li class="chapter" data-level="2.1.4" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#datasets-setting-up-the-work-directory"><i class="fa fa-check"></i><b>2.1.4</b> Datasets &amp; setting up the work directory</a></li>
+<li class="chapter" data-level="2.1.5" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#loading-packages"><i class="fa fa-check"></i><b>2.1.5</b> Loading packages</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#basic-building-blocks-i-about-stan-programming"><i class="fa fa-check"></i><b>2.2</b> Basic building blocks I: About Stan Programming</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#opening-a-stan-script-in-rstudio"><i class="fa fa-check"></i><b>2.2.1</b> Opening a Stan Script in RStudio</a></li>
+<li class="chapter" data-level="2.2.2" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#basic-structure-of-a-stan-script-in-rstudio"><i class="fa fa-check"></i><b>2.2.2</b> Basic structure of a Stan script in RStudio</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#basic-building-blocks-ii-data-types-and-constraint-declarations"><i class="fa fa-check"></i><b>2.3</b> Basic building blocks II: Data types and constraint declarations</a></li>
+<li class="chapter" data-level="2.4" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#basic-building-blocks-iii-developing-our-model"><i class="fa fa-check"></i><b>2.4</b> Basic building blocks III: Developing our model</a></li>
+<li class="chapter" data-level="2.5" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#basic-building-blocks-iv-compiling-our-stan-code-in-rstudio"><i class="fa fa-check"></i><b>2.5</b> Basic building blocks IV: Compiling our Stan code in RStudio</a></li>
+<li class="chapter" data-level="2.6" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#basic-building-blocks-v-extract-posterior-samples-and-interpretation"><i class="fa fa-check"></i><b>2.6</b> Basic building blocks V: Extract posterior samples and interpretation</a></li>
+<li class="chapter" data-level="2.7" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#basic-building-blocks-vi-updating-our-prediction-with-new-information"><i class="fa fa-check"></i><b>2.7</b> Basic building blocks VI: Updating our prediction with new information</a></li>
+<li class="chapter" data-level="2.8" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#tasks"><i class="fa fa-check"></i><b>2.8</b> Tasks</a>
+<ul>
+<li class="chapter" data-level="2.8.1" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#task-1---low-level-arsenic-poisoning-in-cornwall-uk"><i class="fa fa-check"></i><b>2.8.1</b> Task 1 - Low-level arsenic poisoning in Cornwall, UK</a></li>
+<li class="chapter" data-level="2.8.2" data-path="introduction-to-bayesian-inference-using-stan.html"><a href="introduction-to-bayesian-inference-using-stan.html#task-2---body-mass-index-bmi-problem"><i class="fa fa-check"></i><b>2.8.2</b> Task 2 - Body mass index (BMI) problem</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html"><i class="fa fa-check"></i><b>3</b> Bayesian Generalised Linear Models (GLMs)</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html#introduction-1"><i class="fa fa-check"></i><b>3.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html#lecture-video-length-11658"><i class="fa fa-check"></i><b>3.1.1</b> Lecture video (Length: 1:16:58)</a></li>
+<li class="chapter" data-level="3.1.2" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html#learning-outcomes-1"><i class="fa fa-check"></i><b>3.1.2</b> Learning outcomes</a></li>
+<li class="chapter" data-level="3.1.3" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html#live-walk-through-demonstration-video-length-tbc"><i class="fa fa-check"></i><b>3.1.3</b> Live walk-through demonstration video (Length: TBC)</a></li>
+<li class="chapter" data-level="3.1.4" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html#datasets-setting-up-the-work-directory-1"><i class="fa fa-check"></i><b>3.1.4</b> Datasets &amp; setting up the work directory</a></li>
+<li class="chapter" data-level="3.1.5" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html#loading-and-installing-packages"><i class="fa fa-check"></i><b>3.1.5</b> Loading and installing packages</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html#poisson-regression-modelling"><i class="fa fa-check"></i><b>3.2</b> Poisson Regression Modelling</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html#selecting-the-appropriate-poisson-model"><i class="fa fa-check"></i><b>3.2.1</b> Selecting the appropriate Poisson model</a></li>
+<li class="chapter" data-level="3.2.2" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html#data-preparation-and-set-up-for-bayesian-analysis-in-stan"><i class="fa fa-check"></i><b>3.2.2</b> Data preparation and set-up for Bayesian analysis in Stan</a></li>
+<li class="chapter" data-level="3.2.3" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html#creating-a-script-to-run-a-negative-binomial-poisson-regression-in-stan"><i class="fa fa-check"></i><b>3.2.3</b> Creating a script to run a Negative Binomial Poisson regression in Stan</a></li>
+<li class="chapter" data-level="3.2.4" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html#compiling-our-stan-code-in-rstudio"><i class="fa fa-check"></i><b>3.2.4</b> Compiling our Stan code in RStudio</a></li>
+<li class="chapter" data-level="3.2.5" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html#computing-the-exceedance-probabilities"><i class="fa fa-check"></i><b>3.2.5</b> Computing the exceedance probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html#tasks-1"><i class="fa fa-check"></i><b>3.3</b> Tasks</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html#task-1---obesity-and-fastfoods-in-london"><i class="fa fa-check"></i><b>3.3.1</b> Task 1 - Obesity and Fastfoods in London</a></li>
+<li class="chapter" data-level="3.3.2" data-path="bayesian-generalised-linear-models-glms.html"><a href="bayesian-generalised-linear-models-glms.html#task-2---factors-affecting-house-prices-in-london-2015"><i class="fa fa-check"></i><b>3.3.2</b> Task 2 - Factors affecting house prices in London (2015)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="bayesian-hierarchical-regression-models.html"><a href="bayesian-hierarchical-regression-models.html"><i class="fa fa-check"></i><b>4</b> Bayesian Hierarchical Regression Models</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="bayesian-hierarchical-regression-models.html"><a href="bayesian-hierarchical-regression-models.html#introduction-2"><i class="fa fa-check"></i><b>4.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="bayesian-hierarchical-regression-models.html"><a href="bayesian-hierarchical-regression-models.html#lecture-video"><i class="fa fa-check"></i><b>4.1.1</b> Lecture video</a></li>
+<li class="chapter" data-level="4.1.2" data-path="bayesian-hierarchical-regression-models.html"><a href="bayesian-hierarchical-regression-models.html#live-walk-through-demonstration-video"><i class="fa fa-check"></i><b>4.1.2</b> Live walk-through demonstration video</a></li>
+<li class="chapter" data-level="4.1.3" data-path="bayesian-hierarchical-regression-models.html"><a href="bayesian-hierarchical-regression-models.html#datasets-setting-up-the-work-directory-2"><i class="fa fa-check"></i><b>4.1.3</b> Datasets &amp; setting up the work directory</a></li>
+<li class="chapter" data-level="4.1.4" data-path="bayesian-hierarchical-regression-models.html"><a href="bayesian-hierarchical-regression-models.html#loading-packages-1"><i class="fa fa-check"></i><b>4.1.4</b> Loading packages</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="bayesian-hierarchical-regression-models.html"><a href="bayesian-hierarchical-regression-models.html#data-preparation-and-set-up-for-bayesian-analysis-in-stan-1"><i class="fa fa-check"></i><b>4.2</b> Data preparation and set-up for Bayesian analysis in Stan</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="bayesian-hierarchical-regression-models.html"><a href="bayesian-hierarchical-regression-models.html#creating-a-script-to-run-a-2-level-multilevel-linear-regression-in-stan"><i class="fa fa-check"></i><b>4.2.1</b> Creating a script to run a 2-level Multilevel linear regression in Stan</a></li>
+<li class="chapter" data-level="4.2.2" data-path="bayesian-hierarchical-regression-models.html"><a href="bayesian-hierarchical-regression-models.html#compiling-our-stan-code-for-hierarchical-modelling"><i class="fa fa-check"></i><b>4.2.2</b> Compiling our Stan code for Hierarchical Modelling</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="bayesian-hierarchical-regression-models.html"><a href="bayesian-hierarchical-regression-models.html#task---maternal-access-to-adequate-delivery-services"><i class="fa fa-check"></i><b>4.3</b> Task - Maternal access to adequate delivery services</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html"><i class="fa fa-check"></i><b>5</b> Bayesian Spatial Modelling for Areal Data in Stan</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#introduction-3"><i class="fa fa-check"></i><b>5.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#lecture-video-length-11954"><i class="fa fa-check"></i><b>5.1.1</b> Lecture video (Length: 1:19:54)</a></li>
+<li class="chapter" data-level="5.1.2" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#learning-outcomes-2"><i class="fa fa-check"></i><b>5.1.2</b> Learning outcomes</a></li>
+<li class="chapter" data-level="5.1.3" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#live-walk-through-demonstration-video-length-23259"><i class="fa fa-check"></i><b>5.1.3</b> Live walk-through demonstration video (Length: 2:32:59)</a></li>
+<li class="chapter" data-level="5.1.4" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#loading-and-installing-packages-1"><i class="fa fa-check"></i><b>5.1.4</b> Loading and installing packages</a></li>
+<li class="chapter" data-level="5.1.5" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#datasets-setting-up-the-work-directory-3"><i class="fa fa-check"></i><b>5.1.5</b> Datasets &amp; setting up the work directory</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#data-preparation-in-rstudio"><i class="fa fa-check"></i><b>5.2</b> Data preparation in RStudio</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#calculation-for-expected-numbers"><i class="fa fa-check"></i><b>5.2.1</b> Calculation for expected numbers</a></li>
+<li class="chapter" data-level="5.2.2" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#converting-the-spatial-adjacency-matrix-to-nodes-edges"><i class="fa fa-check"></i><b>5.2.2</b> Converting the spatial adjacency matrix to nodes &amp; edges</a></li>
+<li class="chapter" data-level="5.2.3" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#create-the-dataset-to-be-compiled-in-stan"><i class="fa fa-check"></i><b>5.2.3</b> Create the dataset to be compiled in Stan</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#creating-the-script-for-the-spatial-icar-model"><i class="fa fa-check"></i><b>5.3</b> Creating the script for the Spatial ICAR model</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#data-block"><i class="fa fa-check"></i><b>5.3.1</b> Data block</a></li>
+<li class="chapter" data-level="5.3.2" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#transformed-data-block"><i class="fa fa-check"></i><b>5.3.2</b> Transformed data block</a></li>
+<li class="chapter" data-level="5.3.3" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#parameters-block"><i class="fa fa-check"></i><b>5.3.3</b> Parameters block</a></li>
+<li class="chapter" data-level="5.3.4" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#transformed-parameters-block"><i class="fa fa-check"></i><b>5.3.4</b> Transformed parameters block</a></li>
+<li class="chapter" data-level="5.3.5" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#model-block"><i class="fa fa-check"></i><b>5.3.5</b> Model block</a></li>
+<li class="chapter" data-level="5.3.6" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#generated-quantities-block"><i class="fa fa-check"></i><b>5.3.6</b> Generated quantities block</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#compiling-stan-code-for-spatial-icar-modelling"><i class="fa fa-check"></i><b>5.4</b> Compiling Stan code for Spatial ICAR modelling</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#printing-of-the-global-results"><i class="fa fa-check"></i><b>5.4.1</b> Printing of the global results</a></li>
+<li class="chapter" data-level="5.4.2" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#rapid-diagnostics-of-the-rhats"><i class="fa fa-check"></i><b>5.4.2</b> Rapid diagnostics of the rHATs</a></li>
+<li class="chapter" data-level="5.4.3" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#extraction-of-the-area-specific-relative-risks"><i class="fa fa-check"></i><b>5.4.3</b> Extraction of the area-specific relative risks</a></li>
+<li class="chapter" data-level="5.4.4" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#mapping-of-rr-and-significance"><i class="fa fa-check"></i><b>5.4.4</b> Mapping of RR and significance</a></li>
+<li class="chapter" data-level="5.4.5" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#extracting-and-mapping-of-the-exceedance-probabilities"><i class="fa fa-check"></i><b>5.4.5</b> Extracting and mapping of the exceedance probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#bayesian-updating"><i class="fa fa-check"></i><b>5.5</b> Bayesian Updating</a></li>
+<li class="chapter" data-level="5.6" data-path="bayesian-spatial-modelling-for-areal-data-in-stan.html"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#task"><i class="fa fa-check"></i><b>5.6</b> Task</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to Bayesian Inference and Modelling (June 2025)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="bayesian-hierarchical-regression-models" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> Bayesian Hierarchical Regression Models<a href="bayesian-hierarchical-regression-models.html#bayesian-hierarchical-regression-models" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="introduction-2" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Introduction<a href="bayesian-hierarchical-regression-models.html#introduction-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="lecture-video" class="section level3 hasAnchor" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Lecture video<a href="bayesian-hierarchical-regression-models.html#lecture-video" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><img src="images/general/Video_handle.png" width="100%" style="display: block; margin: auto;" />
+<strong>Parts:</strong> <a href="https://youtu.be/hP86-T_k38k"><strong>[1]</strong></a> | <a href="https://youtu.be/r1RPPAtFV0w"><strong>[2]</strong></a></p>
+</div>
+<div id="live-walk-through-demonstration-video" class="section level3 hasAnchor" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> Live walk-through demonstration video<a href="bayesian-hierarchical-regression-models.html#live-walk-through-demonstration-video" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="vembedr" align="center">
+<div>
+<iframe src="https://www.youtube.com/embed/DFi_ao4TbAQ" width="711" height="400" frameborder="0" allowfullscreen="" data-external="1"></iframe>
+</div>
+</div>
+<p><a href="https://youtu.be/DFi_ao4TbAQ">[<strong>Watch on YouTube</strong>]</a></p>
+<p>We will learn how to perform hierarchical regression modelling within a Bayesian framework. These models are useful and robust especially if there’s a hierarchical structure in the dataset. This artefact must be taken into account to ensure statistical robustness. We will focus on implementing 2-level hierarchical regressions with examples on <strong>random-intercept-only</strong> and <strong>slope</strong> model as these are quite simple to pull off in Stan.</p>
+<p>Let us begin.</p>
+</div>
+<div id="datasets-setting-up-the-work-directory-2" class="section level3 hasAnchor" number="4.1.3">
+<h3><span class="header-section-number">4.1.3</span> Datasets &amp; setting up the work directory<a href="bayesian-hierarchical-regression-models.html#datasets-setting-up-the-work-directory-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Go to your folder <strong>CPD-course</strong> and create a sub folder called “<strong>Day 3</strong>”. Here, we will store all our R &amp; Stan scripts and data files. Set your work directory to the <strong>Day 3</strong> folder.</p>
+<p>For Windows, the code for setting the work directory will be:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="bayesian-hierarchical-regression-models.html#cb53-1" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;C:/Users/AccountName/Desktop/CPD-course/Day 3&quot;</span>)</span></code></pre></div>
+<p>For MAC, the code for setting the work directory will be:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="bayesian-hierarchical-regression-models.html#cb54-1" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;/Users/AccountName/Desktop/CPD-course/Day 3&quot;</span>)</span></code></pre></div>
+<p>The dataset for this practical are:</p>
+<ul>
+<li><code>Maths attainment and activity study.csv</code></li>
+<li><code>Pregnancies and hospital data.csv</code></li>
+</ul>
+<p>We will start of with the <code>Maths attainment and activity study.csv</code>. Let us load this dataset into memory:</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="bayesian-hierarchical-regression-models.html#cb55-1" tabindex="-1"></a><span class="co"># load up the data</span></span>
+<span id="cb55-2"><a href="bayesian-hierarchical-regression-models.html#cb55-2" tabindex="-1"></a>Maths_dataset <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;Maths attainment and activity study.csv&quot;</span>)</span></code></pre></div>
+</div>
+<div id="loading-packages-1" class="section level3 hasAnchor" number="4.1.4">
+<h3><span class="header-section-number">4.1.4</span> Loading packages<a href="bayesian-hierarchical-regression-models.html#loading-packages-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We need to load the installed packages including <code>rstan</code> and <code>tidybayes</code>:</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="bayesian-hierarchical-regression-models.html#cb56-1" tabindex="-1"></a><span class="co"># load up packages</span></span>
+<span id="cb56-2"><a href="bayesian-hierarchical-regression-models.html#cb56-2" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&#39;rstan&#39;</span>)</span>
+<span id="cb56-3"><a href="bayesian-hierarchical-regression-models.html#cb56-3" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&#39;tidybayes&#39;</span>)</span>
+<span id="cb56-4"><a href="bayesian-hierarchical-regression-models.html#cb56-4" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&#39;tidyverse&#39;</span>)</span></code></pre></div>
+<p>As usual, for the best experience, configure Stan:</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="bayesian-hierarchical-regression-models.html#cb57-1" tabindex="-1"></a><span class="co"># configure Stan</span></span>
+<span id="cb57-2"><a href="bayesian-hierarchical-regression-models.html#cb57-2" tabindex="-1"></a><span class="fu">options</span>(<span class="at">mc.cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>())</span>
+<span id="cb57-3"><a href="bayesian-hierarchical-regression-models.html#cb57-3" tabindex="-1"></a><span class="fu">rstan_options</span>(<span class="at">auto_write =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="data-preparation-and-set-up-for-bayesian-analysis-in-stan-1" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Data preparation and set-up for Bayesian analysis in Stan<a href="bayesian-hierarchical-regression-models.html#data-preparation-and-set-up-for-bayesian-analysis-in-stan-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We are going to fit a 2-level hierarchical model on a continuous outcome i.e., <code>MathScore</code> and see how the following independent variables i.e., <code>ActiveTime</code> and <code>Supportive</code> impact it. The <code>Maths_dataset</code> contains a total of 200 students evenly clustered into 4 classrooms <code>ClassroomID</code> (i.e., 50 students in each classroom). The students have a unique student number i.e., <code>StudentID</code> and classroom number in the <code>GroupID</code> column.</p>
+<p>We want fit an <code>random-intercept-only</code> to explore the difference in the classroom’s performance in maths, as well as how <code>ActiveTime</code> and <code>Supportive</code> impact it. To perform the 2-level hierarchical model, we need to extract right information from the <code>Maths_dataset</code> data frame for the Stan script compile.</p>
+<p>Here’s the information we’ll create in the <code>list()</code> object:</p>
+<ul>
+<li><code>N</code> = total number of students (level 1);</li>
+<li><code>CL</code> = maximum number of group (level 2);</li>
+<li><code>ClassroomID</code> = the list of all the group numbers that align with the students;</li>
+<li><code>k</code> = the total number of independent variables to be included in the model (in this case, its two which are both continuous). We are using <code>ActiveTime</code> and <code>Supportive</code>;</li>
+<li><code>MathScore</code> = we want to extract the dependent variable;</li>
+<li><code>ActiveTime</code> = we want to extract the first independent variable;</li>
+<li><code>Supportive</code> = we want to extract the second independent variable;</li>
+</ul>
+<div class="note">
+<p><strong>Note:</strong> This code shows an instance where we explicitly list the variables out in the modl</p>
+</div>
+<p>We can condense this information into list() object in line of code as our dataset for <strong>Stan</strong> to compile:</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="bayesian-hierarchical-regression-models.html#cb58-1" tabindex="-1"></a>stan.dataset <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">N=</span><span class="fu">nrow</span>(Maths_dataset), </span>
+<span id="cb58-2"><a href="bayesian-hierarchical-regression-models.html#cb58-2" tabindex="-1"></a>    <span class="at">CL=</span><span class="fu">max</span>(<span class="fu">unique</span>(Maths_dataset<span class="sc">$</span>GroupID)),</span>
+<span id="cb58-3"><a href="bayesian-hierarchical-regression-models.html#cb58-3" tabindex="-1"></a>    <span class="at">ClassroomID=</span><span class="fu">as.integer</span>(Maths_dataset<span class="sc">$</span>GroupID),</span>
+<span id="cb58-4"><a href="bayesian-hierarchical-regression-models.html#cb58-4" tabindex="-1"></a>    <span class="at">k=</span><span class="dv">2</span>,</span>
+<span id="cb58-5"><a href="bayesian-hierarchical-regression-models.html#cb58-5" tabindex="-1"></a>    <span class="at">MathScore=</span>Maths_dataset<span class="sc">$</span>Math,</span>
+<span id="cb58-6"><a href="bayesian-hierarchical-regression-models.html#cb58-6" tabindex="-1"></a>    <span class="at">ActiveTime=</span>Maths_dataset<span class="sc">$</span>ActiveTime,</span>
+<span id="cb58-7"><a href="bayesian-hierarchical-regression-models.html#cb58-7" tabindex="-1"></a>    <span class="at">Supportive=</span>Maths_dataset<span class="sc">$</span>Support</span>
+<span id="cb58-8"><a href="bayesian-hierarchical-regression-models.html#cb58-8" tabindex="-1"></a>    )</span></code></pre></div>
+<p>At this point, the dataset is fully prepared and ready to go. Let’s create our <strong>Stan script</strong> for running a <strong>2-level Multilevel linear regression</strong> within a Bayesian framework.</p>
+<div id="creating-a-script-to-run-a-2-level-multilevel-linear-regression-in-stan" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Creating a script to run a 2-level Multilevel linear regression in Stan<a href="bayesian-hierarchical-regression-models.html#creating-a-script-to-run-a-2-level-multilevel-linear-regression-in-stan" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We will need <code>Data</code>, <code>Parameters</code> and <code>Model</code> blocks only for this analysis. Recall that the <code>Data</code>, <code>Parameters</code> and <code>Model</code> block <strong>must</strong> be specified for any regression analysis to work.</p>
+<p><strong>FIRST STEP:</strong> We specify the total number of observations <code>int N</code> as well as the number of independent variables <code>int k</code> as an integer in the <strong>data</strong> block. We define our <code>MathScore</code> outcome as a <code>vector</code> of size <code>N</code>, and we do the same for the two independent variables <code>ActiveTime</code> and <code>Supportive</code>, and specify all these variables to be <code>real</code> and constrained - this is sanity check (not compulsory).</p>
+<p>We need to specific the number of classrooms for which the students are clustered in through <code>CL</code> and <code>ClassroomID</code>. Note that <code>CL</code> is the maximum number of classrooms (i.e., <code>4</code>). The <code>ClassroomID</code> is the declared in the Stan code as integer which takes values from <code>1</code> to <code>4</code>, with <code>4</code> being the maximum number constrained by the <code>CL</code>. The <code>ClassroomID[N]</code> aligns the group ID number with the student’s ID number - e.g., classroom 1 with student’s of ID’s 1, 2, 3, 4 and so on etc., Stan will treat the records as <code>1[1]</code>, <code>1[2]</code>, <code>1[3]</code>, <code>1[4]</code> and so on.</p>
+<pre class="text"><code>data {
+    int&lt;lower = 0&gt; N;                              // Number of students (i.e., observations)
+    int&lt;lower = 0&gt; CL;                             // Total number of classrooms
+    int&lt;lower = 0, upper = CL&gt; ClassroomID[N];     // Aligning the classroom ID number to the student ID
+    int&lt;lower = 0&gt; k;                              // Specify total number of independent variables to be used in model
+    real&lt;lower = 0&gt; ActiveTime[N];                 // First independent variable
+    real&lt;lower = 0&gt; Supportive[N];                 // Second independent variable
+    real&lt;lower = 0&gt; MathScore[N];                  // Outcome or dependent variable
+}</code></pre>
+<p><strong>SECOND STEP:</strong> For the <strong>parameters</strong> block, here we will need to specify the name of the <strong>fixed effect part</strong> of regression i.e., <code>gamma00</code> and the level-1 coefficients <code>beta</code> for our independent variables. We need to also specify the random effect part of the model as well i.e., <code>u0,1 u0,2, u0,3 and u0,4</code> as a vector by linking this to the four number of classes. Finally, we need to specify the <code>sigma_error</code> and <code>group_error</code> as the variance (or residual errors on group- and individual-level) as we must estimate this!</p>
+<p>Here is the code:</p>
+<pre class="text"><code>data {
+    int&lt;lower = 0&gt; N;                             // Number of students (i.e., observations)
+    int&lt;lower = 0&gt; CL;                            // Total number of classrooms
+    int&lt;lower = 0, upper = CL&gt; ClassroomID[N];    // Aligning the classroom ID number to the student ID
+    int&lt;lower = 0&gt; k;                             // Specify total number of independent variables to be used in model
+    real&lt;lower = 0&gt; ActiveTime[N];                // First independent variable
+    real&lt;lower = 0&gt; Supportive[N];                // Second independent variable
+    real&lt;lower = 0&gt; MathScore[N];                 // Outcome or dependent variable
+}
+
+parameters {
+    real gamma00;                                 // Declare the fixed part (intercept) (Global intercept)
+    vector[k] beta;                               // Declare the fixed part (beta1 and beta2 coefficients for ActiveTime and Supportive)
+    real u[CL];                                   // Declare the random effects u0,1 u0,2, u0,3 and u0,4
+    real&lt;lower = 0&gt; sigma_error;                  // Declare the random part (level-1)
+    real&lt;lower = 0&gt; group_error;                  // Declare the random part (level-2)
+}</code></pre>
+<p><strong>THIRD STEP:</strong> We need to include the varying intercept into the statistical model. Here, we can write that by adding <strong>transformed parameters</strong> block to the code.</p>
+<pre class="text"><code>data {
+    int&lt;lower = 0&gt; N;                             // Number of students (i.e., observations)
+    int&lt;lower = 0&gt; CL;                            // Total number of classrooms
+    int&lt;lower = 0, upper = CL&gt; ClassroomID[N];    // Aligning the classroom ID number to the student ID
+    int&lt;lower = 0&gt; k;                             // Specify total number of independent variables to be used in model
+    real&lt;lower = 0&gt; ActiveTime[N];                // First independent variable
+    real&lt;lower = 0&gt; Supportive[N];                // Second independent variable
+    real&lt;lower = 0&gt; MathScore[N];                 // Outcome or dependent variable
+}
+
+parameters {
+    real gamma00;                                 // Declare the fixed part (intercept) (Global intercept)
+    vector[k] beta;                               // Declare the fixed part (beta1 and beta2 coefficients for ActiveTime and Supportive)
+    real u[CL];                                   // Declare the random effects u0,1 u0,2, u0,3 and u0,4
+    real&lt;lower = 0&gt; sigma_error;                  // Declare the random part (level-1)
+    real&lt;lower = 0&gt; group_error;                  // Declare the random part (level-2)
+}
+
+transformed parameters {
+    real beta0[CL];
+    
+    for (j in 1:CL){
+        beta0[j] = gamma00 + u[j];                  // Varying intercept by classroom
+    }
+}</code></pre>
+<p><strong>FOURTH AND LAST STEP:</strong> We build our likelihood function and specify the priors for each parameter under the <strong>model</strong> block. We are using a typical linear model as we are assuming there’s some linear relationship:</p>
+<pre class="text"><code>data {
+    int&lt;lower = 0&gt; N;                             // Number of students (i.e., observations)
+    int&lt;lower = 0&gt; CL;                            // Total number of classrooms
+    int&lt;lower = 0, upper = CL&gt; ClassroomID[N];    // Aligning the classroom ID number to the student ID
+    int&lt;lower = 0&gt; k;                             // Specify total number of independent variables to be used in model
+    real&lt;lower = 0&gt; ActiveTime[N];                // First independent variable
+    real&lt;lower = 0&gt; Supportive[N];                // Second independent variable
+    real&lt;lower = 0&gt; MathScore[N];                 // Outcome or dependent variable
+}
+
+parameters {
+    real gamma00;                                 // Declare the fixed part (intercept) (Global intercept)
+    vector[k] beta;                               // Declare the fixed part (beta1 and beta2 coefficients for ActiveTime and Supportive)
+    real u[CL];                                   // Declare the random effects u0,1 u0,2, u0,3 and u0,4
+    real&lt;lower = 0&gt; sigma_error;                  // Declare the random part (level-1)
+    real&lt;lower = 0&gt; group_error;                  // Declare the random part (level-2)
+}
+
+transformed parameters {
+    real beta0[CL];
+    
+    for (j in 1:CL){
+        beta0[j] = gamma00 + u[j];                  // Varying intercept by classroom
+    }
+}
+
+model {
+    real mu;                                      // define mu to be the mean MathScore we want to predict
+    u ~ normal(0, group_error);                   // prior for each random effects u[1], u[2], u[3] and u[4]
+    gamma00 ~ normal(0, 20);                      // prior for the overall intercept gamma00
+    beta ~ normal(0, 20);                         // prior for beta[1] and beta[2] coefficients
+                                                  // note that group_error and sigma_error has no priors - automatically given a uniform
+    
+    // likelihood function
+    for (i in 1:N) {
+        mu = beta0[ClassroomID[i]] + beta[1]*ActiveTime[i] + beta[2]*Supportive[i];
+        MathScore[i] ~ normal(mu, sigma_error);
+    }
+}</code></pre>
+<div class="note">
+<p>Let’s save the script as <code>Maths_Activity_study.stan</code>. Now, we can compile and run it through RStudio to get our estimates coefficients and random intercept results.</p>
+</div>
+</div>
+<div id="compiling-our-stan-code-for-hierarchical-modelling" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> Compiling our Stan code for Hierarchical Modelling<a href="bayesian-hierarchical-regression-models.html#compiling-our-stan-code-for-hierarchical-modelling" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Now, let us turn our attention to RStudio. Using the <code>stan()</code> to compile the save script to obtain the posterior estimation of the parameters in our hierarchical model:</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="bayesian-hierarchical-regression-models.html#cb63-1" tabindex="-1"></a><span class="co"># Start the clock</span></span>
+<span id="cb63-2"><a href="bayesian-hierarchical-regression-models.html#cb63-2" tabindex="-1"></a>ptm <span class="ot">&lt;-</span> <span class="fu">proc.time</span>()</span>
+<span id="cb63-3"><a href="bayesian-hierarchical-regression-models.html#cb63-3" tabindex="-1"></a><span class="co"># compile linear regression model for now</span></span>
+<span id="cb63-4"><a href="bayesian-hierarchical-regression-models.html#cb63-4" tabindex="-1"></a>bayesian.hierarchical.model <span class="ot">=</span> <span class="fu">stan</span>(<span class="st">&quot;Maths_Activity_study.stan&quot;</span>, <span class="at">data=</span>stan.dataset, <span class="at">iter=</span><span class="dv">10000</span>, <span class="at">chains=</span><span class="dv">6</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb63-5"><a href="bayesian-hierarchical-regression-models.html#cb63-5" tabindex="-1"></a><span class="co"># Stop the clock</span></span>
+<span id="cb63-6"><a href="bayesian-hierarchical-regression-models.html#cb63-6" tabindex="-1"></a><span class="fu">proc.time</span>() <span class="sc">-</span> ptm</span></code></pre></div>
+<p><strong>Output summary table</strong></p>
+<pre class="text"><code>bayesian.hierarchical.model
+Inference for Stan model: anon_model.
+6 chains, each with iter=20000; warmup=10000; thin=1; 
+post-warmup draws per chain=10000, total post-warmup draws=60000.
+
+               mean se_mean    sd    2.5%     25%     50%     75%   97.5% n_eff Rhat
+gamma00       33.57    0.26 24.12  -17.25   16.54   35.96   54.19   68.46  8298    1
+beta[1]       11.43    0.00  0.80    9.87   10.89   11.44   11.96   12.99 36973    1
+beta[2]        3.20    0.00  0.83    1.59    2.64    3.20    3.76    4.83 35288    1
+u[1]          44.59    0.27 24.15    9.73   23.94   42.15   61.73   95.49  8302    1
+u[2]          36.90    0.26 24.14    2.05   16.22   34.51   54.01   87.67  8301    1
+u[3]          21.27    0.26 24.13  -13.58    0.62   18.85   38.39   72.19  8301    1
+u[4]          27.75    0.26 24.14   -7.12    7.12   25.30   44.86   78.65  8299    1
+sigma_error    3.34    0.00  0.17    3.03    3.22    3.33    3.45    3.69 34741    1
+group_error   56.27    0.52 59.72    8.21   20.55   40.72   71.63  198.40 13438    1
+beta0[1]      78.15    0.00  0.79   76.61   77.62   78.15   78.69   79.70 41641    1
+beta0[2]      70.47    0.00  0.73   69.05   69.98   70.47   70.96   71.89 43111    1
+beta0[3]      54.83    0.00  0.76   53.35   54.32   54.83   55.35   56.33 42592    1
+beta0[4]      61.32    0.00  0.77   59.82   60.80   61.32   61.84   62.83 41752    1
+lp__        -353.89    0.02  2.15 -358.97 -355.09 -353.54 -352.31 -350.72 17880    1
+
+Samples were drawn using NUTS(diag_e) at Wed Jul 12 03:49:00 2023.
+For each parameter, n_eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor on split chains (at 
+convergence, Rhat=1).</code></pre>
+<p>Here is the <strong>interpretation</strong>:</p>
+<ul>
+<li><code>gamma00</code> is the global mean (or average) in the population under study. This means after for accounting for clustering, on average the students’ marks in maths are <strong>33.57 (95% CrI: -17.25 to 68.46)</strong>. Note that the <code>u[1]</code>, <code>u[2]</code>, <code>u[3]</code> and <code>u[4]</code> are the random-effects for for each Classroom. By adding the random effects to the global intercept (i.e., <code>gamma00 = 33.57</code>) would allow the intercepts to vary across the groups. This result is reflected in the <code>beta0[1]</code>, <code>beta0[2]</code>, <code>beta0[3]</code> and <code>beta0[4]</code>.</li>
+<li><code>beta[1]</code> is the level-1 coefficient for <code>ActiveTime</code>. This means after accounting for clustering, for unit increase in the time spent on active learning on average yields a positive increase on the math scores by <strong>11.43 (95% CrI: 9.87 to 12.99)</strong>. This increase is significant since the credibility intervals excludes the null value of zero.</li>
+<li><code>beta[2]</code>, in the same vein, the same can be said for the amount of one-to-one support a student receives from a teacher.</li>
+<li><code>Variances</code> for level-1 and level-2 can used to explain the model’s performance by taking the <code>56.27/(56.16 + 3.34) = 0.9457</code> is the proportion of explained variation in the 2-level hierarchical model when accounting for group clustering. Here, the value is quite high and so its a good model. Anything close to 1 (or 100%) is good, and vice versa, bad.</li>
+</ul>
+<p>Perhaps, you might want know the probability that a classroom(s) on average would attain maths score of at least 70 (A grade). We can use the exceedance probabilities to find out:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="bayesian-hierarchical-regression-models.html#cb65-1" tabindex="-1"></a><span class="co"># create a function to summarise the posterior distribution for each coefficient exceeding 70.00 as threshold</span></span>
+<span id="cb65-2"><a href="bayesian-hierarchical-regression-models.html#cb65-2" tabindex="-1"></a>threshold.varying_intercepts <span class="ot">&lt;-</span> <span class="cf">function</span>(x){<span class="fu">mean</span>(x <span class="sc">&gt;</span> <span class="dv">70</span>)}</span>
+<span id="cb65-3"><a href="bayesian-hierarchical-regression-models.html#cb65-3" tabindex="-1"></a></span>
+<span id="cb65-4"><a href="bayesian-hierarchical-regression-models.html#cb65-4" tabindex="-1"></a><span class="co"># use spread_draws() and pull() functions on the varying intercept estimates i.e., beta0 to compute their exceedance probability from `threshold.varying_intercepts` object using the summarise() function</span></span>
+<span id="cb65-5"><a href="bayesian-hierarchical-regression-models.html#cb65-5" tabindex="-1"></a>varying_intercepts.exc.probs <span class="ot">&lt;-</span> bayesian.hierarchical.model <span class="sc">%&gt;%</span> <span class="fu">spread_draws</span>(beta0[i]) <span class="sc">%&gt;%</span> </span>
+<span id="cb65-6"><a href="bayesian-hierarchical-regression-models.html#cb65-6" tabindex="-1"></a>    <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">beta0=</span><span class="fu">threshold.varying_intercepts</span>(beta0)) <span class="sc">%&gt;%</span></span>
+<span id="cb65-7"><a href="bayesian-hierarchical-regression-models.html#cb65-7" tabindex="-1"></a>    <span class="fu">pull</span>(beta0)</span>
+<span id="cb65-8"><a href="bayesian-hierarchical-regression-models.html#cb65-8" tabindex="-1"></a></span>
+<span id="cb65-9"><a href="bayesian-hierarchical-regression-models.html#cb65-9" tabindex="-1"></a><span class="co"># Run</span></span>
+<span id="cb65-10"><a href="bayesian-hierarchical-regression-models.html#cb65-10" tabindex="-1"></a>varying_intercepts.exc.probs</span>
+<span id="cb65-11"><a href="bayesian-hierarchical-regression-models.html#cb65-11" tabindex="-1"></a></span>
+<span id="cb65-12"><a href="bayesian-hierarchical-regression-models.html#cb65-12" tabindex="-1"></a><span class="sc">&gt;</span> varying_intercepts.exc.probs</span>
+<span id="cb65-13"><a href="bayesian-hierarchical-regression-models.html#cb65-13" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">1.0000000</span> <span class="fl">0.7407833</span> <span class="fl">0.0000000</span> <span class="fl">0.0000000</span></span></code></pre></div>
+<p>The certainty of achieving 70 score in maths in classroom 1 (100.0%) and 2 (74.1%) are very high. Classroom 3 and 4 do not stand a chance according to our model.</p>
+</div>
+</div>
+<div id="task---maternal-access-to-adequate-delivery-services" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Task - Maternal access to adequate delivery services<a href="bayesian-hierarchical-regression-models.html#task---maternal-access-to-adequate-delivery-services" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Try your hand on this problem in Stan</strong>: Build a random <strong>intercept</strong> and <strong>slope</strong> logit model using data on 1060 births to 501 mothers. The outcome of interest is whether the <code>birth</code> was delivered in a hospital (1) or elsewhere (0). The predictors include the log of income <code>loginc</code>, the <code>distance</code> to the nearest hospital distance, and two indicators of mothers’s education: <code>dropout</code> for less than high school and college for college <code>graduate</code>, so high school or some college is the reference cell.</p>
+<p>Build a model containing the <code>loginc</code>, <code>distance</code> and <code>dropout</code> as covariates.</p>
+<p><strong>HINTS</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>You will need to create a varying slope for the <code>dropout</code> since it is measured on the mother level. This would be similar to creating a varying intercept in the <code>transformed parameters</code> block. Therefore, create <code>gamma00</code> and <code>gamma01</code> in the <code>parameters</code> block, which should be used to create <code>beta00</code> and <code>beta01</code> in the transformed parameters` block.</p></li>
+<li><p>The statistical model should use a <code>bernoulli()</code> with a <code>inv_logit()</code> function in the <code>model block</code>. The model should be as follows:</p></li>
+</ol>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="bayesian-hierarchical-regression-models.html#cb66-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N){</span>
+<span id="cb66-2"><a href="bayesian-hierarchical-regression-models.html#cb66-2" tabindex="-1"></a>        births[i] <span class="sc">~</span> <span class="fu">bernoulli</span>(<span class="fu">inv_logit</span>(beta00[MotherID[i]] <span class="sc">+</span> beta[<span class="dv">1</span>]<span class="sc">*</span>logincome[i] <span class="sc">+</span> beta[<span class="dv">2</span>]<span class="sc">*</span>distance[i] <span class="sc">+</span> beta01[MotherID[i]]<span class="sc">*</span>dropout[i]));</span>
+<span id="cb66-3"><a href="bayesian-hierarchical-regression-models.html#cb66-3" tabindex="-1"></a>}</span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>You can compute the desired coefficients and estimates with the following:</li>
+</ol>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="bayesian-hierarchical-regression-models.html#cb67-1" tabindex="-1"></a><span class="fu">print</span>(logit.hierarchical.model, <span class="at">pars =</span> <span class="fu">c</span>(<span class="st">&quot;gamma00&quot;</span>, <span class="st">&quot;gamma01&quot;</span>, <span class="st">&quot;beta&quot;</span>, <span class="st">&quot;sigma_error&quot;</span>, <span class="st">&quot;group_error&quot;</span>))</span></code></pre></div>
+<ol start="4" style="list-style-type: decimal">
+<li>Try to compute the odds ratios for <code>gamma01</code>, <code>beta[1]</code> and <code>beta[2]</code>.</li>
+</ol>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bayesian-generalised-linear-models-glms.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bayesian-spatial-modelling-for-areal-data-in-stan.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/edit/main/intro_to_Bayesian_Hierarchicals.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection",
+"collaspe": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

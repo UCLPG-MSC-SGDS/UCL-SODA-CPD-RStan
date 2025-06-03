@@ -1,0 +1,6 @@
+getting-started
+what-is-stan
+installation-of-r-rstudio
+installation-process-for-mac-users
+installation-process-for-windows-users
+installation-of-rstan-or-stan-other-important-r-packages

@@ -1,0 +1,73 @@
+---
+title: "Introduction to Bayesian Inference and Modelling (June 2025)"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+link-citations: yes
+github-repo: "UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan"
+description: "Introduction to Bayesian Inference and Modelling"
+#bibliography: [book.bib, packages.bib]
+---
+
+# Welcome {.unnumbered}
+
+```{r echo=FALSE, out.width = "100%", fig.align='center', cache=TRUE,}
+knitr::include_graphics('images/general/Welcome_image_5.png') 
+```
+
+[**UCL Social Data Institute (SODA)**](https://www.ucl.ac.uk/social-data/home/social-data-institute) is hosting a five-day course on Bayesian inference. The aim is to introduce academics and professional data analysts to the basics of Bayesian inference using RStudio and Stan. The course atmosphere will be extremely friendly and supportive, with the goal of teaching the fundamentals of Bayesian inference in Stan to participants from diverse backgrounds—including industry and research fields such as population health, social sciences, disaster-risk reduction, and many more.
+
+By the end of the workshop, the you should be able to: 
+
+- Acquire the foundation and advanced knowledge on key principles of statistical modelling within a Bayesian framework; 
+- Be able to perform inferential statistics on spatial and non-spatial data to carry out hypothesis testing for evidence-based research using the diverse types of regression-based models from a Bayesian framework; 
+- Be able to perform spatial risk prediction for areal data as well as quantify levels of uncertainty using exceedance probabilities; 
+- Acquire new programming language skills such as Stan (interfaced with RStudio).
+
+## Timetable, Schedule & Location  {.unnumbered}
+
+The course will cover the following topics:
+
+| **Date**        |**Downloadables**        | **Topics**                                          |
+|:----------------|:------------------------|:----------------------------------------------------|
+|                 | Not Applicable          | Installation                                        |
+| 09/06/2025      | [**Slides**](); [**No Data**]  | **Introduction to Probability Distributions**       |
+| 10/06/2025      | [**Slides**](); [**No Data**]  | **Introduction to Bayesian Inference**              |
+| 11/06/2025      | [**Slides**](); [**Data**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Datasets%20for%20session%202.zip) | **Bayesian Generalised Linear Models**              |
+| 12/06/2025      | [**Slides**](); [**Data**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Datasets%20for%20session%203.zip) | **Bayesian Hierarchical Regression Models**         |
+| 13/06/2025      | [**Slides**](); [**Data**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Dataset%20for%20session%204.zip)  | **Spatial Bayesian Risk Modelling**                 |
+
+**Solutions**: [**[Day 1]**]() | [**[Day 2]**]() | [**[Day 3]**]() | [**[Day 4]**]() | [**[Day 5]**]()
+
+Throughout the course, each day will consist of a lecture, a walkthrough demonstration and computer seminar session. Here is the information on the programme's schedule:
+
+| **Times**                                        |**Format**                                                           |
+|:-------------------------------------------------|:--------------------------------------------------------------------|
+| 10:30am-12:00pm (1h30mins)                       | Lecture                                                             |
+| 12:00pm-01:00pm (1h)                             | Lunch Break                                                         |
+| 01:00pm-02:00pm (1h)                             | Live Demonstration Walkthrough                                      |
+| 02:00pm-02:15pm (0h15mins)                       | Short Break                                                         |
+| 02:15pm-04:15pm (2h)                             | Computer Practical Session                                          |
+| 04:15pm-04:30pm (0h15mins)                       | Wrap-up                                                             |
+| 04:30pm                                          | Close                                                               |
+
+All sessions are delivered in-person at the location:
+
+**Room G04 Seminar Room 2** 
+</br> Charles Bell House (University College London),
+</br> 43–45 Foley Street, 
+</br> London, W1W 7TY
+</br> [View UCL Map](http://www.ucl.ac.uk/maps/charles-bell-house) | [View Google Map](https://shorturl.at/C6Qm1) 
+
+::: note
+**IMPORTANT NOTE**: Please bring your own laptops with you to benefit from the course specifically for the walkthrough and computer practicals.
+:::
+
+## My Contact Details {.unnumbered}
+
+**Anwar Musah**
+</br> Lecturer in Social & Geographic Data Science
+</br> UCL Department of Geography
+</br> Room 115 (First Floor) North West Wing Building, Gower Street, London, WC1E 6BT
+</br> Email: [**a.musah@ucl.ac.uk**](mailto:a.musah@ucl.ac.uk); Telephone: +44 (0)748 279 0776
+</br> [LinkedIn](https://www.linkedin.com/in/anwar-musah-b254a7171/) | [UCL Profile](https://profiles.ucl.ac.uk/66048-anwar-musah)
