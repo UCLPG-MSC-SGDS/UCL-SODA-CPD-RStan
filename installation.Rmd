@@ -20,9 +20,9 @@ knitr::include_graphics('images/general/RBase_RStudio_logo.png', error = FALSE)
 
 This section takes you through the installation process for [**R (Base)**](https://www.r-project.org) and [**RStudio**](https://www.rstudio.com) on MAC and Windows.
 
-If you are a **MAC** user, please jump to [**section 1.2.1**]()
+If you are a **MAC** user, please jump to [**section 1.2.1**](https://uclpg-msc-sgds.github.io/UCL-SODA-CPD-RStan/installation-of-r-rstudio-stan.html#installation-process-for-mac-users)
 
-If you are a **Windows** user, please jump to [**section 1.2.2**]()
+If you are a **Windows** user, please jump to [**section 1.2.2**](https://uclpg-msc-sgds.github.io/UCL-SODA-CPD-RStan/installation-of-r-rstudio-stan.html#installation-process-for-windows-users)
 
 ### Installation process for MAC users
 
