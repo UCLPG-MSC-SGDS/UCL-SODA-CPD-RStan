@@ -1,4 +1,4 @@
-# Getting started
+# Installation of R, RStudio & Stan
 
 ## What is Stan?
 
@@ -31,7 +31,7 @@ You will need to have the following software installed for the `rstan` package t
 1. R (version 4.5.0) and RStudio (version 2025.05.0+496)
 2. XQuartz (version 2.8.5)
 3. XCode (version 16.4)
-4. GNU Fortran (version 14.2)
+4. GNU Fortran (version 12.2)
 
 **[1] Installation of R (4.4.2) and RStudio (2024.12.0-427) on MAC:**
 
@@ -60,11 +60,11 @@ Some functions in **R (Base)** and **Stan** require some of the external develop
 - Go to the **App Store** application and get the **XCode** app downloaded on to your system by clicking this [**LINK**](https://apps.apple.com/us/app/xcode/id497799835?mt=12).
 - Once it has downloaded, you can click on the "OPEN" button to verify it's been downloaded. A window will prompt you to complete the installation.
 
-**[4] GNU Fortran (version 14.2):**
+**[4] GNU Fortran (version 12.2):**
 
-**R (Base)** and some packages require the **GNU Fortran 14.2** compiler in order to function smoothly on your MAC OS.
+**R (Base)** and some packages require the **GNU Fortran 12.2** compiler in order to function smoothly on your MAC OS.
 
-- Download the latest version of **GNU Fortran 14.4** (**gfortran-14.2-universal.pkg**) by clicking on this [**LINK**](https://mac.r-project.org/tools/gfortran-14.2-universal.pkg) and simply complete the installation process by following the steps on your system.
+- Download the latest version of **GNU Fortran 12.2** (**gfortran-12.2-universal.pkg**) by clicking on this [**LINK**](https://mac.r-project.org/tools/gfortran-12.2-universal.pkg) and simply complete the installation process by following the steps on your system.
 
 ::: note
 **IMPORTANT NOTE**: The above four steps should complete the installation process for R and RStudio on MAC.
@@ -132,8 +132,11 @@ This completes the installation process for `rstan`. Finally, we install other r
 - `stars`: this package for handling SpatioTemporal Arrays, Raster and vector data.
 - `SpatialEpi`: grants access to the `expected()` function needed for calculating expected numbers.
 - `geostan`: grants access to further functions that we need to compute the adjacency matrix that can be handled in Stan. We will use the two functions `shape2mat()` and `prep_icar_data()` to create the adjacency matrix as nodes and edges.
-- `tidybayes`: grants access to further functions for managing posterior estimates. We will need it calculating the exceedance probabilities. Load this alongside `tidyverse` package.
+- `tidybayes`: grants access to further functions for managing posterior estimates. We will need it calculating the exceedance probabilities. Note that is loaded alongside `tidyverse` and `dplyr` packages.
+- `bayesplot`: grants access to further functions for plot posterior estimates from Bayesian models.
 - `loo`: this package allows the user to perform model validation and comparison
+- `tidyverse`: grants access to 'streamlined' codes and functions for simplified data management in R beyond those provided with Base R codes.
+- `dplyr`: grants further access to more 'streamlined' codes and functions for simplified data management in R beyond those provided with Base R codes.
 
 ```{r, eval=FALSE}
 install.packages("sf")
@@ -141,9 +144,11 @@ install.packages("tmap")
 install.packages("Stars")
 install.packages("SpatialEpi")
 install.packages("geostan")
-install.packages("loo")
 install.packages("tidybayes")
+install.packages("bayesplot")
+install.packages("loo")
 install.packages("tidyverse")
+install.packages("dplyr")
 ```
 
 This concludes the installation section and sets you computer up for the course, if you encounter any problems please contact me.

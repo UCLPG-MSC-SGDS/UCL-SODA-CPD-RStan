@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Reading List | Introduction to Bayesian Inference and Modelling (June 2025)</title>
   <meta name="description" content="Introduction to Bayesian Inference and Modelling" />
-  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Reading List | Introduction to Bayesian Inference and Modelling (June 2025)" />
   <meta property="og:type" content="book" />
@@ -29,7 +29,7 @@
   
   
 <link rel="prev" href="index.html"/>
-<link rel="next" href="getting-started.html"/>
+<link rel="next" href="installation-of-r-rstudio-stan.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -54,7 +54,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -64,7 +64,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -153,15 +153,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="reading-list.html"><a href="reading-list.html#day-4-bayesian-hierarchical-regression-models"><i class="fa fa-check"></i>Day 4: Bayesian Hierarchical Regression Models</a></li>
 <li class="chapter" data-level="" data-path="reading-list.html"><a href="reading-list.html#day-5-bayesian-spatial-modelling-for-areal-data-in-stan"><i class="fa fa-check"></i>Day 5: Bayesian Spatial Modelling for Areal Data in Stan</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
+<li class="chapter" data-level="1" data-path="installation-of-r-rstudio-stan.html"><a href="installation-of-r-rstudio-stan.html"><i class="fa fa-check"></i><b>1</b> Installation of R, RStudio &amp; Stan</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="getting-started.html"><a href="getting-started.html#what-is-stan"><i class="fa fa-check"></i><b>1.1</b> What is Stan?</a></li>
-<li class="chapter" data-level="1.2" data-path="getting-started.html"><a href="getting-started.html#installation-of-r-rstudio"><i class="fa fa-check"></i><b>1.2</b> Installation of R &amp; RStudio</a>
+<li class="chapter" data-level="1.1" data-path="installation-of-r-rstudio-stan.html"><a href="installation-of-r-rstudio-stan.html#what-is-stan"><i class="fa fa-check"></i><b>1.1</b> What is Stan?</a></li>
+<li class="chapter" data-level="1.2" data-path="installation-of-r-rstudio-stan.html"><a href="installation-of-r-rstudio-stan.html#installation-of-r-rstudio"><i class="fa fa-check"></i><b>1.2</b> Installation of R &amp; RStudio</a>
 <ul>
-<li class="chapter" data-level="1.2.1" data-path="getting-started.html"><a href="getting-started.html#installation-process-for-mac-users"><i class="fa fa-check"></i><b>1.2.1</b> Installation process for MAC users</a></li>
-<li class="chapter" data-level="1.2.2" data-path="getting-started.html"><a href="getting-started.html#installation-process-for-windows-users"><i class="fa fa-check"></i><b>1.2.2</b> Installation process for Windows users</a></li>
+<li class="chapter" data-level="1.2.1" data-path="installation-of-r-rstudio-stan.html"><a href="installation-of-r-rstudio-stan.html#installation-process-for-mac-users"><i class="fa fa-check"></i><b>1.2.1</b> Installation process for MAC users</a></li>
+<li class="chapter" data-level="1.2.2" data-path="installation-of-r-rstudio-stan.html"><a href="installation-of-r-rstudio-stan.html#installation-process-for-windows-users"><i class="fa fa-check"></i><b>1.2.2</b> Installation process for Windows users</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="getting-started.html"><a href="getting-started.html#installation-of-rstan-or-stan-other-important-r-packages"><i class="fa fa-check"></i><b>1.3</b> Installation of <code>rstan</code> (or Stan) &amp; other important r-packages</a></li>
+<li class="chapter" data-level="1.3" data-path="installation-of-r-rstudio-stan.html"><a href="installation-of-r-rstudio-stan.html#installation-of-rstan-or-stan-other-important-r-packages"><i class="fa fa-check"></i><b>1.3</b> Installation of <code>rstan</code> (or Stan) &amp; other important r-packages</a></li>
 </ul></li>
 </ul>
 
@@ -183,46 +183,49 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="reading-list" class="section level1 unnumbered hasAnchor">
 <h1>Reading List<a href="reading-list.html#reading-list" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p><img src="images/general/recommended_books.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Contact me via email <a href="mailto:a.musah@ucl.ac.uk"><strong>a.musah@ucl.ac.uk</strong></a> if you are having problems securing one of these recommended books. Check these downloadable ‘Easter Eggs’ in this Google Drive Repository <a href="https://drive.google.com/drive/folders/16aBg0uC1m_aLKry1QGgaHb9ZhxUBr7Wu?usp=share_link"><strong>[LINK]</strong></a>.</p>
 <div id="day-1-introduction-to-probability-distributions" class="section level2 unnumbered hasAnchor">
 <h2>Day 1: Introduction to Probability Distributions<a href="reading-list.html#day-1-introduction-to-probability-distributions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ol style="list-style-type: decimal">
+<ul>
 <li><p><strong>Book</strong>: [Theory] Slater, M. (2022). Bayesian Methods in Statistics: From Concepts to Practice. <strong>Chapters 2: Probability Distributions</strong>. Pages 24-45.</p></li>
-<li><p><strong>Book</strong>: [Theory] Donovan, T.M., &amp; Mickey, R.M. (2019). Bayesian Statistics for Beginners: A Step-by-Step Approach. <strong>Chapters 3: Probability Functions</strong>. Pages 87-108.</p></li>
+<li><p><strong>Book</strong>: [Theory] Donovan, T.M., &amp; Mickey, R.M. (2019). Bayesian Statistics for Beginners: A Step-by-Step Approach. <strong>Chapters 1: Introduction to Probability</strong>. Pages 3-29.</p></li>
+<li><p><strong>Book</strong>: [Theory] Donovan, T.M., &amp; Mickey, R.M. (2019). Bayesian Statistics for Beginners: A Step-by-Step Approach. <strong>Chapters 3: Probability Functions</strong>. Pages 87-132.</p></li>
 <li><p><strong>Article</strong>: [Stan Programming] Carpenter, B., Gelman, A., <em>et al</em> (2019). <code>Stan</code>: A Probabilistic Programming Language. <strong>J Stat Soft</strong>. DOI: <a href="https://doi.org/10.18637%2Fjss.v076.i01"><strong>10.18637/jss.v076.i01</strong></a>.</p></li>
-<li><p><strong>Article</strong>: .</p></li>
-<li><p><strong>Article</strong>: .</p></li>
-</ol>
+</ul>
 </div>
 <div id="day-2-introduction-to-bayesian-inference" class="section level2 unnumbered hasAnchor">
 <h2>Day 2: Introduction to Bayesian Inference<a href="reading-list.html#day-2-introduction-to-bayesian-inference" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>TBC</p>
+<ul>
+<li><strong>Book</strong>: [Theory] Donovan, T.M., &amp; Mickey, R.M. (2019). Bayesian Statistics for Beginners: A Step-by-Step Approach. <strong>Chapters 2: Bayes’ Theorem and Bayesian Inference</strong>. Pages 3-29.</li>
+</ul>
 </div>
 <div id="day-3-bayesian-generalised-linear-models-glms" class="section level2 unnumbered hasAnchor">
 <h2>Day 3: Bayesian Generalised Linear Models (GLMs)<a href="reading-list.html#day-3-bayesian-generalised-linear-models-glms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ol style="list-style-type: decimal">
+<ul>
 <li><p><strong>Book</strong>: [Theory] Slater, M. (2022). Bayesian Methods in Statistics: From Concepts to Practice. <strong>Chapters 5: General Models</strong>. Pages 114-151.</p></li>
 <li><p><strong>Article</strong>: [Theory] Baldwin, S.A., &amp; Larson, M.J. (2017). An introduction to using Bayesian linear regression with clinical data. <strong>Behavior Research and Therapy</strong>. 98:58-75. DOI: <a href="https://doi.org/10.1016/j.brat.2016.12.016"><strong>10.1016/j.brat.2016.12.016</strong></a>.</p></li>
-<li><p><strong>Book</strong>: [Theory] Gelman, A <em>et al</em>. (2014). Bayesian Data Analysis (3rd Edition).<strong>Chapters 14: Introduction to Regression Models</strong>. Pages 353-378.</p></li>
-</ol>
+<li><p><strong>Book</strong>: [Theory] Gelman, A <em>et al</em>. (2014). Bayesian Data Analysis (3rd Edition). <strong>Chapters 14: Introduction to Regression Models</strong>. Pages 353-378.</p></li>
+<li><p><strong>Book</strong>: [Stan Programming] Lambert, B. (2018). A Student’s Guide to Bayesian Statistics. <strong>Chapters 18: Linear Regression Models</strong>. Pages 453-466.</p></li>
+</ul>
 </div>
 <div id="day-4-bayesian-hierarchical-regression-models" class="section level2 unnumbered hasAnchor">
 <h2>Day 4: Bayesian Hierarchical Regression Models<a href="reading-list.html#day-4-bayesian-hierarchical-regression-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ol style="list-style-type: decimal">
+<ul>
 <li><p><strong>Article</strong>: [Stan Programming] Sorensen, T., &amp; Vasishth, S. (2016). Bayesian linear mixed models using Stan: A tutorial for psychologists, linguists, and cognitive scientists. <strong>Tutorials in Quantitative Methods for Psychology</strong>. 12(3):175-200. DOI: <a href="https://www.tqmp.org/RegularArticles/vol12-3/p175/p175.pdf"><strong>10.20982/tqmp.12.3.p175</strong></a></p></li>
 <li><p><strong>Book</strong>: [Theory] Gelman, A <em>et al</em>. (2014). Bayesian Data Analysis (3rd Edition).<strong>Chapters 15: Hierarchical Linear Models</strong>. Pages 381-402.</p></li>
-</ol>
+</ul>
 </div>
 <div id="day-5-bayesian-spatial-modelling-for-areal-data-in-stan" class="section level2 unnumbered hasAnchor">
 <h2>Day 5: Bayesian Spatial Modelling for Areal Data in Stan<a href="reading-list.html#day-5-bayesian-spatial-modelling-for-areal-data-in-stan" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ol style="list-style-type: decimal">
-<li><p><strong>Article</strong>: [Methodology] Li, L. <em>et al</em> (2022). An ecological study exploring the geospatial associations between socioeconomic deprivation and fire-related dwelling casualties in the England (2010–2019). <strong>Applied Geography</strong>. 144(1027718). DOI: <a href="https://doi.org/10.1016/j.apgeog.2022.102718"><strong>10.1016/j.apgeog.2022.102718</strong></a>.</p></li>
+<ul>
+<li><p><strong>Article</strong>: [Application] Li, L. <em>et al</em> (2022). An ecological study exploring the geospatial associations between socioeconomic deprivation and fire-related dwelling casualties in the England (2010–2019). <strong>Applied Geography</strong>. 144(1027718). DOI: <a href="https://doi.org/10.1016/j.apgeog.2022.102718"><strong>10.1016/j.apgeog.2022.102718</strong></a>.</p></li>
+<li><p><strong>Article</strong>: [Application] Gomez, M.J. <em>et al</em> (2023). Bayesian spatial modeling of childhood overweight and obesity prevalence in Costa Rica. <strong>BMC Public Health</strong>. 23(651). DOI:<a href="https://doi.org/10.1186/s12889-023-15486-1"><strong>10.1186/s12889-023-15486-1</strong></a></p></li>
 <li><p><strong>Article</strong>: [Theory] Morris, M. <em>et al</em> (2019). Bayesian hierarchical spatial models: Implementing the Besag York Mollié model in stan. <strong>Spatial and Spatio-temporal Epidemiology</strong>. 31(100301). DOI: <a href="https://doi.org/10.1016/j.sste.2019.100301"><strong>10.1016/j.sste.2019.100301 </strong></a></p></li>
 <li><p><strong>Online Tutorials</strong>: [Stan Programming] Morris, M. <em>et al</em> (2019). Spatial Models in Stan: Intrinsic Auto-Regressive Models for Areal Data. URL: <a href="https://mc-stan.org/users/documentation/case-studies/icar_stan.html" class="uri">https://mc-stan.org/users/documentation/case-studies/icar_stan.html</a></p></li>
-<li><p><strong>Article</strong>: [Methodology] Gomez, M.J. <em>et al</em> (2023). Bayesian spatial modeling of childhood overweight and obesity prevalence in Costa Rica. <strong>BMC Public Health</strong>. 23(651). DOI:<a href="https://doi.org/10.1186/s12889-023-15486-1"><strong>10.1186/s12889-023-15486-1</strong></a></p></li>
 <li><p><strong>Article</strong>: [History] Besag, J. (1974). Spatial interaction and the statistical analysis of lattice systems. <strong>Journal of the Royal Statistical Society</strong>. Series B (Methodological) (1974): 192-236.</p></li>
 <li><p><strong>Article</strong>: [History] Besag, J. &amp; Kooperberg, K. (1995) “On conditional and intrinsic autoregression. <strong>Biometrika</strong>. 733-746.</p></li>
 <li><p><strong>Article</strong>: [History] Riebler, A., <em>et al</em> (2016). An intuitive Bayesian spatial model for disease mapping that accounts for scaling. <strong>Statistical methods in medical research</strong>. 25(4): 1145-1165. DOI: <a href="https://doi.org/10.1177/0962280216660421"><strong>10.1177/0962280216660421</strong></a></p></li>
-</ol>
+</ul>
 
 </div>
 </div>
@@ -232,7 +235,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="getting-started.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="installation-of-r-rstudio-stan.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -246,43 +249,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/edit/main/Readings.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": null,
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection",
-"collaspe": "section"
-}
+  "sharing": {
+    "github": true,
+    "facebook": false,
+    "twitter": false,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": false
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/edit/main/Readings.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
 });
 });
 </script>

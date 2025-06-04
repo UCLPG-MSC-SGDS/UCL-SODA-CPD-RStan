@@ -1,4 +1,4 @@
-getting-started
+installation-of-r-rstudio-stan
 what-is-stan
 installation-of-r-rstudio
 installation-process-for-mac-users
