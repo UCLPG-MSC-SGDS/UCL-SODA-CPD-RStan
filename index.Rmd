@@ -30,7 +30,7 @@ The course will cover the following topics:
 
 | **Date**        |**Downloadables**        | **Topics**                                          |
 |:----------------|:------------------------|:----------------------------------------------------|
-|                 | Not Applicable          | **Installation of R,RStudio & Stan**                |
+|                 | Not Applicable          | **Installation of R, RStudio & Stan**                |
 | 09/06/2025      | [**Slides**]();   | **Introduction to Probability Distributions**       |
 | 10/06/2025      | [**Slides**]();   | **Introduction to Bayesian Inference**              |
 | 11/06/2025      | [**Slides**](); [**[Dataset]**]() | **Bayesian Generalised Linear Models**                |
