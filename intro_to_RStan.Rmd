@@ -115,9 +115,9 @@ Do not worry about that - it is just some formalities put there by default by th
 
 Once you have deleted the default information save the empty file in the **Day 1** folder naming it `Predicting a proportion.stan`. Whenever you are saving Stan programme in RStudio always make sure to save it with a `.stan` ending. 
 
-### Basic structure of a Stan script in RStudio
+### Basic building blocks I: Structure of a Stan script
 
-A typical **Stan** program consist of the following 6 **blocks**:
+A typical **Stan** script consist of the following 6 **blocks**:
 
 1. Data
 2. Transformed data
@@ -126,9 +126,11 @@ A typical **Stan** program consist of the following 6 **blocks**:
 5. Model
 6. Generated quantities
 
-Out of these 6 blocks, the `Data`, `Parameters` and `Model` block **must** be specified. These are three compulsory blocks needed in any Stan script in order for a Bayesian model to work within the `rstan` environment. Let us define what these three important blocks are.
+Out of these 6 blocks, the `Data`, `Parameters` and `Model` block **must** be specified in your Stan script. These are three compulsory blocks needed in any Stan script in order for a Bayesian model to work within the `rstan` environment. Let us define what these three important blocks are.
 
-**FIRST:** The **data block** allows the user to declare how the model reads the dataset from RStudio by specifying the sample size **N** or observations; the number of **k** parameters that needs to be estimated; the names or list of independent variables for the corresponding parameters (e.g., coefficients); as well as data constraints etc., A **data** block is specified accordingly as:
+**FIRST:** The **data block** allows the user to declare how the model reads the dataset from RStudio by specifying the sample size **N** or observations; the number of **k** parameters that needs to be estimated; the names or list of independent variables for the corresponding parameters (e.g., coefficients); the dependent variable (or outcome); as well as any constraints that needs to be applied to the dataset. 
+
+A **data** block is specified accordingly in the script as:
 
 ```{r, eval=FALSE, highlight=FALSE}
 data {
@@ -137,9 +139,11 @@ data {
 
 ```
 
-It is within these curly brackets will specify these details of our dataset. They must be precise as it will have to correspond with the data that is loaded in RStudio's memory.
+It is within these curly brackets will specify these details of our dataset. They must be precise as it will have to correspond with the dataset that's currently loaded in RStudio's memory.
 
-**SECOND:** The **parameters block** allows the use to declare all primitive unknown quantities, including their respective storage types, dimensions, and constraints. The parameters that go here are the ones we want to infer or predict - e.g., includes the `mean`, `variance`, `sd`, `coefficient` and many more. A **parameters** block is specified after the **data** block:
+**SECOND:** The **parameters block** allows the user to declare all the unknown quantities we are going to estimate. The parameters that go here are the ones we want to infer or predict. It define includes the name(s) of the parameters that correspond things like the `mean`, `variance`, `sd`, `coefficients` or anything that you are going to estimate. 
+
+A **parameters** block is specified after the **data** block:
 
 ```{r, eval=FALSE, highlight=FALSE}
 data {
@@ -152,7 +156,9 @@ parameters {
 
 ```
 
-**THIRD:** The **model block** allows the use to declare and specify the sampling statements for the **dependent variable** (i.e., likelihood function) and parameters (i.e., priors) to be used in the model. A **model** block is specified after the **parameters** block:
+**THIRD:** The **model block** allows the user to declare and specify the sampling statistical statements for the **dependent variable** (i.e., likelihood function) as well as any **priors** for the parameters we will estimate through the model. This block is where we code our **probability distributions**.
+
+A **model** block is specified after the **parameters** block:
 
 ```{r, eval=FALSE, highlight=FALSE}
 data {
@@ -169,8 +175,7 @@ model {
 
 ```
 
-Note that adding a double forward slashes ``//`` lets the user add a comment to script. Let add comments to the blocks:
-
+Note that adding a double forward slashes ``//`` lets the user add a comment to the script. Let us add some comments into each of the blocks:
 
 ```{r, eval=FALSE, highlight=FALSE}
 // Add comments after double forward slashes 
@@ -201,13 +206,18 @@ model {
 In Stan, all parameters and data must be defined as variables with a specific type. Note, this is quite a pain but going through this step allows `rstan` to perform really fast. There are four basic **data** types:
 
 1. `int`: for integers, used for specifying the sample size, and is applied to discrete variables
-2. `real`: for continuous, is applied to continuous variables (i.e., ratio or interval) 
-3. `vector`: for a column vector of `reals` 
-4. `matrix`: for a matrix of `reals`
+2. `real`: for continuous, is applied to continuous variables (i.e., ratio or interval)
+3. `array`: for a containing several elements of data points that are `real` or `int` values
+4. `vector`: for a containing several elements of data points that are `real` or `int` values. It is similar to `array` syntax, but if you are going to perform algebraic manipulation of several elements with `matrices` - then it is best to use them as a `vector`.
+5. `matrix`: for containing a collection of several column `vectors` as a single `n`-by-`m` object.
 
-For **constraints**, we specify them on variables. For example, if we are dealing with a proportion **p** we will code it as `real<lower=0, upper=1> p` tells Stan that **p** can be any value from 0 to 1, inclusive. Note that specifying constraints really help speed Stan up so use them wherever possible.
+For **constraints**, we specify them on variables. For example, if we are dealing with a proportion **p** we will code it as `real<lower=0, upper=1> p` to tell Stan that **p** can be any value from 0 to 1, inclusive. Note that specifying constraints really helps speed Stan up so use them wherever you can.
 
-Lastly, you can create **arrays** of variables. For example, `real p[10]` tells Stan that **p** is an array of 10 real values. We can also create a matrix to represent a set of independent variables. Now that we have discussed these points - let work with an actual demonstration to show **data types** and **constraints** work.
+Lastly, you can create **array** of variables. For example, `array[10] real<lower=0 upper=1> p` tells Stan that **p** is an array of 10 real values for proportions. We can also create a matrix to represent a set of independent variables and so on. 
+
+Please take you time with learning these codes, and experiment with them more to gain proficiency. 
+
+Now that we have discussed these points - let work with an actual demonstration to show **data types** and **constraints** work.
 
 ## Basic building blocks III: Developing our model
 

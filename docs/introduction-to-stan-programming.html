@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Introduction to Stan Programming | Introduction to Bayesian Inference and Modelling (June 2025)</title>
+  <meta name="description" content="Introduction to Bayesian Inference and Modelling" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Introduction to Stan Programming | Introduction to Bayesian Inference and Modelling (June 2025)" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Introduction to Bayesian Inference and Modelling" />
+  <meta name="github-repo" content="UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Introduction to Stan Programming | Introduction to Bayesian Inference and Modelling (June 2025)" />
+  
+  <meta name="twitter:description" content="Introduction to Bayesian Inference and Modelling" />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="installation-of-r-rstudio-stan.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="assets/custom.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="toc-logo">
+<a href="https://www.ucl.ac.uk/social-data/home/social-data-institute"><img src="images/general/SODA_logo_only.jpg">
+</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#timetable-schedule-location"><i class="fa fa-check"></i>Timetable, Schedule &amp; Location</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#my-contact-details"><i class="fa fa-check"></i>My Contact Details</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="reading-list.html"><a href="reading-list.html"><i class="fa fa-check"></i>Reading List</a>
+<ul>
+<li class="chapter" data-level="" data-path="reading-list.html"><a href="reading-list.html#day-1-introduction-to-probability-distributions"><i class="fa fa-check"></i>Day 1: Introduction to Probability Distributions</a></li>
+<li class="chapter" data-level="" data-path="reading-list.html"><a href="reading-list.html#day-2-introduction-to-bayesian-inference"><i class="fa fa-check"></i>Day 2: Introduction to Bayesian Inference</a></li>
+<li class="chapter" data-level="" data-path="reading-list.html"><a href="reading-list.html#day-3-bayesian-generalised-linear-models-glms"><i class="fa fa-check"></i>Day 3: Bayesian Generalised Linear Models (GLMs)</a></li>
+<li class="chapter" data-level="" data-path="reading-list.html"><a href="reading-list.html#day-4-bayesian-hierarchical-regression-models"><i class="fa fa-check"></i>Day 4: Bayesian Hierarchical Regression Models</a></li>
+<li class="chapter" data-level="" data-path="reading-list.html"><a href="reading-list.html#day-5-bayesian-spatial-modelling-for-areal-data-in-stan"><i class="fa fa-check"></i>Day 5: Bayesian Spatial Modelling for Areal Data in Stan</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="installation-of-r-rstudio-stan.html"><a href="installation-of-r-rstudio-stan.html"><i class="fa fa-check"></i><b>1</b> Installation of R, RStudio &amp; Stan</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="installation-of-r-rstudio-stan.html"><a href="installation-of-r-rstudio-stan.html#what-is-stan"><i class="fa fa-check"></i><b>1.1</b> What is Stan?</a></li>
+<li class="chapter" data-level="1.2" data-path="installation-of-r-rstudio-stan.html"><a href="installation-of-r-rstudio-stan.html#installation-of-r-rstudio"><i class="fa fa-check"></i><b>1.2</b> Installation of R &amp; RStudio</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="installation-of-r-rstudio-stan.html"><a href="installation-of-r-rstudio-stan.html#installation-process-for-mac-users"><i class="fa fa-check"></i><b>1.2.1</b> Installation process for MAC users</a></li>
+<li class="chapter" data-level="1.2.2" data-path="installation-of-r-rstudio-stan.html"><a href="installation-of-r-rstudio-stan.html#installation-process-for-windows-users"><i class="fa fa-check"></i><b>1.2.2</b> Installation process for Windows users</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="installation-of-r-rstudio-stan.html"><a href="installation-of-r-rstudio-stan.html#installation-of-rstan-or-stan-other-important-r-packages"><i class="fa fa-check"></i><b>1.3</b> Installation of <code>rstan</code> (or Stan) &amp; other important r-packages</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html"><i class="fa fa-check"></i><b>2</b> Introduction to Stan Programming</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#lecture-video-tbc"><i class="fa fa-check"></i><b>2.1.1</b> Lecture video (TBC)</a></li>
+<li class="chapter" data-level="2.1.2" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#learning-outcomes"><i class="fa fa-check"></i><b>2.1.2</b> Learning outcomes</a></li>
+<li class="chapter" data-level="2.1.3" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#demonstration-video-tbc"><i class="fa fa-check"></i><b>2.1.3</b> Demonstration video (TBC)</a></li>
+<li class="chapter" data-level="2.1.4" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#setting-up-the-work-directory"><i class="fa fa-check"></i><b>2.1.4</b> Setting up the work directory</a></li>
+<li class="chapter" data-level="2.1.5" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#loading-packages"><i class="fa fa-check"></i><b>2.1.5</b> Loading packages</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#about-stan-programming"><i class="fa fa-check"></i><b>2.2</b> About Stan Programming</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#basic-building-blocks-i-opening-a-stan-script-in-rstudio"><i class="fa fa-check"></i><b>2.2.1</b> Basic building blocks I: Opening a Stan Script in RStudio</a></li>
+<li class="chapter" data-level="2.2.2" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#basic-building-blocks-ii-structure-of-a-stan-script"><i class="fa fa-check"></i><b>2.2.2</b> Basic building blocks II: Structure of a Stan script</a></li>
+<li class="chapter" data-level="2.2.3" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#basic-building-blocks-iii-data-types-and-constraint-declarations"><i class="fa fa-check"></i><b>2.2.3</b> Basic building blocks III: Data types and constraint declarations</a></li>
+<li class="chapter" data-level="2.2.4" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#basic-building-blocks-iv-developing-our-model"><i class="fa fa-check"></i><b>2.2.4</b> Basic building blocks IV: Developing our model</a></li>
+<li class="chapter" data-level="2.2.5" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#basic-building-blocks-v-compiling-stan-code-in-rstudio"><i class="fa fa-check"></i><b>2.2.5</b> Basic building blocks V: Compiling Stan code in RStudio</a></li>
+<li class="chapter" data-level="2.2.6" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#basic-building-blocks-vi-extract-posterior-samples-interpretation"><i class="fa fa-check"></i><b>2.2.6</b> Basic building blocks VI: Extract posterior samples &amp; interpretation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#tasks"><i class="fa fa-check"></i><b>2.3</b> Tasks</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#task-1---simulating-and-estimating-body-mass-index-bmi"><i class="fa fa-check"></i><b>2.3.1</b> Task 1 - Simulating and Estimating Body Mass Index (BMI)</a></li>
+<li class="chapter" data-level="2.3.2" data-path="introduction-to-stan-programming.html"><a href="introduction-to-stan-programming.html#task-2---low-level-arsenic-poisoning-in-cornwall-uk"><i class="fa fa-check"></i><b>2.3.2</b> Task 2 - Low-level arsenic poisoning in Cornwall, UK</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to Bayesian Inference and Modelling (June 2025)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="introduction-to-stan-programming" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">2</span> Introduction to Stan Programming<a href="introduction-to-stan-programming.html#introduction-to-stan-programming" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="introduction" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Introduction<a href="introduction-to-stan-programming.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="lecture-video-tbc" class="section level3 hasAnchor" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Lecture video (TBC)<a href="introduction-to-stan-programming.html#lecture-video-tbc" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>[Embed recorded lecture video here]</p>
+<p><a href="">[<strong>Watch on YouTube</strong>]</a></p>
+</div>
+<div id="learning-outcomes" class="section level3 hasAnchor" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> Learning outcomes<a href="introduction-to-stan-programming.html#learning-outcomes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Today’s session aims to introduce you to the basic Stan programming etiquette for Bayesian analysis in RStudio using Stan as an Interface, and producing output and interpreting it’s results. By the end of this session, you should be able to perform the following:</p>
+<ol style="list-style-type: decimal">
+<li>Getting acquainted with Stan and learning the basic programming etiquette of Stan.</li>
+<li>Know how to write and compile various <strong>probability distributions</strong> for simple parameters (i.e., mean, standard deviation, a proportion etc.,) in Stan.</li>
+<li>Know how to compile the results into RStudio for use, interpretation and visualisation.</li>
+</ol>
+<p>After the demonstration session is delivered in the first 1-hour of the practical - you can use the computer practical session to try the tutorials yourself by following the instructions as well as trying out the tasks.</p>
+</div>
+<div id="demonstration-video-tbc" class="section level3 hasAnchor" number="2.1.3">
+<h3><span class="header-section-number">2.1.3</span> Demonstration video (TBC)<a href="introduction-to-stan-programming.html#demonstration-video-tbc" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>[Embed recorded demonstration video here]</p>
+<p><a href="">[<strong>Watch on YouTube</strong>]</a></p>
+</div>
+<div id="setting-up-the-work-directory" class="section level3 hasAnchor" number="2.1.4">
+<h3><span class="header-section-number">2.1.4</span> Setting up the work directory<a href="introduction-to-stan-programming.html#setting-up-the-work-directory" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Since, this is our first practical lesson for <strong>Day 1</strong>, let us create a new folder <strong>CPD-course</strong> at the desktop location of our computer. Now, create a sub folder called “<strong>Day 1</strong>” within the <strong>CPD-course</strong> folder. Here, we will store all our R and Stan scripts. Set the work directory to the <strong>Day 1</strong> folder. Download the dataset for today and move them into the <strong>Day 1</strong> folder:</p>
+<ul>
+<li><code>Bti_Larvicide_dataset.csv</code></li>
+</ul>
+<p>For Windows, the code for setting the work directory will be:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="introduction-to-stan-programming.html#cb4-1" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;C:/Users/AccountName/Desktop/CPD-course/Day 1&quot;</span>)</span></code></pre></div>
+<p>For MAC, the code for setting the work directory will be:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="introduction-to-stan-programming.html#cb5-1" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;/Users/AccountName/Desktop/CPD-course/Day 1&quot;</span>)</span></code></pre></div>
+</div>
+<div id="loading-packages" class="section level3 hasAnchor" number="2.1.5">
+<h3><span class="header-section-number">2.1.5</span> Loading packages<a href="introduction-to-stan-programming.html#loading-packages" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To start writing scripts for Bayesian analysis, we will need to load the <code>rstan</code> package.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="introduction-to-stan-programming.html#cb6-1" tabindex="-1"></a><span class="co"># Load the packages with library()</span></span>
+<span id="cb6-2"><a href="introduction-to-stan-programming.html#cb6-2" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&#39;rstan&#39;</span>)</span></code></pre></div>
+<p>Note that when you load <code>rstan</code> from cran, you will see some recommendations on using multiple cores for speeding the process. For the best experience, we highly recommend using this code:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="introduction-to-stan-programming.html#cb7-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">mc.cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>())</span>
+<span id="cb7-2"><a href="introduction-to-stan-programming.html#cb7-2" tabindex="-1"></a><span class="fu">rstan_options</span>(<span class="at">auto_write =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>This tells RStudio to use multiple core for parallel processing whenever Stan is being implemented. Every time you want to use Stan - make sure to load <code>parallel::detectCores()</code> and <code>rstan_options</code> code.</p>
+</div>
+</div>
+<div id="about-stan-programming" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> About Stan Programming<a href="introduction-to-stan-programming.html#about-stan-programming" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This section describes how to code up a basic Stan model. This section forms the foundation for later, and more complex models.</p>
+<div id="basic-building-blocks-i-opening-a-stan-script-in-rstudio" class="section level3 hasAnchor" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Basic building blocks I: Opening a Stan Script in RStudio<a href="introduction-to-stan-programming.html#basic-building-blocks-i-opening-a-stan-script-in-rstudio" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Alright, let’s open a <strong>Stan</strong> file. You can do this by clicking and selecting <code>File</code> &gt; <code>New File</code> &gt; <code>Stan File</code></p>
+<p><img src="images/general/Open_stan_file_1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>When you open a new <strong>Stan</strong> file, you will be greeted with an <code>untitled script</code> which contains the following bits of code:</p>
+<pre class="text"><code>//
+// This Stan program defines a simple model, with a
+// vector of values &#39;y&#39; modeled as normally distributed
+// with mean &#39;mu&#39; and standard deviation &#39;sigma&#39;.
+//
+// Learn more about model development with Stan at:
+//
+//    http://mc-stan.org/users/interfaces/rstan.html
+//    https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started
+//
+
+// The input data is a vector &#39;y&#39; of length &#39;N&#39;.
+data {
+  int&lt;lower=0&gt; N;
+  vector[N] y;
+}
+
+// The parameters accepted by the model. Our model
+// accepts two parameters &#39;mu&#39; and &#39;sigma&#39;.
+parameters {
+  real mu;
+  real&lt;lower=0&gt; sigma;
+}
+
+// The model to be estimated. We model the output
+// &#39;y&#39; to be normally distributed with mean &#39;mu&#39;
+// and standard deviation &#39;sigma&#39;.
+model {
+  y ~ normal(mu, sigma);
+}</code></pre>
+<p>Do not worry about that - it is just some formalities put there by default by the developers behind <code>rstan</code>. You can delete everything you see in this script as we will build our own basic script from scratch.</p>
+<p>Once you have deleted the default information save the empty file in the <strong>Day 1</strong> folder naming it <code>Predicting_larvicide_concentrations.stan</code>. Whenever you are saving Stan programme in RStudio always make sure to save it with a <code>.stan</code> ending.</p>
+</div>
+<div id="basic-building-blocks-ii-structure-of-a-stan-script" class="section level3 hasAnchor" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Basic building blocks II: Structure of a Stan script<a href="introduction-to-stan-programming.html#basic-building-blocks-ii-structure-of-a-stan-script" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A typical <strong>Stan</strong> script consist of the following 6 <strong>blocks</strong>:</p>
+<ol style="list-style-type: decimal">
+<li>Data</li>
+<li>Transformed data</li>
+<li>Parameters</li>
+<li>Transformed parameters</li>
+<li>Model</li>
+<li>Generated quantities</li>
+</ol>
+<p>Out of these 6 blocks, the <code>Data</code>, <code>Parameters</code> and <code>Model</code> block <strong>must</strong> be specified in your Stan script. These are three compulsory blocks needed in any Stan script in order for a Bayesian model to work within the <code>rstan</code> environment. Let us define what these three important blocks are.</p>
+<p><strong>FIRST:</strong> The <strong>data block</strong> allows the user to declare how the model reads the dataset from RStudio by specifying the sample size <strong>N</strong> or observations; the number of <strong>k</strong> parameters that needs to be estimated; the names or list of independent variables for the corresponding parameters (e.g., coefficients); the dependent variable (or outcome); as well as any constraints that needs to be applied to the dataset.</p>
+<p>A <strong>data</strong> block is specified accordingly in the script as:</p>
+<pre class="text"><code>data {
+
+}</code></pre>
+<p>It is within these curly brackets will specify these details of our dataset. They must be precise as it will have to correspond with the dataset that’s currently loaded in RStudio’s memory.</p>
+<p><strong>SECOND:</strong> The <strong>parameters block</strong> allows the user to declare all the unknown quantities we are going to estimate. The parameters that go here are the ones we want to infer or predict. It define includes the name(s) of the parameters that correspond things like the <code>mean</code>, <code>variance</code>, <code>sd</code>, <code>coefficients</code> or anything that you are going to estimate.</p>
+<p>A <strong>parameters</strong> block is specified after the <strong>data</strong> block:</p>
+<pre class="text"><code>data {
+
+}
+
+parameters {
+    
+}</code></pre>
+<p><strong>THIRD:</strong> The <strong>model block</strong> allows the user to declare and specify the sampling statistical statements for the <strong>dependent variable</strong> (i.e., likelihood function) as well as any <strong>priors</strong> for the parameters we will estimate through the model. This block is where we code our <strong>probability distributions</strong>.</p>
+<p>A <strong>model</strong> block is specified after the <strong>parameters</strong> block:</p>
+<pre class="text"><code>data {
+
+}
+
+parameters {
+    
+}
+
+model {
+    
+}</code></pre>
+<p>Note that adding a double forward slashes <code>//</code> lets the user add a comment to the script. Let us add some comments into each of the blocks:</p>
+<pre class="text"><code>// Add comments after double forward slashes 
+
+data {
+    // data block
+
+}
+
+parameters {
+    // parameters block
+    
+}
+
+model {
+    // model block
+    
+}</code></pre>
+<div class="note">
+<p><strong>Important Notes:</strong> Since, the other blocks are not compulsory - we will leave them out for now. But we will come back and explain what those remaining blocks are in <strong>Day 2 and 3</strong>. Now, save your Stan script.</p>
+</div>
+</div>
+<div id="basic-building-blocks-iii-data-types-and-constraint-declarations" class="section level3 hasAnchor" number="2.2.3">
+<h3><span class="header-section-number">2.2.3</span> Basic building blocks III: Data types and constraint declarations<a href="introduction-to-stan-programming.html#basic-building-blocks-iii-data-types-and-constraint-declarations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In Stan, all parameters and data must be defined as variables with a specific type. Note, this is quite a pain but going through this step allows <code>rstan</code> to perform really fast. There are four basic <strong>data</strong> types:</p>
+<ol style="list-style-type: decimal">
+<li><code>int</code>: for integers, used for specifying the sample size, and is applied to discrete variables</li>
+<li><code>real</code>: for continuous, is applied to continuous variables (i.e., ratio or interval)</li>
+<li><code>array</code>: for a containing several elements of data points that are <code>real</code> or <code>int</code> values</li>
+<li><code>vector</code>: for a containing several elements of data points that are <code>real</code> or <code>int</code> values. It is similar to <code>array</code> syntax, but if you are going to perform algebraic manipulation of several elements with <code>matrices</code> - then it is best to use them as a <code>vector</code>.</li>
+<li><code>matrix</code>: for containing a collection of several column <code>vectors</code> as a single <code>n</code>-by-<code>m</code> object.</li>
+</ol>
+<p>For <strong>constraints</strong>, we specify them on variables. For example, if we are dealing with a proportion <strong>p</strong> we will code it as <code>real&lt;lower=0, upper=1&gt; p</code> to tell Stan that <strong>p</strong> can be any value from 0 to 1, inclusive. Note that specifying constraints really helps speed Stan up so use them wherever you can.</p>
+<p>Lastly, you can create <strong>array</strong> of variables. For example, <code>array[10] real&lt;lower=0 upper=1&gt; p</code> tells Stan that <strong>p</strong> is an array of 10 real values for proportions. We can also create a matrix to represent a set of independent variables and so on.</p>
+<p>Please take you time with learning these codes, and experiment with them more to gain proficiency.</p>
+<p>Now that we have discussed these points - let us work with an actual demonstration to show <strong>data types</strong> and <strong>constraints</strong> work.</p>
+</div>
+<div id="basic-building-blocks-iv-developing-our-model" class="section level3 hasAnchor" number="2.2.4">
+<h3><span class="header-section-number">2.2.4</span> Basic building blocks IV: Developing our model<a href="introduction-to-stan-programming.html#basic-building-blocks-iv-developing-our-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="note">
+<p><strong>PROBLEM:</strong> To combat mosquito populations - water bodies are treated with biological an agent called <strong>Bti dunks</strong>. These are ringed shaped objects that dissolve in standing water where mosquitoes breed. 120 samples from various points to ensure its working against mosquitoes and its not a cause for concern in terms of environmental contamination.</p>
+<ul>
+<li>What is the mean &amp; standard deviation, and uncertainty surrounding the levels of Bti larvicide concentrations present in standing water?</li>
+</ul>
+</div>
+<p>If you open the following dataset <code>Bti_Larvicide_dataset.csv</code>:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="introduction-to-stan-programming.html#cb13-1" tabindex="-1"></a><span class="co"># open dataset</span></span>
+<span id="cb13-2"><a href="introduction-to-stan-programming.html#cb13-2" tabindex="-1"></a>Bti_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;Bti_Larvicide_dataset.csv&quot;</span>)</span>
+<span id="cb13-3"><a href="introduction-to-stan-programming.html#cb13-3" tabindex="-1"></a><span class="co"># open data viewer</span></span>
+<span id="cb13-4"><a href="introduction-to-stan-programming.html#cb13-4" tabindex="-1"></a><span class="fu">View</span>(Bti_data)</span></code></pre></div>
+<p>You will notice that it contains 120 observations, and 2 columns:</p>
+<ul>
+<li>The first column <code>standing_water_id</code> is the unique ID number for each observation</li>
+<li>The second column <code>Bti_mgl</code> is the concentrations of Bti larvicides in various water bodies (in mg/L)</li>
+</ul>
+<p>Let us build our first model that predicts the mean and standard deviation as a posterior distribution. Let us extract the bits and pieces of information for the <strong>data</strong> block:</p>
+<ul>
+<li>Total sample size is <code>120</code>. We will define that as <code>N</code> in the Stan as an integer <code>int</code> with non-zero values in the <strong>data block</strong></li>
+<li>The column in the data frame for <code>Bti_data</code> (i.e., <code>Bti_mgl</code>) needs to be extracted. We will define that as an <code>array</code> of size <code>N</code> containing <code>real</code> values. We will name the variable as <code>bti</code> in Stan within the <strong>data block</strong></li>
+</ul>
+<p>Now that we have the information, in RStudio, we will need to build this dataset into a list object using <code>list()</code> to connect it with the <strong>data block</strong> in the Stan script. Let us store the data in list object called <code>stan_dataset</code>:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="introduction-to-stan-programming.html#cb14-1" tabindex="-1"></a><span class="co"># create a list object using the list() function</span></span>
+<span id="cb14-2"><a href="introduction-to-stan-programming.html#cb14-2" tabindex="-1"></a>stan_dataset <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">N =</span> <span class="dv">120</span>, <span class="at">bti =</span> Bti_data<span class="sc">$</span>Bti_mgl)</span>
+<span id="cb14-3"><a href="introduction-to-stan-programming.html#cb14-3" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="introduction-to-stan-programming.html#cb14-4" tabindex="-1"></a><span class="co"># print data in console</span></span>
+<span id="cb14-5"><a href="introduction-to-stan-programming.html#cb14-5" tabindex="-1"></a>stan_dataset</span></code></pre></div>
+<p>Now that the list object is prepared, we can start scripting in Stan.</p>
+<p><strong>FIRST:</strong> We specify the total number of samples as <code>N</code> that its an integer <code>int</code> which cannot be negative a number <code>&lt;lower = 0&gt;</code> in the <strong>data block</strong>. Also, we also need to specify name of the <code>bti</code> variable in stan that its an <code>array</code> of size <code>N</code> consisting real numbers in the <strong>data block</strong> too.</p>
+<pre class="text"><code>data {
+    // define N (120)
+    int&lt;lower = 0&gt; N;
+    // create an array of size 120 to store BTI values
+    array[N] real bti;
+}</code></pre>
+<p><strong>SECOND:</strong> For the <strong>parameters block</strong>, here we will need to specify the name of the parameters that we want to infer. Here, its <span class="math inline">\(\mu\)</span> which is the <strong>mean</strong> levels of Bti concentrations, as well as <span class="math inline">\(\sigma\)</span> which is the <strong>standard deviation</strong>. Note that, we need to tell Stan that these parameters are <code>real</code> numbers, as well as they are strictly positive values (i.e., use <code>&lt;lower = 0&gt;</code> to apply constraint) because we cannot have negative concentrations &amp; a negative value for standard deviation.</p>
+<pre class="text"><code>data {
+    // define N (120)
+    int&lt;lower = 0&gt; N;
+    // create an array of size 120 to store BTI values
+    array[N] real bti;
+}
+
+parameters {
+    // defined the mean as mu
+    real&lt;lower = 0&gt; mu;
+    // defined the SD as sigma
+    real&lt;lower = 0&gt; sigma;
+}</code></pre>
+<p><strong>THIRD:</strong> For the <strong>model block</strong>, we need to state that both <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> in the likelihood function - hence, <strong>bti</strong> variable will be sampled from the <strong>normal distribution</strong>. The model block will be:</p>
+<pre class="text"><code>data {
+    // define N (120)
+    int&lt;lower = 0&gt; N;
+    // create an array of size 120 to store BTI values
+    array[N] real bti;
+}
+
+parameters {
+    // defined the mean as mu
+    real&lt;lower = 0&gt; mu;
+    // defined the SD as sigma
+    real&lt;lower = 0&gt; sigma;
+}
+
+model {
+    // likelihood function, without any prior distribution specified
+    bti ~ normal(mu, sigma);
+}</code></pre>
+<div class="note">
+<p><strong>COMPLIMENTS:</strong> Well done, we have built our first Bayesian model in Stan. Let us now save this script. What we need to do next is compile this script in RStudio to get our results.</p>
+</div>
+</div>
+<div id="basic-building-blocks-v-compiling-stan-code-in-rstudio" class="section level3 hasAnchor" number="2.2.5">
+<h3><span class="header-section-number">2.2.5</span> Basic building blocks V: Compiling Stan code in RStudio<a href="introduction-to-stan-programming.html#basic-building-blocks-v-compiling-stan-code-in-rstudio" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>You can use the <code>stan()</code> function to call the stan script from RStudio in order to obtain the posterior estimates. The results will be stored in <code>stan</code> object called <code>bti_prediction</code>:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="introduction-to-stan-programming.html#cb18-1" tabindex="-1"></a><span class="co"># the directory needs to be set to where you save the dataset and Stan script</span></span>
+<span id="cb18-2"><a href="introduction-to-stan-programming.html#cb18-2" tabindex="-1"></a>bti_prediction <span class="ot">&lt;-</span> <span class="fu">stan</span>(<span class="st">&quot;Predicting_larvicide_concentrations.stan&quot;</span>, </span>
+<span id="cb18-3"><a href="introduction-to-stan-programming.html#cb18-3" tabindex="-1"></a>    <span class="at">data=</span>stan_dataset, </span>
+<span id="cb18-4"><a href="introduction-to-stan-programming.html#cb18-4" tabindex="-1"></a>    <span class="at">iter=</span><span class="dv">3000</span>, </span>
+<span id="cb18-5"><a href="introduction-to-stan-programming.html#cb18-5" tabindex="-1"></a>    <span class="at">chains=</span><span class="dv">3</span>, </span>
+<span id="cb18-6"><a href="introduction-to-stan-programming.html#cb18-6" tabindex="-1"></a>    <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>Some notes on the above code’s arguments:</p>
+<ul>
+<li><code>data=</code> specify the dataset stored as a list object.</li>
+<li><code>iter=</code> we are asking the <code>stan()</code> to perform 3,000 iterations on each chain to generate the posterior samples. The algorithm behind these iterations can be <strong>MCMC</strong>, <strong>NUTS</strong> or <strong>HMC</strong> algorithm (<strong>NUTS</strong> No-U-turn sampler is the default)</li>
+<li><code>chains=</code> we are asking the <code>stan()</code> function to perform 3 chains using 3 cores in our computer</li>
+</ul>
+<p>The resulting output can be printed with the function <code>print()</code>. Here, we are going to print the mean, standard error in mean, SD and the IQR ranges with 95% limits (i.e., 2.5% and 97.5%):</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="introduction-to-stan-programming.html#cb19-1" tabindex="-1"></a><span class="fu">print</span>(bti_prediction, <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.975</span>))</span></code></pre></div>
+<p>We obtain this summary table:</p>
+<pre class="text"><code>Inference for Stan model: anon_model.
+3 chains, each with iter=3000; warmup=1500; thin=1; 
+post-warmup draws per chain=1500, total post-warmup draws=4500.
+
+         mean se_mean   sd    2.5%     25%     50%     75%   97.5% n_eff Rhat
+mu      25.27    0.01 0.45   24.39   24.96   25.26   25.57   26.18  3624    1
+sigma    5.01    0.01 0.34    4.40    4.77    4.99    5.22    5.72  3811    1
+lp__  -247.60    0.02 1.03 -250.35 -247.97 -247.28 -246.87 -246.61  2164    1
+
+Samples were drawn using NUTS(diag_e) at Mon Jun  9 01:10:46 2025.
+For each parameter, n_eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor on split chains (at 
+convergence, Rhat=1).</code></pre>
+<div class="note">
+<p><strong>What does it all mean?</strong> The top part states that 3 chains were run for 3000 iterations. However, the first 1500 samples generated from each chain were discarded as warm-up, meaning that only 1500 samples from each chain were kept, resulting 4500 (1500x3) total post-warm-up sample draws. The output shows the summary statistics for our <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>. The <code>lp__</code> is the log-probability - which is used to quantify how well the model is for the data but, in my opinion, its not a useful estimate. Instead, use the effective sample size <code>n_eff</code> and <code>Rhat</code>. If the <code>Rhat</code> is less than <strong>1.05</strong> for all parameters - it means that the estimation of our parameters are fine. Anything above <strong>1.05</strong> it means that the results are not reliable.</p>
+</div>
+</div>
+<div id="basic-building-blocks-vi-extract-posterior-samples-interpretation" class="section level3 hasAnchor" number="2.2.6">
+<h3><span class="header-section-number">2.2.6</span> Basic building blocks VI: Extract posterior samples &amp; interpretation<a href="introduction-to-stan-programming.html#basic-building-blocks-vi-extract-posterior-samples-interpretation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>At this point, let us extract the posterior samples for the mean and standard deviation, and graph them to understand it posterior distribution. We use the <code>extract()</code> function from the <code>rstan</code> package, and graph them:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="introduction-to-stan-programming.html#cb21-1" tabindex="-1"></a><span class="co"># extracting the samples (it should be 4500)</span></span>
+<span id="cb21-2"><a href="introduction-to-stan-programming.html#cb21-2" tabindex="-1"></a>extracted_samples <span class="ot">&lt;-</span> rstan<span class="sc">::</span><span class="fu">extract</span>(bti_prediction)</span></code></pre></div>
+<p>The object <code>extracted_samples</code> should contain the 4,500 sample results each for the Bti (mg/L) mean and its corresponding SD. From the extraction, suppose if you wanted to compute the posterior mean, with the 0.025 and 0.975 quantiles (these limits are referred to as <strong>95% credibility limits (95% CrI)</strong>). This can be done using both the <code>mean()</code> and <code>quantile()</code> function.</p>
+<p>Here is how we compute them:</p>
+<pre class="text"><code># posterior mean for mu
+mean(extracted_samples$mu)
+
+# calculate 95% Credibility limits (95% CrI) for mu
+quantile(extracted_samples$mu, probs = c(0.025, 0.975))</code></pre>
+<p>We can also examine the posterior samples as a distribution as a visual through a density plot:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="introduction-to-stan-programming.html#cb23-1" tabindex="-1"></a><span class="co"># generate probability density plot of the posterior samples</span></span>
+<span id="cb23-2"><a href="introduction-to-stan-programming.html#cb23-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(extracted_samples<span class="sc">$</span>mu), </span>
+<span id="cb23-3"><a href="introduction-to-stan-programming.html#cb23-3" tabindex="-1"></a>    <span class="at">main =</span> <span class="st">&quot;Posterior samples&quot;</span>, </span>
+<span id="cb23-4"><a href="introduction-to-stan-programming.html#cb23-4" tabindex="-1"></a>    <span class="at">xlab =</span> <span class="st">&quot;Posterior Means for Bti concentrations (mg/L)&quot;</span>, </span>
+<span id="cb23-5"><a href="introduction-to-stan-programming.html#cb23-5" tabindex="-1"></a>    <span class="at">ylab =</span> <span class="st">&quot;Posterior Probability Density (Plausibility)&quot;</span>)</span>
+<span id="cb23-6"><a href="introduction-to-stan-programming.html#cb23-6" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="introduction-to-stan-programming.html#cb23-7" tabindex="-1"></a><span class="co"># Add vertical dashed line at the mean</span></span>
+<span id="cb23-8"><a href="introduction-to-stan-programming.html#cb23-8" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fl">25.24285</span>, <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">col =</span> <span class="st">&quot;darkgrey&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb23-9"><a href="introduction-to-stan-programming.html#cb23-9" tabindex="-1"></a><span class="co"># add vertical line for the lower 95% CrI value</span></span>
+<span id="cb23-10"><a href="introduction-to-stan-programming.html#cb23-10" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fl">24.34943</span>, <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">col =</span> <span class="st">&quot;darkgrey&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb23-11"><a href="introduction-to-stan-programming.html#cb23-11" tabindex="-1"></a><span class="co"># add vertical line for the upper 95% CrI value</span></span>
+<span id="cb23-12"><a href="introduction-to-stan-programming.html#cb23-12" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fl">26.12595</span>, <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">col =</span> <span class="st">&quot;darkgrey&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="images/general/Mu_bti_post.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>We can also report the results for the standard deviation as well (i.e., its posterior mean, 95% CrI and posterior distribution):</p>
+<pre class="text"><code># posterior mean for sigma 
+mean(extracted_samples$sigma)
+
+# calculate 95% Credibility limits (95% CrI) for sigma
+quantile(extracted_samples$sigma, probs = c(0.025, 0.975))
+
+# generate probability density plot of the posterior samples for sigma
+plot(density(extracted_samples$sigma), 
+    main = &quot;Posterior samples&quot;, 
+    xlab = &quot;Posterior Means for Standard Deviation&quot;, 
+    ylab = &quot;Posterior Probability Density (Plausibility)&quot;)
+
+# Add vertical dashed line at the mean
+abline(v = 4.998751, lty = &quot;dashed&quot;, col = &quot;darkgrey&quot;, lwd = 2)
+# add vertical line for the lower 95% CrI value
+abline(v = 4.411431, lty = &quot;dashed&quot;, col = &quot;darkgrey&quot;, lwd = 2)
+# add vertical line for the upper 95% CrI value
+abline(v = 5.666914, lty = &quot;dashed&quot;, col = &quot;darkgrey&quot;, lwd = 2)</code></pre>
+<p><img src="images/general/Sd_bti_post.png" width="100%" style="display: block; margin: auto;" /></p>
+<div class="note">
+<p><strong>Interpretation:</strong> The estimated mean (<span class="math inline">\(\mu\)</span>) of Bti concentrations from our sample posterior distribution was <strong>25.24 mg/L</strong> (i.e., most likely or plausible value) with 95% credibility limits of <strong>24.39</strong> and <strong>26.12</strong>. Formally writing as <span class="math inline">\(\mu\)</span> = <strong>25.24 mg/L (95% CrI: 24.39-26.12)</strong>. In terms of the spread, the estimated standard deviation (<span class="math inline">\(\sigma\)</span>) is <strong>4.99 mg/L (95% CrI: 4.411 to 5.666)</strong></p>
+</div>
+</div>
+</div>
+<div id="tasks" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Tasks<a href="introduction-to-stan-programming.html#tasks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="task-1---simulating-and-estimating-body-mass-index-bmi" class="section level3 hasAnchor" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Task 1 - Simulating and Estimating Body Mass Index (BMI)<a href="introduction-to-stan-programming.html#task-1---simulating-and-estimating-body-mass-index-bmi" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Try this first problem in Stan</strong>: You are tasked to simulate a sample of 1000 BMI values from a Normal distribution with mean 23 and SD 8.3. Then, using Stan, fit a Bayesian model to estimate the unknown population mean BMI and its 95% credible interval. Assume both the population mean (<span class="math inline">\(\mu\)</span>) and standard deviation (<span class="math inline">\(\sigma\)</span>) are unknown.</p>
+<p><strong>Hints:</strong></p>
+<ol style="list-style-type: decimal">
+<li>In the R script, use the function <code>rnorm()</code> to generate your sample of 1000 BMI points</li>
+<li>In the R script, create a <code>list()</code> with <code>N</code> and <code>bmi</code> (your simulated data)</li>
+<li>In the Stan script for the following:
+<ul>
+<li>Define the <code>data</code> block in accordance with the list object.</li>
+<li>Use a <code>parameters</code> block to define <code>mu</code> and <code>sigma</code> as <code>real</code> values (constrain <code>sigma</code> to be positive).</li>
+<li>Use a <code>model</code> block to write the likelihood: <code>bmi ~ normal(mu, sigma);</code></li>
+</ul></li>
+<li>Report the posterior mean of BMI and its 95% credible interval from the model output. Generate its posterior density plot.</li>
+</ol>
+</div>
+<div id="task-2---low-level-arsenic-poisoning-in-cornwall-uk" class="section level3 hasAnchor" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Task 2 - Low-level arsenic poisoning in Cornwall, UK<a href="introduction-to-stan-programming.html#task-2---low-level-arsenic-poisoning-in-cornwall-uk" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Try this second problem in Stan</strong>: Suppose a random sample of 50 villagers from a rural community in Cornwall, UK, were surveyed for signs of chronic arsenic exposure. Each person was classified as either <strong>Diseased</strong> or Healthy. Out of the 50 surveyed, <strong>19 were found to be diseased</strong>. Use a Bayesian model to estimate the true prevalence of arsenic poisoning in the wider population.</p>
+<p><strong>Hints:</strong></p>
+<ol style="list-style-type: decimal">
+<li>In the R script, create a <code>list()</code> with <code>N</code> and <code>Diseased</code>.</li>
+<li>In the Stan script for the following:
+<ul>
+<li>Define the <code>data</code> block in accordance with the list object.</li>
+<li>Use a <code>parameters</code> block to define <code>prevalence</code> as a parameter (constrain <code>prevalence</code> between 0 and 1).</li>
+<li>Use a <code>model</code> block to write the likelihood: <code>Diseased ~ binomial(N, prevalence);</code></li>
+</ul></li>
+<li>Report the posterior mean of the prevalence of metallic poisoning in Cornwall with its 95% credible interval from the model output. Generate its posterior density plot.</li>
+</ol>
+<div class="note">
+<p><strong>Note:</strong> Solutions for task 1 and 2 will be made available later today</p>
+</div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="installation-of-r-rstudio-stan.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": true,
+    "facebook": false,
+    "twitter": false,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": false
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/edit/main/intro_to_RStan_Probability_Dist.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
