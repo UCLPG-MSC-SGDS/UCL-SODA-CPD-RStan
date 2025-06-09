@@ -12,7 +12,7 @@
 
 Today’s session aims to introduce you to the basic Stan programming etiquette for Bayesian analysis in RStudio using Stan as an Interface, and producing output and interpreting it's results. By the end of this session, you should be able to perform the following:
 
-1. Getting acquainted with Stan and learning the basic programming etiquette of Stan.
+1. Getting acquainted with Stan and learning the basic programming etiquette of Stan - this will include simulating and estimation of parameters.
 2. Know how to write and compile various **probability distributions** for simple parameters (i.e., mean, standard deviation, a proportion etc.,) in Stan.
 3. Know how to compile the results into RStudio for use, interpretation and visualisation.
 
