@@ -32,7 +32,7 @@ The course will cover the following topics:
 |:----------------|:------------------------|:----------------------------------------------------|
 |                 | Not Applicable          | **Installation of R, RStudio & Stan**                |
 | 09/06/2025      | [**Slides**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/lecture_notes_pdfs/Day%201%20Lecture%20-%20Introduction%20to%20Probability%20Distribution.pdf); [**[Dataset]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/day-1_dataset.zip)| **Introduction to Probability Distributions**|
-| 10/06/2025      | **Slides**; **[Dataset]** | **Introduction to Bayesian Inference**                |
+| 10/06/2025      | [**Slides**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/lecture_notes_pdfs/Day%202%20Lecture%20-%20Introduction%20to%20Bayesian%20Inference.pdf); N/A | **Introduction to Bayesian Inference**                |
 | 11/06/2025      | **Slides**; **[Dataset]** | **Bayesian Generalised Linear Models**                |
 | 12/06/2025      | **Slides**; **[Dataset]** | **Bayesian Hierarchical Regression Models**           |
 | 13/06/2025      | **Slides**; **[Dataset]** | **Spatial Bayesian Risk Modelling**                   |
