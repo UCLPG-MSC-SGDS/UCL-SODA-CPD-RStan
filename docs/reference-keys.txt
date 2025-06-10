@@ -21,3 +21,14 @@ basic-building-blocks-vi-extract-posterior-samples-interpretation
 tasks
 task-1---simulating-and-estimating-body-mass-index-bmi
 task-2---low-level-arsenic-poisoning-in-cornwall-uk
+introduction-to-bayesian-inference
+introduction-1
+lecture-video-tbc-1
+learning-outcomes-1
+demonstration-video-tbc-1
+setting-up-the-work-directory-1
+loading-packages-1
+input-data-process-model-and-assumptions-for-priors
+compiling-stan-code-in-rstudio
+tasks-1
+task-1---aedes-borne-infestation-in-recife-052023
