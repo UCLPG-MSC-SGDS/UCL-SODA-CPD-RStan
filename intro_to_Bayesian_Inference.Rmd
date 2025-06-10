@@ -2,11 +2,12 @@
 
 ## Introduction
 
-### Lecture video (TBC)
-
-[Embed recorded lecture video here]
-
-[[**Watch on YouTube**]]()
+### Lectures (Length: 1:15:22 minutes)
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('E0v_2wlMEDM', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/E0v_2wlMEDM)
 
 ### Learning outcomes
 
@@ -18,11 +19,12 @@ Today’s session aims to introduce you to the basic Stan programming etiquette 
 
 After the demonstration session is delivered in the first 1-hour of the practical - you can use the computer practical session to try the tutorials yourself by following the instructions as well as trying out the tasks. 
 
-### Demonstration video (TBC)
-
-[Embed recorded demonstration video here]
-
-[[**Watch on YouTube**]]()
+### Demonstration (Length: 1:22:54 minutes)
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('GPY6AxAFRug', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/GPY6AxAFRug)
 
 ### Setting up the work directory 
 
@@ -311,4 +313,4 @@ posterior_df <- data.frame(
    - Use a `parameters` block to define `prevalence` as a parameter (constrain `prevalence` between 0 and 1).
    - Use a `model` block to write the likelihood: `Infested ~ binomial(N, prevalence);`
    - In the `model` block, use it to specify the appropriate **prior** distribution for the `prevalence` parameter.
-3. Report the posterior mean of the prevalence of metallic poisoning in Cornwall with its 95% credible interval from the model output. Generate its posterior density plot.
+3. Report the posterior mean of the prevalence of infestation in Recife with its associated 95% credibility interval from the model output. Generate its posterior density plot.

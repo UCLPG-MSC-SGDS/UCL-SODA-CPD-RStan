@@ -6,9 +6,9 @@ installation-process-for-windows-users
 installation-of-rstan-or-stan-other-important-r-packages
 introduction-to-stan-programming
 introduction
-lecture-video-tbc
+lectures-length-15555-minutes
 learning-outcomes
-demonstration-video-tbc
+demonstration-length-10838-minutes
 setting-up-the-work-directory
 loading-packages
 about-stan-programming
@@ -23,9 +23,9 @@ task-1---simulating-and-estimating-body-mass-index-bmi
 task-2---low-level-arsenic-poisoning-in-cornwall-uk
 introduction-to-bayesian-inference
 introduction-1
-lecture-video-tbc-1
+lectures-length-11522-minutes
 learning-outcomes-1
-demonstration-video-tbc-1
+demonstration-length-12254-minutes
 setting-up-the-work-directory-1
 loading-packages-1
 input-data-process-model-and-assumptions-for-priors

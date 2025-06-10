@@ -2,11 +2,12 @@
 
 ## Introduction
 
-### Lecture video (TBC)
-
-[Embed recorded lecture video here]
-
-[[**Watch on YouTube**]]()
+### Lectures (Length: 1:55:55 minutes)
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('uNup4ouHsiM', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/uNup4ouHsiM)
 
 ### Learning outcomes
 
@@ -18,11 +19,12 @@ Today’s session aims to introduce you to the basic Stan programming etiquette 
 
 After the demonstration session is delivered in the first 1-hour of the practical - you can use the computer practical session to try the tutorials yourself by following the instructions as well as trying out the tasks. 
 
-### Demonstration video (TBC)
-
-[Embed recorded demonstration video here]
-
-[[**Watch on YouTube**]]()
+### Demonstration (Length: 1:08:38 minutes)
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('c2yjgqfeo48', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/c2yjgqfeo48)
 
 ### Setting up the work directory 
 
