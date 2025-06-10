@@ -12,7 +12,7 @@ day <- 0:14
 observed_cases <- c(12, 9, 19, 30, 27, 45, 67, 71, 103, 119, 161, 213, 288, 340, 431)
 
 # Data list for Stan
-stan_data <- list(
+stan_dataset <- list(
 	N = length(day),
 	t = as.vector(day),
 	y = as.integer(observed_cases)
@@ -20,13 +20,13 @@ stan_data <- list(
 
 fit <- stan(
 	file = "Incidence_rates.stan",
-	data = stan_data,
+	data = stan_dataset,
 	iter = 3000,
 	chains = 3,
 	verbose = FALSE
 )
 
-print(fit, pars = c("I0", "eta", "r"), probs = c(0.025, 0.5, 0.975))
+print(fit, pars = c("D0", "r"), probs = c(0.025, 0.5, 0.975))
 
 # Extract and plot posterior predictions
 posterior <- extract(fit)
@@ -40,9 +40,9 @@ legend("topleft", legend = c("Observed", "Predicted Mean"),
 
 
 posterior_df <- data.frame(
-	I0 = posterior$I0,
+	D0 = posterior$D0,
 	r = posterior$r,
-	Predictions = posterior$y_pred
+	predictions = posterior$y_pred
 )
 
 

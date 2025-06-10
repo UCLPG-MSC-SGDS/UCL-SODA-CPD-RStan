@@ -161,7 +161,7 @@ model {
 	r ~ normal(0, 1);
 	
 	for (n in 1:N) {
-		real lambda = D0 * exp(r * eta * t[n]);
+		real lambda = D0 * exp(r * t[n]);
 		y[n] ~ poisson(lambda);
 	}
 }
@@ -188,7 +188,7 @@ model {
 	r ~ normal(0, 1);
 	
 	for (n in 1:N) {
-		real lambda = D0 * exp(r * eta * t[n]);
+		real lambda = D0 * exp(r * t[n]);
 		y[n] ~ poisson(lambda);
 	}
 }
@@ -196,7 +196,7 @@ model {
 generated quantities {
   vector[N] y_pred;
   for (n in 1:N) {
-    y_pred[n] = poisson_rng(D0 * exp(r * eta * t[n]));
+    y_pred[n] = poisson_rng(D0 * exp(r * t[n]));
   }
 }
 
