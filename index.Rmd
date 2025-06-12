@@ -37,7 +37,7 @@ The course will cover the following topics:
 | 12/06/2025      | [**[Slides]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/lecture_notes_pdfs/Day%204%20Lecture%20-%20Bayesian%20Hierarchical%20Models.pdf); [**[Dataset]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/day-4_dataset.zip) | **Bayesian Hierarchical Regression Models**           |
 | 13/06/2025      | **[Slides]**; **[Dataset]** | **Spatial Bayesian Risk Modelling**                   |
 
-**Solutions**: [**[Day 1]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Solutions%20-%20Day%201.zip) | [**[Day 2]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Solutions%20-%20Day%202.zip) | **[Day 3]** | **[Day 4]** | **[Day 5]**
+**Solutions**: [**[Day 1]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Solutions%20-%20Day%201.zip) | [**[Day 2]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Solutions%20-%20Day%202.zip) | [**[Day 3]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Solutions%20-%20Day%203.zip) | **[Day 4]** | **[Day 5]**
 
 Throughout the course, each day will consist of a lecture, a walkthrough demonstration and computer seminar session. Here is the information on the programme's schedule:
 
