@@ -34,9 +34,10 @@ tasks-1
 task-1---aedes-borne-infestation-in-recife-052023
 bayesian-generalised-linear-models-glms
 introduction-2
-lectures-tbc
+lectures-length-10416-minutes
 learning-outcomes-2
-demonstration-tbc
+demonstration-part-i-length-15936-minutes
+demonstration-part-ii-length-11338-minutes
 datasets-setting-up-the-work-directory
 loading-and-installing-packages
 poisson-regression-modelling

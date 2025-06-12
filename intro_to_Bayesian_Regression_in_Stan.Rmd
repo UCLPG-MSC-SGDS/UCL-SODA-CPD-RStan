@@ -2,11 +2,12 @@
 
 ## Introduction
 
-### Lectures (TBC)
-
-[EMBED VIDEO HERE]
-
-[[**Watch on YouTube**]]()
+### Lectures (Length: 1:04:16 minutes)
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('1_JbtNNB6_0', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/1_JbtNNB6_0)
 
 ### Learning outcomes
 
@@ -20,11 +21,19 @@ Today’s session aims to formally introduce you to **Stan** programming for **B
 
 You can follow the live walkthrough demonstration, and then use the practical sessions to try the practical tutorials yourself by following the instructions and trying out the tasks.
 
-###  Demonstration (TBC)
+### Demonstration [Part I] (Length: 1:59:36 minutes)
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('WRIFeQ_pgfk', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/WRIFeQ_pgfk)
 
-[EMBED VIDEO HERE]
-
-[[**Watch on YouTube**]]()
+### Demonstration [Part II] (Length: 1:13:38 minutes)
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('Xd1o12psU78', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/Xd1o12psU78)
 
 ### Datasets & setting up the work directory 
 
@@ -137,6 +146,10 @@ theta
 
 The estimated over-dispersion parameter is **0.3161472**, which is small, this suggests that residential burglaries exhibits substantial over-dispersion. We will use this value in our Bayesian model when we code it in Stan.
 
+<div class="note">
+**Acknowledgements:** Thanks to **Fernando Rodriguez** for pointing out that it is improper practice to fix the dispersion parameter in the model, and for advising that it is best practice to allow the model to estimate it instead. That part has been amended accordingly. Further thanks to **Jacob Cohen** for noting that the current approach to estimating the dispersion parameter should serve primarily as guidance only to help us understand the extent of dispersion in our data and inform the choice of a prior distribution accordingly.
+</div>
+
 ### Data preparation and set-up for Bayesian analysis in Stan
 
 Let begin with a model that only contains independent variables that are continuous measures i.e., distance and connectivity. We can prepare the dataset into `list()` object:
@@ -146,8 +159,8 @@ stan_dataset_model1 <- list(N = nrow(burglaryDataset),
 	burg = burglaryDataset$burglary, 
 	dist = burglaryDataset$distance,
 	conn = burglaryDataset$connectivity,
-	offset = log(burglaryDataset$totalhouses),
-	phi = 0.31614)
+	offset = log(burglaryDataset$totalhouses)
+	)
 ```
 
 <div class="note">
@@ -157,8 +170,7 @@ stan_dataset_model1 <- list(N = nrow(burglaryDataset),
 - `burg = burglaryDataset$burglary`: Here, we defined the outcome variable (i.e., counts of burglaries) as `burg`.
 - `dist = burglaryDataset$distance`: Independent variable for distance.
 - `conn = burglaryDataset$connectivity`: Independent variable for connectivity.
-- `offset = log(burglaryDataset$totalhouses)`: Here, the `offset` is calculated from taking the log-transform of the `totalhouses`, which is the denominators used for expressing the residential burglaries as a crime rate per capita.
-- `phi = 0.31614`: We specify the over-dispersion parameter as calculated from `glm.nb()`.
+- `off_set = log(burglaryDataset$totalhouses)`: Here, the `off_set` is calculated from taking the log-transform of the `totalhouses`, which is the denominators used for expressing the residential burglaries as a crime rate per capita.
 </div>
 
 Let's create our **Stan script** for running a **Negative Binomial Poisson regression** within a Bayesian framework.
@@ -182,50 +194,49 @@ Let's start with the `data` block:
 
 data {
 	int<lower=0> N;                    // declare the overall number of data points to be passed into model
-	int<lower=0> burg[N];              // define as an array and specify it as an integer for counts
+	array[N] int<lower=0> burg;        // define as an array and specify it as an integer for counts
 	vector[N] dist;                    // continuous variable
 	vector[N] conn;                    // continuous variable
-	vector[N] offset;                  // offset variable for the denominators (total households on a stree segment)
-	real<lower=0> phi;                 // fixed value to account for overdispersion in the crime counts
+	vector[N] off_set;                 // offset variable for the denominators (total households on a stree segment)
 }
 
 ```
 
-**SECOND STEP:** For the `parameters` block, here we will need to specify the name of the regression intercept `alpha`, which is baseline risk of residential burglaries, and the two coefficients i.e., `beta[1]` and `beta[2]` for our two independent variables `dist` and `conn` respectively.
+**SECOND STEP:** For the `parameters` block, here we will need to specify the name of the regression intercept `alpha`, which is baseline risk of residential burglaries, and the two coefficients i.e., `beta[1]` and `beta[2]` for our two independent variables `dist` and `conn` respectively. We will also create `phi`, a dispersion parameter, to mimic the behaviour of that shown in the histogram of Scenario 2 and the derived estimate of **$\theta$ = 0.3161472** ([see section 4.2.1]())
 
 ```{r, eval=FALSE, highlight=FALSE}
 
 data {
 	int<lower=0> N;                    // declare the overall number of data points to be passed into model
-	int<lower=0> burg[N];              // define as an array and specify it as an integer for counts
+	array[N] int<lower=0> burg;        // define as an array and specify it as an integer for counts
 	vector[N] dist;                    // continuous variable
 	vector[N] conn;                    // continuous variable
-	vector[N] offset;                  // offset variable for the denominators (total households on a stree segment)
-	real<lower=0> phi;                 // fixed value to account for overdispersion in the crime counts
+	vector[N] off_set;                 // offset variable for the denominators (total households on a stree segment)
 }
 
 parameters {
 	real alpha;
+	real<lower=0> phi;
 	vector[2] beta;
 }
 
 ```
 
-**THIRD STEP:** We build our likelihood function and specify the priors for each parameter under the `model` block. For all parameters - the priors have been centred around 0, meaning that broadly, these variables have no effect on residential burglaries, and if any, these effects may range from ±1 (so in risk terms 0.36 to 2.71). The regression model is `neg_binomial_2_log(formula, Overdispersion)`:
+**THIRD STEP:** We build our likelihood function and specify the priors for each parameter under the `model` block. For all parameters - the priors have been centred around 0, meaning that broadly, these variables have no effect on residential burglaries, and if any, these effects may range from ±1SD (so in risk terms 0.36 to 2.71). The regression model is `neg_binomial_2_log(formula, Overdispersion)`:
 
 ```{r, eval=FALSE, highlight=FALSE}
 
 data {
 	int<lower=0> N;                    // declare the overall number of data points to be passed into model
-	int<lower=0> burg[N];              // define as an array and specify it as an integer for counts
+	array[N] int<lower=0> burg;        // define as an array and specify it as an integer for counts
 	vector[N] dist;                    // continuous variable
 	vector[N] conn;                    // continuous variable
-	vector[N] offset;                  // offset variable for the denominators (total households on a stree segment)
-	real<lower=0> phi;                 // fixed value to account for overdispersion in the crime counts
+	vector[N] off_set;                 // offset variable for the denominators (total households on a stree segment)
 }
 
 parameters {
 	real alpha;
+	real<lower=0> phi;
 	vector[2] beta;
 }
 
@@ -234,6 +245,7 @@ model {
 	alpha ~ normal(0, 1);               
 	beta[1] ~ normal(0, 1);
 	beta[2] ~ normal(0, 1);
+	phi ~ beta(2, 5)
 	
 	// likelihood function i.e., statistical model
 	for (i in 1:N) {
@@ -249,15 +261,15 @@ model {
 
 data {
 	int<lower=0> N;                    // declare the overall number of data points to be passed into model
-	int<lower=0> burg[N];              // define as an array and specify it as an integer for counts
+	array[N] int<lower=0> burg;        // define as an array and specify it as an integer for counts
 	vector[N] dist;                    // continuous variable
 	vector[N] conn;                    // continuous variable
-	vector[N] offset;                  // offset variable for the denominators (total households on a stree segment)
-	real<lower=0> phi;                 // fixed value to account for overdispersion in the crime counts
+	vector[N] off_set;                 // offset variable for the denominators (total households on a stree segment)
 }
 
 parameters {
 	real alpha;
+	real<lower=0> phi;
 	vector[2] beta;
 }
 
@@ -266,10 +278,11 @@ model {
 	alpha ~ normal(0, 1);               
 	beta[1] ~ normal(0, 1);
 	beta[2] ~ normal(0, 1);
+	phi ~ beta(2, 5)
 	
 	// likelihood function i.e., statistical model
 	for (i in 1:N) {
-		burg[i] ~ neg_binomial_2_log(alpha + beta[1]*dist[i] + beta[2]*conn[i] + offset[i], phi);
+		burg[i] ~ neg_binomial_2_log(alpha + beta[1]*dist[i] + beta[2]*conn[i] + off_set[i], phi);
 	}
 }
 
@@ -283,11 +296,13 @@ generated quantities {
 	// model validation and comparison
 	vector[N] log_lik;                 
 	for (i in 1:N) {
-		log_lik[i] = neg_binomial_2_log_lpmf(burg[i] | alpha + beta[1]*dist[i] + beta[2]*conn[i] + offset[i], phi);
+		log_lik[i] = neg_binomial_2_log_lpmf(burg[i] | alpha + beta[1]*dist[i] + beta[2]*conn[i] + off_set[i], phi);
 	}
 }
 
 ```
+
+Save the stan script as `Cont_Model_1.stan`.
 
 ### Compiling our Stan code in RStudio and Results
 
@@ -295,7 +310,7 @@ Now, let us turn our attention to RStudio. Using the `stan()` to compile and obt
 
 ```{r, eval = FALSE}
 # the directory needs to be set to where you saved the dataset and Stan script
-crr.negbin.model1 = stan("Week_2_Cont_Model.stan", data=stan_dataset_model1, iter=3000, chains=6, verbose = FALSE)
+crr.negbin.model1 = stan("Cont_Model_1.stan", data=stan_dataset_model1, iter=3000, chains=6, verbose = FALSE)
 ```
 
 We can print the results accordingly:
@@ -397,7 +412,7 @@ burglaryDataset$integ3 <- ifelse(burglaryDataset$integq == 3, 1, 0)
 burglaryDataset$integ4 <- ifelse(burglaryDataset$integq == 4, 1, 0)
 ```
 
-Let expand the model to include independent variables that are both continuous and categorical measures i.e., distance and connectivity, choice and integration, and the new information into a `list()` object:
+Let us expand the model to include independent variables that are both continuous and categorical measures i.e., distance and connectivity, choice and integration, and the new information into a `list()` object:
 
 ```{r, eval=FALSE}
 stan_dataset_model2 <- list(N = nrow(burglaryDataset),
@@ -410,8 +425,8 @@ stan_dataset_model2 <- list(N = nrow(burglaryDataset),
 	intcat2 = burglaryDataset$integ2,
 	intcat3 = burglaryDataset$integ3,
 	intcat4 = burglaryDataset$integ4,
-	offset = log(burglaryDataset$totalhouses),
-	phi = 0.31614)
+	off_set = log(burglaryDataset$totalhouses)
+	)
 ```
 
 The amended Stan code will look something as follows:
@@ -420,21 +435,21 @@ The amended Stan code will look something as follows:
 
 data {
 	int<lower=0> N;                    // declare the overall number of data points to be passed into model
-	int<lower=0> burg[N];              // define as an array and specify it as an integer for counts
+	array[N] int<lower=0> burg;        // define as an array and specify it as an integer for counts
 	vector[N] dist;                    // continuous variable
 	vector[N] conn;                    // continuous variable
-	int<lower=0, upper=1> chcat2[N];
-	int<lower=0, upper=1> chcat3[N];
-	int<lower=0, upper=1> chcat4[N];
-	int<lower=0, upper=1> intcat2[N];
-	int<lower=0, upper=1> intcat3[N];
-	int<lower=0, upper=1> intcat4[N];
-	vector[N] offset;                  // offset variable for the denominators (total households on a stree segment)
-	real<lower=0> phi;                 // fixed value to account for overdispersion in the crime counts
+	vector[N] chcat2;
+	vector[N] chcat3;
+	vector[N] chcat4;
+	vector[N] intcat2;
+	vector[N] intcat3;
+	vector[N] intcat4;
+	vector[N] off_set;                 // offset variable for the denominators (total households on a stree segment)
 }
 
 parameters {
 	real alpha;
+	real<lower=0> phi;
 	vector[2] beta;
 	vector[3] chcq;
 	vector[3] intq;
@@ -446,10 +461,11 @@ model {
 	beta ~ normal(0, 1);
 	chcq  ~ normal(0, 1);
 	intq  ~ normal(0, 1);
+	phi ~ beta(2, 5)
 	
 	// likelihood function i.e., statistical model
 	for (i in 1:N) {
-		burg[i] ~ neg_binomial_2_log(alpha + beta[1]*dist[i] + beta[2]*conn[i] + chcq[1]*chcat2[i] + chcq[2]*chcat3[i] + chcq[3]*chcat4[i] + intq[1]*intcat2[i] + intq[2]*intcat3[i] + intq[3]*intcat4[i] + offset[i], phi);
+		burg[i] ~ neg_binomial_2_log(alpha + beta[1]*dist[i] + beta[2]*conn[i] + chcq[1]*chcat2[i] + chcq[2]*chcat3[i] + chcq[3]*chcat4[i] + intq[1]*intcat2[i] + intq[2]*intcat3[i] + intq[3]*intcat4[i] + off_set[i], phi);
 	}
 }
 
@@ -467,17 +483,19 @@ generated quantities {
 	// model validation and comparison
 	vector[N] log_lik;                 
 	for (i in 1:N) {
-		log_lik[i] = neg_binomial_2_log_lpmf(burg[i] | alpha + beta[1]*dist[i] + beta[2]*conn[i] + chcq[1]*chcat2[i] + chcq[2]*chcat3[i] + chcq[3]*chcat4[i] + intq[1]*intcat2[i] + intq[2]*intcat3[i] + intq[3]*intcat4[i] + offset[i], phi);
+		log_lik[i] = neg_binomial_2_log_lpmf(burg[i] | alpha + beta[1]*dist[i] + beta[2]*conn[i] + chcq[1]*chcat2[i] + chcq[2]*chcat3[i] + chcq[3]*chcat4[i] + intq[1]*intcat2[i] + intq[2]*intcat3[i] + intq[3]*intcat4[i] + off_set[i], phi);
 	}
 }
 
 ```
 
+Please save the Stan script as `Cat_Model_2.stan`.
+
 We can use the `stan()` to compile the updated code to obtain the posterior estimation accordingly:
 
 ```{r, eval = FALSE}
 # the directory needs to be set to where you saved the dataset and Stan script
-crr.negbin.model2 = stan("Week_2_Cat_Model.stan", data=stan_dataset_model2, iter=3000, chains=6, verbose = FALSE)
+crr.negbin.model2 = stan("Cat_Model_2.stan", data=stan_dataset_model2, iter=3000, chains=6, verbose = FALSE)
 ```
 
 We can print the results accordingly:
