@@ -49,3 +49,14 @@ model-with-categorical-variables
 tasks-2
 task-1---obesity-and-fastfoods-in-london
 task-2---factors-affecting-house-prices-in-london-2015
+bayesian-hierarchical-regression-models
+introduction-3
+lectures-tbc
+learning-outcomes-3
+demonstration-tbc
+datasets-setting-up-the-work-directory-1
+loading-packages-2
+data-preparation-and-set-up-for-bayesian-analysis-in-stan-1
+creating-a-script-to-run-a-2-level-multilevel-linear-regression-in-stan
+compiling-our-stan-code-for-hierarchical-modelling
+task

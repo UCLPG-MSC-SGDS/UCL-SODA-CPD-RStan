@@ -2,53 +2,53 @@
 
 ## Introduction
 
-### Lecture video
+### Lectures (TBC)
 
-```{r echo=FALSE, out.width = "100%", fig.align='center', cache=TRUE,}
-knitr::include_graphics('images/general/Video_handle.png') 
-```
-**Parts:** [**[1]**](https://youtu.be/hP86-T_k38k) | [**[2]**](https://youtu.be/r1RPPAtFV0w)
+[EMBED LECTURE VIDEO HERE]
 
+[[**Watch on YouTube**]]()
 
-###  Live walk-through demonstration video
+### Learning outcomes
 
-```{r, warnings=FALSE, message=FALSE, echo=FALSE}
-library(vembedr)
-embed_youtube('DFi_ao4TbAQ', height=400) %>% use_align('center')
-```
-[[**Watch on YouTube**]](https://youtu.be/DFi_ao4TbAQ)
+We will learn how to perform hierarchical regression modelling within a Bayesian framework. These models are useful and robust especially if there's a hierarchical structure in the dataset. This artefact must be taken into account to ensure statistical robustness. We will focus on implementing 2-level hierarchical regressions with an example of a model that has a **varying intercept** and **varying-slope coefficients**. These models are quite simple to pull off in Stan once you get the gist of it.
 
+You can follow the live walkthrough demonstration, and then use the practical sessions to try the practical tutorials yourself by following the instructions and trying out the tasks.
 
-We will learn how to perform hierarchical regression modelling within a Bayesian framework. These models are useful and robust especially if there's a hierarchical structure in the dataset. This artefact must be taken into account to ensure statistical robustness. We will focus on implementing 2-level hierarchical regressions with examples on **random-intercept-only** and **slope** model as these are quite simple to pull off in Stan. 
+### Demonstration (TBC)
 
-Let us begin.
+[EMBED DEMONSTRATION VIDEO HERE]
+
+[[**Watch on YouTube**]]()
 
 ### Datasets & setting up the work directory 
 
-Go to your folder **CPD-course** and create a sub folder called "**Day 3**". Here, we will store all our R & Stan scripts and data files. Set your work directory to the **Day 3** folder.
+Go to your folder **CPD-course** and create a sub folder called "**Day 4**". Here, we will store all our R & Stan scripts and data files. Set your work directory to the **Day 4** folder.
 
 For Windows, the code for setting the work directory will be:
 
 ```{r, eval = FALSE}
-setwd("C:/Users/AccountName/Desktop/CPD-course/Day 3")
+setwd("C:/Users/AccountName/Desktop/CPD-course/Day 4")
 ```
 
 For MAC, the code for setting the work directory will be:
 
 ```{r, eval = FALSE}
-setwd("/Users/AccountName/Desktop/CPD-course/Day 3")
+setwd("/Users/AccountName/Desktop/CPD-course/Day 4")
 ```
 
-The dataset for this practical are:
+The main dataset for this practical:
 
-- `Maths attainment and activity study.csv`
+- `WHO-AFRO Cholera 2000-17.csv`
+
+The dataset for the task:
+
 - `Pregnancies and hospital data.csv`
 
-We will start of with the `Maths attainment and activity study.csv`. Let us load this dataset into memory:
+Let us load this dataset into memory:
 
 ```{r, eval=FALSE}
 # load up the data
-Maths_dataset <- read.csv("Maths attainment and activity study.csv")
+Maths_dataset <- read.csv("WHO-AFRO Cholera 2000-17.csv")
 ```
 
 ### Loading packages
@@ -62,7 +62,7 @@ library('tidybayes')
 library('tidyverse')
 ```
 
-As usual, for the best experience, configure Stan:
+Configure Stan:
 
 ```{r, eval = FALSE}
 # configure Stan
@@ -72,159 +72,344 @@ rstan_options(auto_write = TRUE)
 
 ## Data preparation and set-up for Bayesian analysis in Stan
 
-We are going to fit a 2-level hierarchical model on a continuous outcome i.e., `MathScore` and see how the following independent variables i.e., `ActiveTime` and `Supportive` impact it. The `Maths_dataset` contains a total of 200 students evenly clustered into 4 classrooms `ClassroomID` (i.e., 50 students in each classroom). The students have a unique student number i.e., `StudentID` and classroom number in the `GroupID` column.
+We are going to fit a 2-level Hierarchical regression model on a count outcome i.e., **Cholera** and to see the impact of the following risk factors: coverage of **no basic water services** and **no sanitation services**. The `WHO_AFRO_Cholera` object contains a total of 13 sub-Saharan African countries who are part of the World Health Organization, whereby each country has **cholera**, **basic water** and **sanitation service** information starting from 2000, and up to 2017, inclusive (i.e., 18 years worth of data). Other independent variables for the countries for each year includes **GDP**, **Temperature** and **Rainfall**. 
 
-We want fit an `random-intercept-only` to explore the difference in the classroom's performance in maths, as well as how `ActiveTime` and `Supportive` impact it. To perform the 2-level hierarchical model, we need to extract right information from the `Maths_dataset` data frame for the Stan script compile. 
+Note that the yearly data are grouped within the 13 countries `country_id` or `country_name`. Within a country, the information has a unique reading captured by the `year_id`.
 
-Here's the information we'll create in the `list()` object:
+We want fit a **2-level negative binomial Poisson regression model** with `varying-intercept` and `varying-slopes` on the  basic water and sanitation services variables. To explore:
 
-- `N` = total number of students (level 1);
-- `CL` = maximum number of group (level 2);
-- `ClassroomID` = the list of all the group numbers that align with the students;
-- `k` = the total number of independent variables to be included in the model (in this case, its two which are both continuous). We are using `ActiveTime` and `Supportive`;
-- `MathScore` = we want to extract the dependent variable;
-- `ActiveTime` = we want to extract the first independent variable;
-- `Supportive` = we want to extract the second independent variable;
+1. Global relationships between the increased burden of limited water and basic sanitation services, and risk of cholera, across the WHO-AFRO.
+2. Local relationships between the increased burden of limited water and basic sanitation services, and risk of cholera, within each country.
 
-<div class="note">
-**Note:** This code shows an instance where we explicitly list the variables out in the modl
-</div>
+To perform such 2-level hierarchical model, we need to prepare the dataset in RStudio accordingly by extracting the right pieces of information from the `WHO_AFRO_Cholera` data frame object to be passed to the **data block** in our Stan script. 
 
-We can condense this information into list() object in line of code as our dataset for **Stan** to compile:
+**KEY INGREDIENTS**:
+
+- `N`: total number of observations/rows in our dataset (234);
+- `Country`: maximum number of groups formed in the dataset (13 countries);
+- `CountryID`: this lists all the unique ID numbers for the group i.e., aligns country ID with the observations;
+- `Cholera`: we want to extract this as a dependent variable and treat as an `int` because its **counts** measure;
+- `Water`: we want to extract this as a primary independent variable and treat as an `real` since its a **continuous** measure;
+- `Sanitation`: we want to extract the primary independent variable and treat as a `real` since its a **continuous** measure;
+- `GDP`: we want to include this as an **apriori** independent variable and treat as an `real` since its a **continuous** measure;
+- `Rainfall`: we want to include this as another **apriori** independent variable and treat as an `real` since its a **continuous** measure;
+- `Temperature`: we want to include this as another **apriori** independent variable, just like the first two, and treat as an `real` since its a **continuous** measure;
+- `Log_Population`: The `population` column has been log-transformed in the `list()`. This is going to be treated as an offset `real` measure;
+- `phi`: Represent the dispersion in counts of cholera. We are going to assume that it is the same for all countries. We will assume their prior is from a beta distribution centred on around 0.2-0.3 (i.e., **phi ~ beta(2, 5)**).    
+
+We can condense this information into `list()` object in line of code as our dataset for **Stan** to compile:
 
 ```{r, eval=FALSE}
-stan.dataset <- list(N=nrow(Maths_dataset), 
-	CL=max(unique(Maths_dataset$GroupID)),
-	ClassroomID=as.integer(Maths_dataset$GroupID),
-	k=2,
-	MathScore=Maths_dataset$Math,
-	ActiveTime=Maths_dataset$ActiveTime,
-	Supportive=Maths_dataset$Support
-	)
+
+# create dataset for Stan
+stan.cholera.dataset <- list(
+	N=nrow(WHO_AFRO_Cholera), 
+	Country=max(unique(WHO_AFRO_Cholera$country_id)),
+	CountryID=as.integer(WHO_AFRO_Cholera$country_id),
+	Cholera=WHO_AFRO_Cholera$cholera,
+	Log_Population = log(WHO_AFRO_Cholera$population),
+	Water = WHO_AFRO_Cholera$basic_water,
+	Sanitation = WHO_AFRO_Cholera$basic_sanitation,
+	GDP = WHO_AFRO_Cholera$gdp,
+	Rainfall = WHO_AFRO_Cholera$rainfall,
+	Temperature = WHO_AFRO_Cholera$temperature
+)
+
 ```
 
-At this point, the dataset is fully prepared and ready to go. Let's create our **Stan script** for running a **2-level Multilevel linear regression** within a Bayesian framework.
+At this point, the dataset is now fully prepared and ready to go. Let's create our **Stan script** for running a **2-level negative binomial Poisson regression** within a Bayesian framework.
 
 ### Creating a script to run a 2-level Multilevel linear regression in Stan
 
-We will need `Data`, `Parameters` and `Model` blocks only for this analysis. Recall that the `Data`, `Parameters` and `Model` block **must** be specified for any regression analysis to work. 
+We will need `data`, `parameters`, `transformed parameters` and `model` blocks for this analysis. 
 
-**FIRST STEP:** We specify the total number of observations `int N` as well as the number of independent variables `int k` as an integer in the **data** block. We define our `MathScore` outcome as a `vector` of size `N`, and we do the same for the two independent variables `ActiveTime` and `Supportive`, and specify all these variables to be `real` and constrained - this is sanity check (not compulsory). 
-
-We need to specific the number of classrooms for which the students are clustered in through `CL` and `ClassroomID`. Note that `CL` is the maximum number of classrooms (i.e., `4`). The `ClassroomID` is the declared in the Stan code as integer which takes values from `1` to `4`, with `4` being the maximum number constrained by the `CL`. The `ClassroomID[N]` aligns the group ID number with the student's ID number - e.g., classroom 1 with student's of ID's 1, 2, 3, 4 and so on etc., Stan will treat the records as `1[1]`, `1[2]`, `1[3]`, `1[4]` and so on. 
+**FIRST STEP:** In the `data` block, we can pass the key information from our list object `stan.cholera.dataset`. 
 
 ```{r, eval=FALSE, highlight=FALSE}
+
 data {
-	int<lower = 0> N;                              // Number of students (i.e., observations)
-	int<lower = 0> CL;                             // Total number of classrooms
-	int<lower = 0, upper = CL> ClassroomID[N];     // Aligning the classroom ID number to the student ID
-	int<lower = 0> k;                              // Specify total number of independent variables to be used in model
-	real<lower = 0> ActiveTime[N];                 // First independent variable
-	real<lower = 0> Supportive[N];                 // Second independent variable
-	real<lower = 0> MathScore[N];                  // Outcome or dependent variable
+  int<lower=1> N;                                  // Number of observations
+  int<lower=1> Country;                            // Number of countries
+  array[N] int<lower=1, upper=Country> CountryID;  // Country IDs 
+  array[N] int<lower=0> Cholera;                   // Cholera cases
+  array[N] real Water;                             // Water access variable
+  array[N] real Sanitation;                        // Sanitation variable
+  array[N] real GDP;                               // GDP variable
+	array[N] real Rainfall;                          // Rainfall variable         
+	array[N] real Temperature;                       // Temperature variable
+  array[N] real Log_Population;                    // Logged Population variable used as offset
 }
+
 ```
 
-**SECOND STEP:** For the **parameters** block, here we will need to specify the name of the **fixed effect part** of regression i.e., `gamma00` and the level-1 coefficients `beta` for  our independent variables. We need to also specify the random effect part of the model as well i.e., `u0,1 u0,2, u0,3 and u0,4` as a vector by linking this to the four number of classes. Finally, we need to specify the `sigma_error` and `group_error` as the variance (or residual errors on group- and individual-level) as we must estimate this!
+**SECOND STEP:** For the **parameters** block, here we will need to specify the name of the **fixed effect** of the regression model i.e., `gamma00`, `gamma01` and `gamma02`, which is the overall intercept, and the overall effect (coefficients) of `Water` and `Sanitation` on `Cholera`, respectively. These are operating on the level-1 part of the model. We want the intercept and latter coefficients vary across the countries at level-2; thus, we define **country-specific random effects** from them which is governed by some **standard deviation** i.e., their variation within countries. 
+
+Note that the coefficients `beta3`, `beta4` and `beta5` for `GDP`, `Rainfall` and `Temperature` are on level-1.
+
+Lastly, we are defining `phi` for over-dispersed. 
 
 Here is the code:
 
 ```{r, eval=FALSE, highlight=FALSE}
+
 data {
-	int<lower = 0> N;                             // Number of students (i.e., observations)
-	int<lower = 0> CL;                            // Total number of classrooms
-	int<lower = 0, upper = CL> ClassroomID[N];    // Aligning the classroom ID number to the student ID
-	int<lower = 0> k;                             // Specify total number of independent variables to be used in model
-	real<lower = 0> ActiveTime[N];                // First independent variable
-	real<lower = 0> Supportive[N];                // Second independent variable
-	real<lower = 0> MathScore[N];                 // Outcome or dependent variable
+  int<lower=1> N;                                  // Number of observations
+  int<lower=1> Country;                            // Number of countries
+  array[N] int<lower=1, upper=Country> CountryID;  // Country IDs 
+  array[N] int<lower=0> Cholera;                   // Cholera cases
+  array[N] real Water;                             // Water access variable
+  array[N] real Sanitation;                        // Sanitation variable
+  array[N] real GDP;                               // GDP variable
+	array[N] real Rainfall;                          // Rainfall variable         
+	array[N] real Temperature;                       // Temperature variable
+  array[N] real Log_Population;                    // Logged Population variable used as offset
 }
 
 parameters {
-	real gamma00;                                 // Declare the fixed part (intercept) (Global intercept)
-	vector[k] beta;                               // Declare the fixed part (beta1 and beta2 coefficients for ActiveTime and Supportive)
-	real u[CL];                                   // Declare the random effects u0,1 u0,2, u0,3 and u0,4
-	real<lower = 0> sigma_error;                  // Declare the random part (level-1)
-	real<lower = 0> group_error;                  // Declare the random part (level-2)
+  real gamma00;                                    // Overall intercept
+  real gamma01;                                    // Overall effect of Water
+  real gamma02;                                    // Overall effect of Sanitation
+  real beta3;                                      // overall fixed effects relationship with GDP
+	real beta4;                                      // overall fixed effects relationship with rainfall
+	real beta5;                                      // overall fixed effects relationship with temperature
+  array[Country] real random_intercept;            // Country-specific random intercepts
+  array[Country] real random_slope_water;          // Country-specific random slopes for Water
+  array[Country] real random_slope_sanitation;     // Country-specific random slopes for Sanitation
+  real<lower=0> group_intercept_sd;                // SD of random intercepts
+  real<lower=0> group_slope_water_sd;              // SD of random slopes for Water
+  real<lower=0> group_slope_sanitation_sd;         // SD of random slopes for Sanitation
+  real<lower=0> phi;                               // Use phi for dispersion
 }
+
 ```
 
-**THIRD STEP:** We need to include the varying intercept into the statistical model. Here, we can write that by adding **transformed parameters** block to the code.
+**THIRD STEP:** For the **transformed parameters** block, include the sub-equations for `beta00`, `beta01` and `beta02`, where we add the fixed effects and random effects:
+
+```{r, eval=FALSE, highlight=FALSE}
+
+data {
+  int<lower=1> N;                                  // Number of observations
+  int<lower=1> Country;                            // Number of countries
+  array[N] int<lower=1, upper=Country> CountryID;  // Country IDs 
+  array[N] int<lower=0> Cholera;                   // Cholera cases
+  array[N] real Water;                             // Water access variable
+  array[N] real Sanitation;                        // Sanitation variable
+  array[N] real GDP;                               // GDP variable
+	array[N] real Rainfall;                          // Rainfall variable         
+	array[N] real Temperature;                       // Temperature variable
+  array[N] real Log_Population;                    // Logged Population variable used as offset
+}
+
+parameters {
+  real gamma00;                                    // Overall intercept
+  real gamma01;                                    // Overall effect of Water
+  real gamma02;                                    // Overall effect of Sanitation
+  real beta3;                                      // overall fixed effects relationship with GDP
+	real beta4;                                      // overall fixed effects relationship with rainfall
+	real beta5;                                      // overall fixed effects relationship with temperature
+  array[Country] real random_intercept;            // Country-specific random intercepts
+  array[Country] real random_slope_water;          // Country-specific random slopes for Water
+  array[Country] real random_slope_sanitation;     // Country-specific random slopes for Sanitation
+  real<lower=0> group_intercept_sd;                // SD of random intercepts
+  real<lower=0> group_slope_water_sd;              // SD of random slopes for Water
+  real<lower=0> group_slope_sanitation_sd;         // SD of random slopes for Sanitation
+  real<lower=0> phi;                               // Use phi for dispersion
+}
+  
+transformed parameters {
+  array[Country] real beta00;
+  array[Country] real beta01;
+  array[Country] real beta02;
+
+  for (j in 1:Country) {
+    beta00[j] = gamma00 + random_intercept[j];           // Random intercept per country - overall risks of cholera varying by country
+    beta01[j] = gamma01 + random_slope_water[j];         // Random slope for Water - overall risks cholera with `Water` varying by country
+    beta02[j] = gamma02 + random_slope_sanitation[j];    // Random slope for Sanitation - overall risks cholera with `Sanitation` varying by country
+  }
+}
+
+```
+
+**FOURTH STEP:** We build our likelihood function and specify the priors for each parameter under the **model** block. This will contain our statistical model.
 
 ```{r, eval=FALSE, highlight=FALSE}
 data {
-	int<lower = 0> N;                             // Number of students (i.e., observations)
-	int<lower = 0> CL;                            // Total number of classrooms
-	int<lower = 0, upper = CL> ClassroomID[N];    // Aligning the classroom ID number to the student ID
-	int<lower = 0> k;                             // Specify total number of independent variables to be used in model
-	real<lower = 0> ActiveTime[N];                // First independent variable
-	real<lower = 0> Supportive[N];                // Second independent variable
-	real<lower = 0> MathScore[N];                 // Outcome or dependent variable
+  int<lower=1> N;                                  // Number of observations
+  int<lower=1> Country;                            // Number of countries
+  array[N] int<lower=1, upper=Country> CountryID;  // Country IDs 
+  array[N] int<lower=0> Cholera;                   // Cholera cases
+  array[N] real Water;                             // Water access variable
+  array[N] real Sanitation;                        // Sanitation variable
+  array[N] real GDP;                               // GDP variable
+	array[N] real Rainfall;                          // Rainfall variable         
+	array[N] real Temperature;                       // Temperature variable
+  array[N] real Log_Population;                    // Logged Population variable used as offset
 }
 
 parameters {
-	real gamma00;                                 // Declare the fixed part (intercept) (Global intercept)
-	vector[k] beta;                               // Declare the fixed part (beta1 and beta2 coefficients for ActiveTime and Supportive)
-	real u[CL];                                   // Declare the random effects u0,1 u0,2, u0,3 and u0,4
-	real<lower = 0> sigma_error;                  // Declare the random part (level-1)
-	real<lower = 0> group_error;                  // Declare the random part (level-2)
+  real gamma00;                                    // Overall intercept
+  real gamma01;                                    // Overall effect of Water
+  real gamma02;                                    // Overall effect of Sanitation
+  real beta3;                                      // overall fixed effects relationship with GDP
+	real beta4;                                      // overall fixed effects relationship with rainfall
+	real beta5;                                      // overall fixed effects relationship with temperature
+  array[Country] real random_intercept;            // Country-specific random intercepts
+  array[Country] real random_slope_water;          // Country-specific random slopes for Water
+  array[Country] real random_slope_sanitation;     // Country-specific random slopes for Sanitation
+  real<lower=0> group_intercept_sd;                // SD of random intercepts
+  real<lower=0> group_slope_water_sd;              // SD of random slopes for Water
+  real<lower=0> group_slope_sanitation_sd;         // SD of random slopes for Sanitation
+  real<lower=0> phi;                               // Use phi for dispersion
 }
-
+  
 transformed parameters {
-	real beta0[CL];
-	
-	for (j in 1:CL){
-		beta0[j] = gamma00 + u[j]; 	                // Varying intercept by classroom
-	}
-}
-```
+  array[Country] real beta00;
+  array[Country] real beta01;
+  array[Country] real beta02;
 
-**FOURTH AND LAST STEP:** We build our likelihood function and specify the priors for each parameter under the **model** block. We are using a typical linear model as we are assuming there's some linear relationship:
-
-```{r, eval=FALSE, highlight=FALSE}
-data {
-	int<lower = 0> N;                             // Number of students (i.e., observations)
-	int<lower = 0> CL;                            // Total number of classrooms
-	int<lower = 0, upper = CL> ClassroomID[N];    // Aligning the classroom ID number to the student ID
-	int<lower = 0> k;                             // Specify total number of independent variables to be used in model
-	real<lower = 0> ActiveTime[N];                // First independent variable
-	real<lower = 0> Supportive[N];                // Second independent variable
-	real<lower = 0> MathScore[N];                 // Outcome or dependent variable
-}
-
-parameters {
-	real gamma00;                                 // Declare the fixed part (intercept) (Global intercept)
-	vector[k] beta;                               // Declare the fixed part (beta1 and beta2 coefficients for ActiveTime and Supportive)
-	real u[CL];                                   // Declare the random effects u0,1 u0,2, u0,3 and u0,4
-	real<lower = 0> sigma_error;                  // Declare the random part (level-1)
-	real<lower = 0> group_error;                  // Declare the random part (level-2)
-}
-
-transformed parameters {
-	real beta0[CL];
-	
-	for (j in 1:CL){
-		beta0[j] = gamma00 + u[j]; 	                // Varying intercept by classroom
-	}
+  for (j in 1:Country) {
+    beta00[j] = gamma00 + random_intercept[j];           // Random intercept per country - overall risks of cholera varying by country
+    beta01[j] = gamma01 + random_slope_water[j];         // Random slope for Water - overall risks cholera with `Water` varying by country
+    beta02[j] = gamma02 + random_slope_sanitation[j];    // Random slope for Sanitation - overall risks cholera with `Sanitation` varying by country
+  }
 }
 
 model {
-	real mu;                                      // define mu to be the mean MathScore we want to predict
-	u ~ normal(0, group_error);                   // prior for each random effects u[1], u[2], u[3] and u[4]
-	gamma00 ~ normal(0, 20);                      // prior for the overall intercept gamma00
-	beta ~ normal(0, 20);                         // prior for beta[1] and beta[2] coefficients
-	                                              // note that group_error and sigma_error has no priors - automatically given a uniform
-	
-	// likelihood function
-	for (i in 1:N) {
-		mu = beta0[ClassroomID[i]] + beta[1]*ActiveTime[i] + beta[2]*Supportive[i];
-		MathScore[i] ~ normal(mu, sigma_error);
-	}
+  // Priors for fixed effects
+  gamma00 ~ normal(0, 1);
+  gamma01 ~ normal(0, 1);
+  gamma02 ~ normal(0, 1);
+  beta3 ~ normal(0, 1);
+  beta4 ~ normal(0, 1);
+  beta5 ~ normal(0, 1);
+
+  // Priors for random effects
+  random_intercept ~ normal(0, group_intercept_sd);
+  random_slope_water ~ normal(0, group_slope_water_sd);
+  random_slope_sanitation ~ normal(0, group_slope_sanitation_sd);
+  
+  // Priors for standard deviations of random effects
+  group_intercept_sd ~ cauchy(0, 0.5);
+  group_slope_water_sd ~ cauchy(0, 0.5);
+  group_slope_sanitation_sd ~ cauchy(0, 0.5);
+
+  // Prior for overdispersion parameter
+  phi ~ beta(2, 5);
+
+  // Likelihood: Negative Binomial Poisson Regression
+  for (i in 1:N) {
+    Cholera[i] ~ neg_binomial_2_log(beta00[CountryID[i]] + beta01[CountryID[i]]*Water[i] + beta02[CountryID[i]]*Sanitation[i] + beta3*GDP[i] + beta4*Rainfall[i] + beta5*Temperature[i] + Log_Population[i], phi);
+  }
 }
+
+```
+
+**FINAL STEP:** We include **generated quantities** block to derive all results as relative risk ratios.
+
+```{r, eval=FALSE, highlight=FALSE}
+
+data {
+  int<lower=1> N;                                  // Number of observations
+  int<lower=1> Country;                            // Number of countries
+  array[N] int<lower=1, upper=Country> CountryID;  // Country IDs 
+  array[N] int<lower=0> Cholera;                   // Cholera cases
+  array[N] real Water;                             // Water access variable
+  array[N] real Sanitation;                        // Sanitation variable
+  array[N] real GDP;                               // GDP variable
+  array[N] real Rainfall;                          // Rainfall variable
+  array[N] real Temperature;                       // Temperature variable
+  array[N] real Log_Population;                    // Logged Population variable used as offset
+}
+
+parameters {
+  real gamma00;                                    // Overall intercept
+  real gamma01;                                    // Overall effect of Water
+  real gamma02;                                    // Overall effect of Sanitation
+  real beta3;                                      // overall fixed effects relationship with GDP
+	real beta4;                                      // overall fixed effects relationship with rainfall
+	real beta5;                                      // overall fixed effects relationship with temperature
+  array[Country] real random_intercept;            // Country-specific random intercepts
+  array[Country] real random_slope_water;          // Country-specific random slopes for Water
+  array[Country] real random_slope_sanitation;     // Country-specific random slopes for Sanitation
+  real<lower=0> group_intercept_sd;                // SD of random intercepts
+  real<lower=0> group_slope_water_sd;              // SD of random slopes for Water
+  real<lower=0> group_slope_sanitation_sd;         // SD of random slopes for Sanitation
+  real<lower=0> phi;                               // Use phi for dispersion
+}
+  
+transformed parameters {
+  array[Country] real beta00;
+  array[Country] real beta01;
+  array[Country] real beta02;
+
+  for (j in 1:Country) {
+    beta00[j] = gamma00 + random_intercept[j];           // Random intercept per country - overall risks of cholera varying by country
+    beta01[j] = gamma01 + random_slope_water[j];         // Random slope for Water - overall risks cholera with `Water` varying by country
+    beta02[j] = gamma02 + random_slope_sanitation[j];    // Random slope for Sanitation - overall risks cholera with `Sanitation` varying by country
+  }
+}
+
+model {
+  // Priors for fixed effects
+  gamma00 ~ normal(0, 1);
+  gamma01 ~ normal(0, 1);
+  gamma02 ~ normal(0, 1);
+  beta3 ~ normal(0, 1);
+  beta4 ~ normal(0, 1);
+  beta5 ~ normal(0, 1);
+
+  // Priors for random effects
+  random_intercept ~ normal(0, group_intercept_sd);
+  random_slope_water ~ normal(0, group_slope_water_sd);
+  random_slope_sanitation ~ normal(0, group_slope_sanitation_sd);
+  
+  // Priors for standard deviations of random effects
+  group_intercept_sd ~ cauchy(0, 0.5);
+  group_slope_water_sd ~ cauchy(0, 0.5);
+  group_slope_sanitation_sd ~ cauchy(0, 0.5);
+
+  // Prior for overdispersion parameter
+  phi ~ beta(2, 5);
+
+  // Likelihood: Negative Binomial Poisson Regression
+  for (i in 1:N) {
+    Cholera[i] ~ neg_binomial_2_log(beta00[CountryID[i]] + beta01[CountryID[i]]*Water[i] + beta02[CountryID[i]]*Sanitation[i] + beta3*GDP[i] + beta4*Rainfall[i] + beta5*Temperature[i] + Log_Population[i], phi);
+  }
+}
+
+generated quantities {
+	// report the coefficients as relative risk ratios
+	real gamma00_RR;
+  real gamma01_RR;
+  real gamma02_RR;
+    
+  gamma00_RR = exp(gamma00);
+  gamma01_RR = exp(gamma01);
+  gamma02_RR = exp(gamma02);
+    
+  real beta3_RR;
+  real beta4_RR;
+  real beta5_RR;
+    
+  beta3_RR = exp(beta3);
+  beta4_RR = exp(beta4);
+  beta5_RR = exp(beta5);
+		
+	// report the varying slopes as relative risk ratios
+  array[Country] real beta00_RR;
+  array[Country] real beta01_RR;
+  array[Country] real beta02_RR;
+  
+  beta00_RR = exp(beta00);
+  beta01_RR = exp(beta01);
+  beta02_RR = exp(beta02);
+}
+// end script
+
 ```
 
 <div class="note">
-Let's save the script as `Maths_Activity_study.stan`. Now, we can compile and run it through RStudio to get our estimates coefficients and random intercept results. 
+Let's save the script as `Cholera Script.stan`. Now, we can compile and run it through RStudio to get our estimated coefficients. 
 </div>
 
 ### Compiling our Stan code for Hierarchical Modelling
@@ -235,91 +420,352 @@ Now, let us turn our attention to RStudio. Using the `stan()` to compile the sav
 # Start the clock
 ptm <- proc.time()
 # compile linear regression model for now
-bayesian.hierarchical.model = stan("Maths_Activity_study.stan", data=stan.dataset, iter=10000, chains=6, verbose = FALSE)
+bayesian.hierarchical.model = stan("Cholera Script.stan", data=stan.dataset, iter=3000, chains=3, verbose = FALSE)
 # Stop the clock
 proc.time() - ptm
 ```
 
 **Output summary table**
 ```{r, eval=FALSE, highlight=FALSE}
-bayesian.hierarchical.model
+# print full table to avoid some rows from being omitted.
+options(max.print = 100000)
+
+# print full table to see all results
+print(bayesian.hierarchical.model)
+
+#PRINTED OUTPUT FROM CONSOLE
+
 Inference for Stan model: anon_model.
-6 chains, each with iter=20000; warmup=10000; thin=1; 
-post-warmup draws per chain=10000, total post-warmup draws=60000.
+3 chains, each with iter=3000; warmup=1500; thin=1; 
+post-warmup draws per chain=1500, total post-warmup draws=4500.
 
-               mean se_mean    sd    2.5%     25%     50%     75%   97.5% n_eff Rhat
-gamma00       33.57    0.26 24.12  -17.25   16.54   35.96   54.19   68.46  8298    1
-beta[1]       11.43    0.00  0.80    9.87   10.89   11.44   11.96   12.99 36973    1
-beta[2]        3.20    0.00  0.83    1.59    2.64    3.20    3.76    4.83 35288    1
-u[1]          44.59    0.27 24.15    9.73   23.94   42.15   61.73   95.49  8302    1
-u[2]          36.90    0.26 24.14    2.05   16.22   34.51   54.01   87.67  8301    1
-u[3]          21.27    0.26 24.13  -13.58    0.62   18.85   38.39   72.19  8301    1
-u[4]          27.75    0.26 24.14   -7.12    7.12   25.30   44.86   78.65  8299    1
-sigma_error    3.34    0.00  0.17    3.03    3.22    3.33    3.45    3.69 34741    1
-group_error   56.27    0.52 59.72    8.21   20.55   40.72   71.63  198.40 13438    1
-beta0[1]      78.15    0.00  0.79   76.61   77.62   78.15   78.69   79.70 41641    1
-beta0[2]      70.47    0.00  0.73   69.05   69.98   70.47   70.96   71.89 43111    1
-beta0[3]      54.83    0.00  0.76   53.35   54.32   54.83   55.35   56.33 42592    1
-beta0[4]      61.32    0.00  0.77   59.82   60.80   61.32   61.84   62.83 41752    1
-lp__        -353.89    0.02  2.15 -358.97 -355.09 -353.54 -352.31 -350.72 17880    1
+                                mean se_mean     sd     2.5%      25%      50%      75%    97.5% n_eff Rhat
+gamma00                        -0.52    0.02   0.95    -2.38    -1.16    -0.53     0.11     1.37  3059 1.00
+gamma01                         0.59    0.01   0.30    -0.03     0.42     0.61     0.79     1.16  1780 1.00
+gamma02                         0.39    0.01   0.42    -0.39     0.11     0.37     0.66     1.25  1841 1.00
+beta3                           0.27    0.01   0.20    -0.13     0.14     0.27     0.41     0.65  1363 1.00
+beta4                          -0.01    0.00   0.01    -0.02    -0.01    -0.01    -0.01     0.00  2878 1.00
+beta5                          -0.30    0.00   0.04    -0.38    -0.33    -0.30    -0.27    -0.21  2767 1.00
+random_intercept[1]            -0.04    0.01   0.34    -0.84    -0.15    -0.01     0.08     0.63  2975 1.00
+random_intercept[2]            -0.02    0.01   0.34    -0.79    -0.14    -0.01     0.11     0.69  4060 1.00
+random_intercept[3]             0.09    0.01   0.33    -0.47    -0.06     0.03     0.21     0.92  2012 1.00
+random_intercept[4]             0.05    0.01   0.35    -0.62    -0.08     0.01     0.17     0.89  4091 1.00
+random_intercept[5]             0.06    0.01   0.33    -0.57    -0.08     0.02     0.17     0.83  2752 1.00
+random_intercept[6]            -0.13    0.01   0.38    -1.13    -0.25    -0.05     0.05     0.47   984 1.00
+random_intercept[7]            -0.02    0.00   0.26    -0.59    -0.13    -0.01     0.09     0.56  4029 1.00
+random_intercept[8]            -0.07    0.01   0.28    -0.75    -0.19    -0.03     0.06     0.47  2355 1.00
+random_intercept[9]            -0.06    0.01   0.36    -0.95    -0.17    -0.02     0.09     0.61  3042 1.00
+random_intercept[10]            0.02    0.01   0.34    -0.68    -0.11     0.00     0.13     0.77  3193 1.00
+random_intercept[11]            0.14    0.01   0.37    -0.43    -0.04     0.05     0.25     1.14  1049 1.00
+random_intercept[12]            0.01    0.00   0.25    -0.50    -0.10     0.00     0.11     0.59  2753 1.00
+random_intercept[13]           -0.11    0.01   0.35    -1.02    -0.23    -0.04     0.06     0.47  1403 1.00
+random_slope_water[1]           0.20    0.01   0.56    -0.80    -0.09     0.11     0.45     1.58  2275 1.00
+random_slope_water[2]           0.10    0.01   0.57    -1.05    -0.18     0.06     0.37     1.38  2779 1.00
+random_slope_water[3]           0.14    0.01   0.46    -0.78    -0.09     0.09     0.38     1.16  2596 1.00
+random_slope_water[4]          -0.31    0.01   0.44    -1.33    -0.55    -0.23    -0.01     0.42  1034 1.00
+random_slope_water[5]          -0.07    0.01   0.42    -0.91    -0.30    -0.06     0.12     0.87  1882 1.00
+random_slope_water[6]          -0.06    0.01   0.60    -1.47    -0.31    -0.01     0.23     1.15  4630 1.00
+random_slope_water[7]           0.47    0.03   0.64    -0.44     0.02     0.31     0.79     2.11   605 1.00
+random_slope_water[8]          -0.12    0.01   0.43    -1.06    -0.34    -0.07     0.11     0.71  2222 1.00
+random_slope_water[9]          -0.23    0.02   0.63    -1.84    -0.51    -0.10     0.12     0.85  1610 1.00
+random_slope_water[10]         -0.56    0.03   0.74    -2.39    -0.95    -0.35    -0.03     0.42   569 1.00
+random_slope_water[11]          0.17    0.01   0.40    -0.62    -0.06     0.12     0.39     1.02  2011 1.00
+random_slope_water[12]         -0.22    0.01   0.54    -1.46    -0.48    -0.12     0.08     0.73  1628 1.00
+random_slope_water[13]          0.65    0.03   0.78    -0.29     0.08     0.41     1.06     2.59   516 1.00
+random_slope_sanitation[1]      0.22    0.01   0.66    -1.05    -0.22     0.19     0.64     1.57  2253 1.00
+random_slope_sanitation[2]      0.31    0.01   0.50    -0.72    -0.01     0.32     0.64     1.24  2156 1.00
+random_slope_sanitation[3]      0.47    0.02   1.38    -2.12    -0.40     0.40     1.28     3.35  3419 1.00
+random_slope_sanitation[4]      0.21    0.02   0.73    -1.23    -0.28     0.21     0.67     1.66  1610 1.00
+random_slope_sanitation[5]      2.03    0.03   1.04     0.11     1.31     2.00     2.70     4.17  1612 1.00
+random_slope_sanitation[6]      1.45    0.02   0.78    -0.06     0.94     1.46     1.96     2.96  1491 1.00
+random_slope_sanitation[7]      1.13    0.03   1.33    -1.09     0.19     1.02     1.92     4.06  1521 1.00
+random_slope_sanitation[8]      0.10    0.01   0.84    -1.47    -0.45     0.09     0.64     1.80  3218 1.00
+random_slope_sanitation[9]     -1.12    0.02   0.78    -2.74    -1.62    -1.11    -0.60     0.36  1669 1.00
+random_slope_sanitation[10]    -1.29    0.02   0.74    -2.75    -1.77    -1.29    -0.79     0.12  2215 1.00
+random_slope_sanitation[11]    -1.29    0.02   0.70    -2.73    -1.75    -1.28    -0.80     0.02  1707 1.00
+random_slope_sanitation[12]    -0.99    0.02   0.69    -2.34    -1.46    -0.98    -0.52     0.34  1670 1.00
+random_slope_sanitation[13]    -0.17    0.01   0.64    -1.42    -0.58    -0.18     0.24     1.08  1936 1.00
+group_intercept_sd              0.28    0.02   0.24     0.02     0.10     0.22     0.40     0.88   179 1.00
+group_slope_water_sd            0.57    0.02   0.39     0.06     0.27     0.50     0.78     1.48   313 1.01
+group_slope_sanitation_sd       1.33    0.01   0.47     0.56     1.01     1.27     1.58     2.37  1202 1.00
+phi                             0.46    0.00   0.04     0.39     0.43     0.46     0.49     0.54  4832 1.00
+beta00[1]                      -0.56    0.02   1.02    -2.59    -1.23    -0.57     0.11     1.44  3256 1.00
+beta00[2]                      -0.54    0.02   1.00    -2.51    -1.19    -0.55     0.13     1.46  3161 1.00
+beta00[3]                      -0.43    0.02   1.02    -2.45    -1.11    -0.43     0.25     1.61  2975 1.00
+beta00[4]                      -0.47    0.02   1.03    -2.46    -1.15    -0.48     0.20     1.61  3083 1.00
+beta00[5]                      -0.46    0.02   1.01    -2.47    -1.14    -0.47     0.21     1.58  2919 1.00
+beta00[6]                      -0.65    0.02   1.03    -2.75    -1.33    -0.64     0.02     1.36  2771 1.00
+beta00[7]                      -0.54    0.02   0.97    -2.45    -1.19    -0.53     0.10     1.41  3073 1.00
+beta00[8]                      -0.59    0.02   0.99    -2.55    -1.25    -0.59     0.07     1.35  3069 1.00
+beta00[9]                      -0.58    0.02   1.03    -2.64    -1.25    -0.58     0.11     1.43  3066 1.00
+beta00[10]                     -0.50    0.02   1.02    -2.54    -1.19    -0.51     0.16     1.52  3219 1.00
+beta00[11]                     -0.39    0.02   1.03    -2.37    -1.08    -0.40     0.29     1.66  2592 1.00
+beta00[12]                     -0.51    0.02   0.98    -2.41    -1.16    -0.52     0.13     1.41  3030 1.00
+beta00[13]                     -0.63    0.02   1.02    -2.65    -1.30    -0.62     0.04     1.36  2886 1.00
+beta01[1]                       0.80    0.01   0.58    -0.33     0.46     0.76     1.10     2.14  2975 1.00
+beta01[2]                       0.70    0.01   0.61    -0.53     0.38     0.69     1.01     2.02  3754 1.00
+beta01[3]                       0.74    0.01   0.45    -0.20     0.48     0.74     1.01     1.64  2684 1.00
+beta01[4]                       0.29    0.02   0.49    -0.82    -0.02     0.35     0.63     1.11   874 1.00
+beta01[5]                       0.52    0.01   0.37    -0.25     0.30     0.54     0.76     1.27  3294 1.00
+beta01[6]                       0.53    0.01   0.67    -1.03     0.22     0.59     0.91     1.80  3007 1.00
+beta01[7]                       1.07    0.02   0.61     0.09     0.64     0.97     1.40     2.54   754 1.00
+beta01[8]                       0.48    0.01   0.43    -0.47     0.22     0.51     0.76     1.27  2051 1.00
+beta01[9]                       0.37    0.02   0.70    -1.36     0.02     0.49     0.80     1.55  1284 1.00
+beta01[10]                      0.04    0.03   0.83    -2.02    -0.39     0.24     0.62     1.22   564 1.00
+beta01[11]                      0.76    0.01   0.39    -0.01     0.52     0.75     1.00     1.54  2399 1.00
+beta01[12]                      0.37    0.02   0.58    -0.99     0.07     0.45     0.74     1.37  1178 1.00
+beta01[13]                      1.25    0.03   0.77     0.16     0.70     1.07     1.68     3.06   600 1.00
+beta02[1]                       0.61    0.01   0.58    -0.43     0.21     0.57     0.96     1.86  2941 1.00
+beta02[2]                       0.70    0.00   0.27     0.14     0.53     0.70     0.87     1.21  4444 1.00
+beta02[3]                       0.86    0.03   1.45    -1.77    -0.07     0.78     1.71     3.90  3171 1.00
+beta02[4]                       0.60    0.02   0.64    -0.65     0.16     0.60     1.02     1.88  1665 1.00
+beta02[5]                       2.42    0.03   1.07     0.37     1.68     2.42     3.13     4.54  1687 1.00
+beta02[6]                       1.84    0.02   0.74     0.34     1.36     1.86     2.34     3.22  1423 1.00
+beta02[7]                       1.52    0.03   1.39    -0.84     0.53     1.39     2.38     4.57  1819 1.00
+beta02[8]                       0.49    0.01   0.81    -1.07    -0.05     0.48     1.00     2.13  3592 1.00
+beta02[9]                      -0.74    0.02   0.68    -2.04    -1.19    -0.76    -0.30     0.66  1798 1.00
+beta02[10]                     -0.90    0.02   0.68    -2.19    -1.36    -0.92    -0.46     0.50  2050 1.00
+beta02[11]                     -0.91    0.01   0.58    -2.07    -1.28    -0.90    -0.52     0.20  1512 1.00
+beta02[12]                     -0.60    0.02   0.62    -1.80    -1.01    -0.64    -0.23     0.75  1577 1.00
+beta02[13]                      0.22    0.01   0.53    -0.75    -0.13     0.20     0.55     1.32  2464 1.00
+gamma00_RR                      0.94    0.02   1.18     0.09     0.31     0.59     1.11     3.94  2838 1.00
+gamma01_RR                      1.89    0.01   0.56     0.97     1.52     1.84     2.20     3.18  2057 1.00
+gamma02_RR                      1.62    0.02   0.75     0.68     1.11     1.45     1.94     3.50  1786 1.00
+beta3_RR                        1.33    0.01   0.27     0.87     1.15     1.31     1.50     1.92  1474 1.00
+beta4_RR                        0.99    0.00   0.01     0.98     0.99     0.99     0.99     1.00  2879 1.00
+beta5_RR                        0.74    0.00   0.03     0.68     0.72     0.74     0.76     0.81  2764 1.00
+beta00_RR[1]                    0.96    0.02   1.32     0.08     0.29     0.56     1.12     4.22  3061 1.00
+beta00_RR[2]                    0.96    0.02   1.25     0.08     0.30     0.58     1.13     4.30  2994 1.00
+beta00_RR[3]                    1.10    0.03   1.49     0.09     0.33     0.65     1.29     4.99  2653 1.00
+beta00_RR[4]                    1.10    0.04   1.86     0.09     0.32     0.62     1.22     4.98  2758 1.00
+beta00_RR[5]                    1.08    0.03   1.63     0.08     0.32     0.63     1.23     4.85  2893 1.00
+beta00_RR[6]                    0.88    0.02   1.23     0.06     0.27     0.53     1.02     3.89  2897 1.00
+beta00_RR[7]                    0.94    0.02   1.23     0.09     0.30     0.59     1.11     4.09  2777 1.00
+beta00_RR[8]                    0.90    0.02   1.17     0.08     0.29     0.55     1.08     3.86  2696 1.00
+beta00_RR[9]                    0.94    0.02   1.28     0.07     0.29     0.56     1.12     4.18  3033 1.00
+beta00_RR[10]                   1.03    0.03   1.49     0.08     0.30     0.60     1.17     4.59  2829 1.00
+beta00_RR[11]                   1.19    0.04   1.84     0.09     0.34     0.67     1.34     5.27  2390 1.00
+beta00_RR[12]                   0.97    0.02   1.26     0.09     0.31     0.60     1.14     4.10  2782 1.00
+beta00_RR[13]                   0.91    0.03   1.54     0.07     0.27     0.54     1.04     3.91  2895 1.00
+beta01_RR[1]                    2.71    0.05   2.45     0.72     1.59     2.13     3.00     8.46  2095 1.00
+beta01_RR[2]                    2.45    0.04   2.07     0.59     1.46     1.99     2.76     7.51  2634 1.00
+beta01_RR[3]                    2.33    0.03   1.33     0.82     1.61     2.09     2.73     5.14  2365 1.00
+beta01_RR[4]                    1.49    0.02   0.68     0.44     0.98     1.42     1.87     3.05  1119 1.00
+beta01_RR[5]                    1.81    0.01   0.73     0.78     1.35     1.71     2.14     3.56  2784 1.00
+beta01_RR[6]                    2.13    0.03   1.84     0.36     1.24     1.80     2.49     6.07  3057 1.00
+beta01_RR[7]                    3.65    0.11   3.44     1.10     1.90     2.63     4.06    12.66   970 1.00
+beta01_RR[8]                    1.77    0.02   0.78     0.63     1.24     1.66     2.13     3.56  2439 1.00
+beta01_RR[9]                    1.78    0.03   1.21     0.26     1.02     1.63     2.22     4.73  2272 1.00
+beta01_RR[10]                   1.35    0.03   0.89     0.13     0.67     1.27     1.87     3.40   881 1.00
+beta01_RR[11]                   2.31    0.02   1.00     0.99     1.67     2.12     2.72     4.66  2519 1.00
+beta01_RR[12]                   1.69    0.02   0.99     0.37     1.07     1.58     2.09     3.95  2288 1.00
+beta01_RR[13]                   5.07    0.22   6.82     1.17     2.01     2.90     5.38    21.35   992 1.00
+beta02_RR[1]                    2.22    0.04   1.90     0.65     1.24     1.77     2.62     6.43  2363 1.00
+beta02_RR[2]                    2.08    0.01   0.58     1.15     1.69     2.02     2.39     3.36  4284 1.00
+beta02_RR[3]                   15.51    3.97 231.58     0.17     0.93     2.18     5.53    49.53  3406 1.00
+beta02_RR[4]                    2.24    0.04   1.68     0.52     1.17     1.81     2.77     6.53  2282 1.00
+beta02_RR[5]                   20.08    0.58  29.58     1.45     5.36    11.23    22.88    94.06  2588 1.00
+beta02_RR[6]                    8.16    0.15   6.58     1.40     3.89     6.44    10.33    25.02  2041 1.00
+beta02_RR[7]                   15.62    1.15  60.65     0.43     1.69     4.02    10.75    96.23  2794 1.00
+beta02_RR[8]                    2.35    0.06   3.46     0.34     0.95     1.61     2.73     8.45  3218 1.00
+beta02_RR[9]                    0.61    0.01   0.49     0.13     0.30     0.47     0.74     1.93  1537 1.00
+beta02_RR[10]                   0.52    0.01   0.42     0.11     0.26     0.40     0.63     1.66  1570 1.00
+beta02_RR[11]                   0.48    0.01   0.30     0.13     0.28     0.41     0.59     1.22  1224 1.00
+beta02_RR[12]                   0.67    0.02   0.56     0.17     0.37     0.53     0.80     2.11  1305 1.00
+beta02_RR[13]                   1.45    0.02   1.04     0.47     0.88     1.22     1.73     3.73  2128 1.00
+lp__                        -2050.22    1.22  14.88 -2076.40 -2060.84 -2051.37 -2040.26 -2019.30   149 1.00
 
-Samples were drawn using NUTS(diag_e) at Wed Jul 12 03:49:00 2023.
+Samples were drawn using NUTS(diag_e) at Thu Jun 12 05:52:03 2025.
 For each parameter, n_eff is a crude measure of effective sample size,
 and Rhat is the potential scale reduction factor on split chains (at 
 convergence, Rhat=1).
+
+```
+
+You can examine the traceplot of divergence if necessary:
+
+```{r, eval=FALSE}
+
+# print traceplot for the global coefficients
+traceplot(bayesian.hierarchical.model, 
+	pars = c("gamma00_RR", "gamma01_RR", "gamma02_RR", "beta3_RR", "beta4_RR", "beta5_RR",
+		"group_intercept_sd", "group_slope_water_sd", "group_slope_sanitation_sd", "phi"))
+
+# print traceplot for the varying intercept and varying coefficients results
+traceplot(bayesian.hierarchical.model, pars = c("beta00_RR", "beta01_RR", "beta02_RR"))
+```
+
+Dealing with results from **Stan** can be very challenging. Let us show you how to extract the desired results. We will first report the overall relative risks and group variations:
+
+```{r, eval=FALSE}
+# print table to reports the relative risk ratios for Cholera
+print(bayesian.hierarchical.model, 
+	probs=c(0.025, 0.975), 
+	pars = c("gamma00_RR", "gamma01_RR", "gamma02_RR", "beta3_RR", "beta4_RR", "beta5_RR",
+		"group_intercept_sd", "group_slope_water_sd", "group_slope_sanitation_sd"))
+
+# PRINTED OUTPUT
+
+Inference for Stan model: anon_model.
+3 chains, each with iter=3000; warmup=1500; thin=1; 
+post-warmup draws per chain=1500, total post-warmup draws=4500.
+
+                          mean se_mean   sd 2.5% 97.5% n_eff Rhat
+gamma00_RR                0.94    0.02 1.18 0.09  3.94  2838 1.00
+gamma01_RR                1.89    0.01 0.56 0.97  3.18  2057 1.00
+gamma02_RR                1.62    0.02 0.75 0.68  3.50  1786 1.00
+beta3_RR                  1.33    0.01 0.27 0.87  1.92  1474 1.00
+beta4_RR                  0.99    0.00 0.01 0.98  1.00  2879 1.00
+beta5_RR                  0.74    0.00 0.03 0.68  0.81  2764 1.00
+group_intercept_sd        0.28    0.02 0.24 0.02  0.88   179 1.00
+group_slope_water_sd      0.57    0.02 0.39 0.06  1.48   313 1.01
+group_slope_sanitation_sd 1.33    0.01 0.47 0.56  2.37  1202 1.00
+
+Samples were drawn using NUTS(diag_e) at Thu Jun 12 05:52:03 2025.
+For each parameter, n_eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor on split chains (at 
+convergence, Rhat=1).
+
 ```
 
 Here is the **interpretation**:
 
-- `gamma00` is the global mean (or average) in the population under study. This means after for accounting for clustering, on average the students' marks in maths are **33.57 (95% CrI: -17.25 to 68.46)**. Note that the `u[1]`, `u[2]`, `u[3]` and `u[4]` are the random-effects for for each Classroom. By adding the random effects to the global intercept (i.e., `gamma00 = 33.57`) would allow the intercepts to vary across the groups. This result is reflected in the `beta0[1]`, `beta0[2]`, `beta0[3]` and `beta0[4]`.
-- `beta[1]` is the level-1 coefficient for `ActiveTime`. This means after accounting for clustering, for unit increase in the time spent on active learning on average yields a positive increase on the math scores by **11.43 (95% CrI: 9.87 to 12.99)**. This increase is significant since the credibility intervals excludes the null value of zero. 
-- `beta[2]`, in the same vein, the same can be said for the amount of one-to-one support a student receives from a teacher. 
-- `Variances` for level-1 and level-2 can used to explain the model's performance by taking the `56.27/(56.16 + 3.34) = 0.9457` is the proportion of explained variation in the 2-level hierarchical model when accounting for group clustering. Here, the value is quite high and so its a good model. Anything close to 1 (or 100%) is good, and vice versa, bad.
+- `gamma00` is the overall baseline risk of cholera in sub-Saharan Africa. It is **0.94 (95% CrI from 0.09 to 3.94)** times lower than usual in the population. 
+- `gamma01` is the overall risk of cholera associated with coverage **without basic water services** in sub-Saharan Africa. The risk of cholera is **1.89 (95% CrI: 0.97 to 3.18)** times higher when coverage without such service gets higher.
+- `gamma02` is the overall risk of cholera associated with coverage **without basic sanitation services** in sub-Saharan Africa. The risk of cholera is **1.62 (95% CrI: 0.68 to 3.50)** times higher when coverage without such service gets higher.
+- `group_intercept_sd`: The standard deviation is **0.28** - this is the random intercepts across countries, which suggests that WHO-AFRO countries have somewhat low variability in their baseline cholera rates. This can be interpreted as countries don't differ drastically in baseline cholera risk (this can be eyeballed from the non-exponentiated values from `beta00[1]`, `beta00[2]` to `beta00[13]`).
+- `group_slope_water_sd`: The standard deviation is **0.57** - this is the random slope for the water service, which suggests that its effect on cholera risk somewhat varies considerably across the countries and not stable unlike the baseline risk (0.57 vs. 0.28)(- this variation can be eyeballed from the exponentiated values of `beta01_RR[1]` to `beta01_RR[13]`).
+- `group_slope_santitation_sd`: The standard deviation is **1.33** - this is the random slope for the sanitation services, which suggests that its effect on cholera risk substantially varies across the countries, more so than the intercept and water (- this variation can be eyeballed from the exponentiated values of `beta02_RR[1]` to `beta02_RR[13]`).
 
-Perhaps, you might want know the probability that a classroom(s) on average would attain maths score of at least 70 (A grade). We can use the exceedance probabilities to find out: 
-
-```{r, eval = FALSE}
-# create a function to summarise the posterior distribution for each coefficient exceeding 70.00 as threshold
-threshold.varying_intercepts <- function(x){mean(x > 70)}
-
-# use spread_draws() and pull() functions on the varying intercept estimates i.e., beta0 to compute their exceedance probability from `threshold.varying_intercepts` object using the summarise() function
-varying_intercepts.exc.probs <- bayesian.hierarchical.model %>% spread_draws(beta0[i]) %>% 
-	group_by(i) %>% summarise(beta0=threshold.varying_intercepts(beta0)) %>%
-	pull(beta0)
-
-# Run
-varying_intercepts.exc.probs
-
-> varying_intercepts.exc.probs
-[1] 1.0000000 0.7407833 0.0000000 0.0000000
-```
-
-The certainty of achieving 70 score in maths in classroom 1 (100.0%) and 2 (74.1%) are very high. Classroom 3 and 4 do not stand a chance according to our model. 
-
-## Task - Maternal access to adequate delivery services
-
-**Try your hand on this problem in Stan**: Build a random **intercept** and **slope** logit model using data on 1060 births to 501 mothers. The outcome of interest is whether the `birth` was delivered in a hospital (1) or elsewhere (0). The predictors include the log of income `loginc`, the `distance` to the nearest hospital distance, and two indicators of mothers’s education: `dropout` for less than high school and college for college `graduate`, so high school or some college is the reference cell.
-
-Build a model containing the `loginc`, `distance` and `dropout` as covariates.
-
-**HINTS**
-
-1. You will need to create a varying slope for the `dropout` since it is measured on the mother level. This would be similar to creating a varying intercept in the `transformed parameters` block. Therefore, create `gamma00` and `gamma01` in the `parameters` block, which should be used to create `beta00` and `beta01` in the transformed parameters` block.
-
-2. The statistical model should use a `bernoulli()` with a `inv_logit()` function in the `model block`. The model should be as follows:
+This portion of the code computes the exceedance probabilities the overall results above:
 
 ```{r, eval=FALSE}
-	
-for (i in 1:N){
-		births[i] ~ bernoulli(inv_logit(beta00[MotherID[i]] + beta[1]*logincome[i] + beta[2]*distance[i] + beta01[MotherID[i]]*dropout[i]));
-}
+# This portion of the code computes the exceedance probabilities for the intercept & each beta coefficient
+threshold.gamma00_RR <- function(x){mean(x > 1.00)}
+gamma00_RR.exc.probs <- bayesian.hierarchical.model %>% spread_draws(gamma00_RR) %>% 
+	summarise(gamma00_RR=threshold.gamma00_RR(gamma00_RR)) %>%
+	pull(gamma00_RR)
 
+threshold.gamma01_RR <- function(x){mean(x > 1.00)}
+gamma01_RR.exc.probs <- bayesian.hierarchical.model %>% spread_draws(gamma01_RR) %>% 
+	summarise(gamma01_RR=threshold.gamma01_RR(gamma01_RR)) %>%
+	pull(gamma01_RR)
+
+threshold.gamma02_RR <- function(x){mean(x > 1.00)}
+gamma02_RR.exc.probs <- bayesian.hierarchical.model %>% spread_draws(gamma02_RR) %>% 
+	summarise(gamma02_RR=threshold.gamma02_RR(gamma02_RR)) %>%
+	pull(gamma02_RR)
+
+threshold.beta3_RR <- function(x){mean(x > 1.00)}
+beta3_RR.exc.probs <- bayesian.hierarchical.model %>% spread_draws(beta3_RR) %>% 
+	summarise(beta3_RR=threshold.beta3_RR (beta3_RR)) %>%
+	pull(beta3_RR)
+
+threshold.beta4_RR <- function(x){mean(x > 1.00)}
+beta4_RR.exc.probs <- bayesian.hierarchical.model %>% spread_draws(beta4_RR) %>% 
+	summarise(beta4_RR=threshold.beta4_RR(beta4_RR)) %>%
+	pull(beta4_RR)
+
+threshold.beta5_RR <- function(x){mean(x > 1.00)}
+beta5_RR.exc.probs <- bayesian.hierarchical.model %>% spread_draws(beta5_RR) %>% 
+	summarise(beta5_RR=threshold.beta5_RR(beta5_RR)) %>%
+	pull(beta5_RR)
+
+# report exceedance probability results
+gamma00_RR.exc.probs
+[1] 0.296175
+gamma01_RR.exc.probs
+[1] 0.963475
+gamma02_RR.exc.probs
+[1] 0.84035
+beta3_RR.exc.probs
+[1] 0.9022667
+beta4_RR.exc.probs
+[1] 0.06706667
+beta5_RR.exc.probs
+[1] 0
 ```
 
-3. You can compute the desired coefficients and estimates with the following:
+We have presented the overall results. What about those that vary across countries? Let put everything into a table - here, its just a matter of writing codes to extracting the results and presenting them in a manner to be use in a paper or assignment:
 
 ```{r, eval=FALSE}
-print(logit.hierarchical.model, pars = c("gamma00", "gamma01", "beta", "sigma_error", "group_error"))
+# Create a vector of names for the results - for overall, and for those that are country-specific
+# note: any country with '_w' is specific for water service
+# note: any country with '_s' is specific for sanitation service
+names <- c("baseline", "water", "sanitation", "gdp", "rainfall", "temperature", "ben_w", "bur_w", "drc_w", "gha_w", "ivc_w", "ken_w",
+	"mal_w", "moz_w", "ner_w", "nir_w", "som_w", "tan_w", "tog_w", "ben_s", "bur_s", "drc_s", "gha_s", "ivc_s", "ken_s",
+	"mal_s", "moz_s", "ner_s", "nir_s", "som_s", "tan_s", "tog_s")
 ```
 
-4. Try to compute the odds ratios for `gamma01`, `beta[1]` and `beta[2]`. 
+Create a data frame with the desired results:
+
+```{r, eval=FALSE}
+# export selected output as a data frame into 'result' object
+results <- as.data.frame(summary(bayesian.hierarchical.model, probs=c(0.025, 0.975), pars = c("gamma00_RR" , "gamma01_RR", "gamma02_RR", "beta3_RR", "beta4_RR", "beta5_RR", "beta01_RR", "beta02_RR"))$summary)
+```
+
+Align the `names` to the results in the `results` object:
+
+```{r, eval=FALSE}
+results$variables <- names
+row.names(results) <- 1:nrow(results)
+```
+
+Now, we are cleaning the table up, with appropriate renaming and re-positioning of columns, and rounding the estimates down to 2 decimal places.
+
+```{r, eval=FALSE}
+results <- results[,c(8, 1, 4, 5, 6, 7)]
+results$mean <- round(results$mean, 2)
+colnames(results)[2] <- "RelativeRisks"
+colnames(results)[3] <- "lower95"
+colnames(results)[4] <- "upper95"
+colnames(results)[5] <- "ess"
+colnames(results)[6] <- "rhat"
+results$lower95<- round(results$lower95, 2)
+results$upper95 <- round(results$upper95, 2)
+results$ess <- round(results$ess, 0)
+results$rhat <- round(results$rhat, 2)
+```
+
+We are going to stitch the exceedance probabilities into this table. Note, we have not calculated the exceedance probabilities for the varying slopes! This portion of the code computes that for you:
+
+```{r, eval=FALSE}
+# This portion of the code computes the exceedance probabilities for the varying slope coefficients for each country
+threshold.beta01_RR <- function(x){mean(x > 1.00)}
+beta01_RR.exc.probs <- bayesian.hierarchical.model %>% spread_draws(beta01_RR[i]) %>% 
+	group_by(i) %>% summarise(beta01_RR=threshold.beta01_RR(beta01_RR)) %>%
+	pull(beta01_RR)
+
+threshold.beta02_RR <- function(x){mean(x > 1.00)}
+beta02_RR.exc.probs <- bayesian.hierarchical.model %>% spread_draws(beta02_RR[i]) %>% 
+	group_by(i) %>% summarise(beta02_RR=threshold.beta02_RR(beta02_RR)) %>%
+	pull(beta02_RR)
+
+beta01_RR.exc.probs
+[1] 0.9328583 0.9021333 0.9555667 0.7321000 0.9221833 0.8309167 0.9854167 0.8771083 0.7624833 0.6029917 0.9712000 0.7726417 0.9893000
+
+beta02_RR.exc.probs
+[1] 0.8711167 0.9891167 0.7319250 0.8213667 0.9921333 0.9918500 0.8769833 0.7330500 0.1448750 0.1002167 0.0541000 0.1655333 0.6480667
+```
+
+We create the table output with final results
+
+```{r, eval=FALSE}
+table <- results
+table$RR_95CrI <- paste(table$RelativeRisks, " (95% CrI: ", table$lower95, " to ", table$upper95, ")", sep = "")
+probs <- c(gamma00_RR.exc.probs, gamma01_RR.exc.probs, gamma02_RR.exc.probs, beta3_RR.exc.probs, beta4_RR.exc.probs, beta5_RR.exc.probs, beta01_RR.exc.probs, beta02_RR.exc.probs)
+table$ExceedProbs <- round(probs, 2)
+table$ESS_Rhat <- paste(table$ess, " (Rhat = ", table$rhat, " < 1.05)", sep = "")
+finaltable <- table[,c(1,7,8,9)]
+```
+
+We have the full results in the `finaltable` object. 
+
+Let us use an example for `gha_w` which refers to the estimate random slope for limited water services and it effect on cholera risk in Ghana. The risk in relation to this variable is **1.49 (95% CrI: 0.42 to 3.11)** times higher. Such chance of risk being greater than 1 in relation to this variable is **0.73 (73%)**. This result; however, is not significant.   
+
+## Task
+
+**Try your hand on this problem in Stan**: Build a random intercept logit model using data on 1060 births to 501 mothers. The outcome of interest is whether the `birth` was delivered in a hospital or elsewhere. The predictors include the log of income `loginc`, the `distance` to the nearest hospital distance, and two indicators of mothers’s education: `dropout` for less than high school and college for college `graduate`, so high school or some college is the reference cell.
+
+Have ago at building this model.
+

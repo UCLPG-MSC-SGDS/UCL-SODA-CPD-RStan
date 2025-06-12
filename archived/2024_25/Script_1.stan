@@ -10,7 +10,6 @@ data {
 	real Rainfall[N];
 	real Temperature[N];
 	real Log_Population[N];
-	real Overdispersion_Parameter; 
 }
 
 parameters{
@@ -57,7 +56,7 @@ model {
   group_slope_water_sd ~ cauchy(0, 0.5);
   group_slope_sanitation_sd ~ cauchy(0, 0.5);
   
-  phi ~ cauchy(0, Overdispersion_Parameter);
+  phi ~ beta(2, 5);
   
   for (i in 1:N) {
   	Cholera[i] ~ neg_binomial_2_log(beta00[CountryID[i]] + beta01[CountryID[i]]*Water[i] + beta02[CountryID[i]]*Sanitation[i] + beta3*GDP[i] + beta4*Rainfall[i] + beta5*Temperature[i] + Log_Population[i], phi);

@@ -1,6 +1,6 @@
 data {
-  int<lower=1> N;                                  // Number of observations
-  int<lower=1> Country;                            // Number of countries
+  int<lower=0> N;                                  // Number of observations
+  int<lower=0> Country;                            // Number of countries
   array[N] int<lower=1, upper=Country> CountryID;  // Country IDs 
   array[N] int<lower=0> Cholera;                   // Cholera cases
   array[N] real Water;                             // Water access variable

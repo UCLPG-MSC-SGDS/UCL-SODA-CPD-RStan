@@ -6,7 +6,7 @@ rmd_files:
 - intro_to_RStan_Probability_Dist.Rmd
 - intro_to_Bayesian_Inference.Rmd
 - intro_to_Bayesian_Regression_in_Stan.Rmd
-#- intro_to_Bayesian_Hierarchicals.Rmd
+- intro_to_Bayesian_Hierarchicals.Rmd
 #- intro_to_Bayesian_ICAR_Regression.Rmd
 
 language:

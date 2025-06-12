@@ -8,9 +8,9 @@ library('tidyverse')
 options(mc.cores = parallel::detectCores())
 rstan_options(auto_write = TRUE)
 
-setwd("/Users/anwarmusah/Documents/Websites/GEOG0125/Data_dumb")
+setwd("/Users/anwarmusah/Documents/Websites/UCL-SODA-CPD-RStan")
 
-WHO_AFRO_Cholera <- read.csv("WHO-AFRO Cholera 2000-17.csv")
+WHO_AFRO_Cholera <- read.csv("datasets/WHO-AFRO Cholera 2000-17.csv")
 
 # create dataset for Stan
 stan.cholera.dataset <- list(
@@ -23,8 +23,7 @@ stan.cholera.dataset <- list(
 	Sanitation = WHO_AFRO_Cholera$basic_sanitation,
 	GDP = WHO_AFRO_Cholera$gdp,
 	Rainfall = WHO_AFRO_Cholera$rainfall,
-	Temperature = WHO_AFRO_Cholera$temperature,
-	Overdispersion_Parameter = 2
+	Temperature = WHO_AFRO_Cholera$temperature
 )
 
 # Start the clock
@@ -32,15 +31,11 @@ ptm <- proc.time()
 
 # compile linear regression model for now
 bayesian.hierarchical.model = stan(
-	"Cholera Script.stan", 
+	"archived/2024_25/Cholera Script.stan", 
 	data=stan.cholera.dataset, 
-	iter=100000,
-	warmup=70000,
-	chains=6, 
-	#control = list(
-		#adapt_delta = 0.99, 
-		#max_treedepth = 15
-		#)
+	iter=3000,
+	chains=3,
+	verbose=FALSE
 	)
 
 # Stop the clock
@@ -50,13 +45,20 @@ proc.time() - ptm
 options(max.print = 100000)
 
 # print full table to show all results
-print(bayesian.hierarchical.model)
+bayesian.hierarchical.model
+
+# print traceplot
+traceplot(bayesian.hierarchical.model, 
+	pars = c("gamma00_RR", "gamma01_RR", "gamma02_RR", "beta3_RR", "beta4_RR", "beta5_RR",
+		"group_intercept_sd", "group_slope_water_sd", "group_slope_sanitation_sd", "phi"))
+
+traceplot(bayesian.hierarchical.model, pars = c("beta01_RR", "beta02_RR"))
 
 # print table to reports the relative risk ratios for Cholera
 print(bayesian.hierarchical.model, 
 	probs=c(0.025, 0.975), 
 	pars = c("gamma00_RR", "gamma01_RR", "gamma02_RR", "beta3_RR", "beta4_RR", "beta5_RR",
-		"group_intercept_sd", "group_slope_water_sd", "group_slope_sanitation_sd"))
+		"group_intercept_sd", "group_slope_water_sd", "group_slope_sanitation_sd", "phi"))
 
 # This portion of the code computes the exceedance probabilities for the intercept & each beta coefficient
 threshold.gamma00_RR <- function(x){mean(x > 1.00)}
@@ -97,6 +99,8 @@ beta3_RR.exc.probs
 beta4_RR.exc.probs
 beta5_RR.exc.probs
 
+# create a table for the results
+
 names <- c("baseline", "water", "sanitation", "gdp", "rainfall", "temperature", "ben_w", "bur_w", "drc_w", "gha_w", "ivc_w", "ken_w",
 	"mal_w", "moz_w", "ner_w", "nir_w", "som_w", "tan_w", "tog_w", "ben_s", "bur_s", "drc_s", "gha_s", "ivc_s", "ken_s",
 	"mal_s", "moz_s", "ner_s", "nir_s", "som_s", "tan_s", "tog_s")
@@ -119,7 +123,6 @@ results$upper95 <- round(results$upper95, 2)
 results$ess <- round(results$ess, 0)
 results$rhat <- round(results$rhat, 2)
 
-
 # This portion of the code computes the exceedance probabilities for the varying slope coefficients for each country
 
 threshold.beta01_RR <- function(x){mean(x > 1.00)}
@@ -134,7 +137,8 @@ beta02_RR.exc.probs <- bayesian.hierarchical.model %>% spread_draws(beta02_RR[i]
 
 table <- results
 table$RR_95CrI <- paste(table$RelativeRisks, " (95% CrI: ", table$lower95, " to ", table$upper95, ")", sep = "")
-probs <- c(gamma00_RR.exc.probs, gamma01_RR.exc.probs, gamma02_RR.exc.probs, beta3_RR.exc.probs, beta4_RR.exc.probs, beta5_RR.exc.probs, beta01_RR.exc.probs, beta01_RR.exc.probs)
+probs <- c(gamma00_RR.exc.probs, gamma01_RR.exc.probs, gamma02_RR.exc.probs, beta3_RR.exc.probs, beta4_RR.exc.probs, beta5_RR.exc.probs, beta01_RR.exc.probs, beta02_RR.exc.probs)
 table$ExceedProbs <- round(probs, 2)
 table$ESS_Rhat <- paste(table$ess, " (Rhat = ", table$rhat, " < 1.05)", sep = "")
 finaltable <- table[,c(1,7,8,9)]
+finaltable

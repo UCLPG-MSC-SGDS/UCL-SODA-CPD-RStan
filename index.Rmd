@@ -31,11 +31,11 @@ The course will cover the following topics:
 | **Date**        |**Downloadables**        | **Topics**                                          |
 |:----------------|:------------------------|:----------------------------------------------------|
 |                 | Not Applicable          | **Installation of R, RStudio & Stan**                |
-| 09/06/2025      | [**Slides**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/lecture_notes_pdfs/Day%201%20Lecture%20-%20Introduction%20to%20Probability%20Distribution.pdf); [**[Dataset]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/day-1_dataset.zip)| **Introduction to Probability Distributions**|
-| 10/06/2025      | [**Slides**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/lecture_notes_pdfs/Day%202%20Lecture%20-%20Introduction%20to%20Bayesian%20Inference.pdf); N/A | **Introduction to Bayesian Inference**                |
-| 11/06/2025      | [**Slides**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/lecture_notes_pdfs/Day%203%20Lecture%20-%20Bayesian%20Generalised%20Linear%20Regression%20Models.pdf); [**[Dataset]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/day-3_dataset.zip) | **Bayesian Generalised Linear Models**                |
-| 12/06/2025      | **Slides**; [**[Dataset]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/day-4_dataset.zip) | **Bayesian Hierarchical Regression Models**           |
-| 13/06/2025      | **Slides**; **[Dataset]** | **Spatial Bayesian Risk Modelling**                   |
+| 09/06/2025      | [**[Slides]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/lecture_notes_pdfs/Day%201%20Lecture%20-%20Introduction%20to%20Probability%20Distribution.pdf); [**[Dataset]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/day-1_dataset.zip)| **Introduction to Probability Distributions**|
+| 10/06/2025      | [**[Slides]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/lecture_notes_pdfs/Day%202%20Lecture%20-%20Introduction%20to%20Bayesian%20Inference.pdf); N/A | **Introduction to Bayesian Inference**                |
+| 11/06/2025      | [**[Slides]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/lecture_notes_pdfs/Day%203%20Lecture%20-%20Bayesian%20Generalised%20Linear%20Regression%20Models.pdf); [**[Dataset]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/day-3_dataset.zip) | **Bayesian Generalised Linear Models**                |
+| 12/06/2025      | **[Slides]**; [**[Dataset]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/day-4_dataset.zip) | **Bayesian Hierarchical Regression Models**           |
+| 13/06/2025      | **[Slides]**; **[Dataset]** | **Spatial Bayesian Risk Modelling**                   |
 
 **Solutions**: [**[Day 1]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Solutions%20-%20Day%201.zip) | [**[Day 2]**](https://github.com/UCLPG-MSC-SGDS/UCL-SODA-CPD-RStan/raw/main/Solutions%20-%20Day%202.zip) | **[Day 3]** | **[Day 4]** | **[Day 5]**
 

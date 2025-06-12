@@ -1,14 +1,14 @@
 data {
-  int<lower=1> N;                                  // Number of observations
-  int<lower=1> Country;                            // Number of countries
+  int<lower=0> N;                                  // Number of observations
+  int<lower=0> Country;                            // Number of countries
   array[N] int<lower=1, upper=Country> CountryID;  // Country IDs 
-  array[N] int<lower=0> Cholera;                   // Cholera cases
-  array[N] real Water;                             // Water access variable
-  array[N] real Sanitation;                        // Sanitation variable
-  array[N] real GDP;                               // GDP variable
-	array[N] real Rainfall;                          // Rainfall variable         
-	array[N] real Temperature;                       // Temperature variable
-  array[N] real Log_Population;                    // Logged Population variable used as offset
+  vector[N] int<lower=0> Cholera;                   // Cholera cases
+  vector[N] Water;                             // Water access variable
+  vector[N] Sanitation;                        // Sanitation variable
+  vector[N] GDP;                               // GDP variable
+	vector[N] Rainfall;                          // Rainfall variable         
+	vector[N] Temperature;                       // Temperature variable
+  vector[N] Log_Population;                    // Logged Population variable used as offset
 }
 
 parameters {
