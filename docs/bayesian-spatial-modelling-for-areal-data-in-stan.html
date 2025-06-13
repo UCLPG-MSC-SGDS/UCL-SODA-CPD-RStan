@@ -332,8 +332,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We will need to install the following new packages:</p>
 <ul>
 <li><code>spdep</code>: grants access to function <code>as(, 'Spatial</code>)` function to coerce non-spatial objects into a spatial object.</li>
+<li><code>tmap</code>: grants access to GIS functions. However, we will need to use the previous version i.e., <code>tmap 3.3-4</code> instead of <code>tmap 4</code>.</li>
 </ul>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#cb88-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;spdep&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#cb88-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;spdep&quot;</span>)</span>
+<span id="cb88-2"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#cb88-2" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;remotes&quot;</span>)</span>
+<span id="cb88-3"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#cb88-3" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_version</span>(<span class="st">&quot;tmap&quot;</span>, <span class="at">version =</span> <span class="st">&quot;3.3-4&quot;</span>)</span></code></pre></div>
 <p>Now, lets load all packages need specifically for this computer practical:</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#cb89-1" tabindex="-1"></a><span class="co"># Load the packages with library()</span></span>
 <span id="cb89-2"><a href="bayesian-spatial-modelling-for-areal-data-in-stan.html#cb89-2" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;sf&quot;</span>)</span>
