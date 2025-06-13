@@ -2,7 +2,7 @@
 
 ## Introduction
 
-### Lectures (Length: 1:55:55 minutes)
+### Lectures (Length: 1:55:55)
 ```{r, warnings=FALSE, message=FALSE, echo=FALSE}
 library(vembedr)
 embed_youtube('uNup4ouHsiM', height=400) %>% use_align('center')
@@ -19,7 +19,7 @@ Today’s session aims to introduce you to the basic Stan programming etiquette 
 
 After the demonstration session is delivered in the first 1-hour of the practical - you can use the computer practical session to try the tutorials yourself by following the instructions as well as trying out the tasks. 
 
-### Demonstration (Length: 1:08:38 minutes)
+### Demonstration (Length: 1:08:38)
 ```{r, warnings=FALSE, message=FALSE, echo=FALSE}
 library(vembedr)
 embed_youtube('c2yjgqfeo48', height=400) %>% use_align('center')

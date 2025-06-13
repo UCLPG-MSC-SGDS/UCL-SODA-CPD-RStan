@@ -2,7 +2,7 @@
 
 ## Introduction
 
-### Lectures (Length: 1:04:16 minutes)
+### Lectures (Length: 1:04:16)
 ```{r, warnings=FALSE, message=FALSE, echo=FALSE}
 library(vembedr)
 embed_youtube('1_JbtNNB6_0', height=400) %>% use_align('center')
@@ -21,14 +21,14 @@ Today’s session aims to formally introduce you to **Stan** programming for **B
 
 You can follow the live walkthrough demonstration, and then use the practical sessions to try the practical tutorials yourself by following the instructions and trying out the tasks.
 
-### Demonstration [Part I] (Length: 1:59:36 minutes)
+### Demonstration [Part I] (Length: 1:59:36)
 ```{r, warnings=FALSE, message=FALSE, echo=FALSE}
 library(vembedr)
 embed_youtube('WRIFeQ_pgfk', height=400) %>% use_align('center')
 ```
 [[**Watch on YouTube**]](https://youtu.be/WRIFeQ_pgfk)
 
-### Demonstration [Part II] (Length: 1:13:38 minutes)
+### Demonstration [Part II] (Length: 1:13:38)
 ```{r, warnings=FALSE, message=FALSE, echo=FALSE}
 library(vembedr)
 embed_youtube('Xd1o12psU78', height=400) %>% use_align('center')

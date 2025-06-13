@@ -2,11 +2,12 @@
 
 ## Introduction
 
-### Lectures (TBC)
-
-[EMBED LECTURE VIDEO HERE]
-
-[[**Watch on YouTube**]]()
+### Lectures (Length: 1:04:43)
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('Aq_rfGHYj6Q', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/Aq_rfGHYj6Q)
 
 ### Learning outcomes
 
@@ -14,11 +15,19 @@ We will learn how to perform hierarchical regression modelling within a Bayesian
 
 You can follow the live walkthrough demonstration, and then use the practical sessions to try the practical tutorials yourself by following the instructions and trying out the tasks.
 
-### Demonstration (TBC)
+### Demonstration [Part I] (Length: 1:57:40)
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('OkEcaOKpkGo', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/OkEcaOKpkGo)
 
-[EMBED DEMONSTRATION VIDEO HERE]
-
-[[**Watch on YouTube**]]()
+### Demonstration [Part II] (Length: 1:01:48)
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('TLvrTTzufE0', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/TLvrTTzufE0)
 
 ### Datasets & setting up the work directory 
 
