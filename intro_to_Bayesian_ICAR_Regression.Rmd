@@ -2,11 +2,12 @@
 
 ## Introduction
 
-### Lectures (TBC)
-
-[EMBED LECTURES VIDEO HERE]
-
-[[**Watch on YouTube**]]()
+### Lectures (Length: 1:37:35)
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('DdchRhSQpj0', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/DdchRhSQpj0)
 
 ### Learning outcomes
 
@@ -22,11 +23,19 @@ You will learn how to:
  
 You can follow the live walkthrough demonstration of the practical and follow the instructions in this recording at your own.
 
-### Demonstration (TBC)
+### Demonstration [Part I] (Length: 1:55:54)
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('W5hcGtGl04M', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/W5hcGtGl04M)
 
-[EMBED DEMONSTRATION VIDEO HERE]
-
-[[**Watch on YouTube**]]()
+### Demonstration [Part II] (Length: 2:02:36)
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(vembedr)
+embed_youtube('5YVkEBx-Dq8', height=400) %>% use_align('center')
+```
+[[**Watch on YouTube**]](https://youtu.be/5YVkEBx-Dq8)
 
 ### Loading packages
 

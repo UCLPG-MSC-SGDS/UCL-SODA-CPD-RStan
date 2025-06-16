@@ -63,9 +63,10 @@ compiling-our-stan-code-for-hierarchical-modelling
 task
 bayesian-spatial-modelling-for-areal-data-in-stan
 introduction-4
-lectures-tbc
+lectures-length-13735
 learning-outcomes-4
-demonstration-tbc
+demonstration-part-i-length-15554
+demonstration-part-ii-length-20236
 loading-packages-3
 datasets-setting-up-the-work-directory-2
 data-preparation-in-rstudio

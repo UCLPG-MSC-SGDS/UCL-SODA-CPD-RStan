@@ -149,22 +149,61 @@ tm_shape(spatial.data) +
 	tm_compass(position = c("right", "top")) + tm_scale_bar(position = c("right", "bottom"))
 
 
-spatial.data$SIR <- spatial.data$Casualties/spatial.data$ExpectedNum
+install.packages("remotes")
+remotes::install_version("tmap", version = "3.3-4")
+
+spatial.data$incidence <- (spatial.data$Casualties/spatial.data$Population) * 100000
 
 # skeleton
-#tmap v3.3-3
 tm_shape(spatial.data) + tm_polygons(alpha = 0.05, border.alpha = 0.4) +
 	tm_shape(england_Region_shp) + tm_polygons(alpha = 0, border.alpha = 1) + tm_text("name", size = "AREA")
 
-#tmap v4
-tm_shape(spatial.data) + tm_polygons(fill_alpha = 0.05, col_alpha = 0.4) +
-	tm_shape(england_Region_shp) + tm_polygons(fill_alpha = 0) + tm_text("name", size = "AREA")
+# example
+tm_shape(spatial.data) + tm_fill("incidence", style = "equal", n = 9, palette="viridis") +
+	# style = "quantile", "cat", "equal", "jenks", "cont"
+	tm_shape(england_Region_shp) + tm_polygons(alpha = 0) +
+	tm_text("name", size = "AREA") +
+	tm_compass(position = c("right", "top")) + 
+	tm_scale_bar(position = c("right", "bottom"))
 
+#tm_shape(spatial.data) + tm_fill("incidence", fill.scale = tm_scale_intervals("eqaul", 9)) +
+	# style = "quantile", "cat", "equal", "jenks", "cont"
+#	tm_shape(england_Region_shp) + tm_polygons(fill_alpha = 0) +
+#	tm_text("name", size = "AREA") +
+#	tm_compass(position = c("right", "top")) + 
+#	tm_scalebar(position = c("right", "bottom"))
+
+
+
+
+# calculate standardised incidence
+spatial.data$SIR <- spatial.data$Casualties/spatial.data$ExpectedNum
+
+
+
+summary(spatial.data$SIR)
+hist(spatial.data$SIR)
+
+spatial.data$SIRCat <- NA
+spatial.data$SIRCat[spatial.data$SIR>= 0 & spatial.data$SIR <= 0.25] <- -4
+spatial.data$SIRCat[spatial.data$SIR> 0.25 & spatial.data$SIR <= 0.50] <- -3
+spatial.data$SIRCat[spatial.data$SIR> 0.50 & spatial.data$SIR <= 0.75] <- -2
+spatial.data$SIRCat[spatial.data$SIR> 0.75 & spatial.data$SIR < 0.99] <- -1
+spatial.data$SIRCat[spatial.data$SIR>= 0.99 & spatial.data$SIR < 1.01] <- 0
+spatial.data$SIRCat[spatial.data$SIR>= 1.01 & spatial.data$SIR <= 1.10] <- 1
+spatial.data$SIRCat[spatial.data$SIR> 1.10 & spatial.data$SIR <= 1.25] <- 2
+spatial.data$SIRCat[spatial.data$SIR> 1.25 & spatial.data$SIR <= 1.50] <- 3
+spatial.data$SIRCat[spatial.data$SIR> 1.50 & spatial.data$SIR <= 1.75] <- 4
+spatial.data$SIRCat[spatial.data$SIR> 1.75 & spatial.data$SIR <= 2.00] <- 5
+spatial.data$SIRCat[spatial.data$SIR> 2.00 & spatial.data$SIR <= 10] <- 6
+
+table(spatial.data$SIRCat)
+
+SIR_colours <- c("#65bafe","#98cffe","#cbe6fe","#dfeffe","white","#fed5d5","#fcbba1","#fc9272","#fb6a4a","#de2d26","#a50f15")
+SIR_labels <- c(">0.0 to 0.25", "0.26 to 0.50", "0.51 to 0.75", "0.76 to 0.99", "1.00 & <1.01",
+	"1.01 to 1.10", "1.11 to 1.25", "1.26 to 1.50", "1.51 to 1.75", "1.76 to 2.00", "2.01 to 3.00")
 
 #tmap v3.3-3
-tm_shape(spatial.data) + tm_fill("SIR", midpoint = 1, palette = "-RdYlGn") +
+tm_shape(spatial.data) + tm_fill("SIR", palette = SIR_colours, labels = SIR_labels) +
 	tm_shape(england_Region_shp) + tm_polygons(alpha = 0, border.alpha = 1) + tm_text("name", size = "AREA")
-
-install.packages("remotes")
-remotes::install_version("tmap", version = "3.3-4")
 
