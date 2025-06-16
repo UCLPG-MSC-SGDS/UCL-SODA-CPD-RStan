@@ -774,7 +774,7 @@ Let us use an example for `gha_w` which refers to the estimate random slope for 
 
 ## Task
 
-**Try your hand on this problem in Stan**: Build a random intercept logit model using data on 1060 births to 501 mothers. The outcome of interest is whether the `birth` was delivered in a hospital or elsewhere. The predictors include the log of income `loginc`, the `distance` to the nearest hospital distance, and two indicators of mothers’s education: `dropout` for less than high school and college for college `graduate`, so high school or some college is the reference cell.
+**Try your hand on this problem in Stan**: Build a **random intercept only** logistic model using data on 1060 births to 501 mothers. The outcome of interest is whether the `birth` was delivered in a hospital or elsewhere. The predictors include the log of income `loginc`, the `distance` to the nearest hospital distance, and two indicators of mothers’s education: `dropout` for less than high school and college for college `graduate`, so high school or some college is the reference cell.
 
 Have ago at building this model.
 
