@@ -87,3 +87,13 @@ extraction-of-the-area-specific-relative-risks
 mapping-of-rr-and-significance
 extracting-and-mapping-of-the-exceedance-probabilities
 task-1
+appendix
+how-to-generate-a-probability-distribution
+figure-image-on-slide-33
+figure-image-on-slide-34
+figure-image-on-slide-35
+figure-image-on-slide-36
+figure-image-on-slide-37-40
+how-to-generate-joint-posterior-plot
+joint-posterior-distribution-for-d0-and-r-in-3d
+joint-posterior-distribution-for-d0-and-r-in-2d

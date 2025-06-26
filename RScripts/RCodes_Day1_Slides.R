@@ -19,7 +19,10 @@ y_shade <- y[x >= 30]
 polygon(c(x_shade, rev(x_shade)),
 	c(y_shade, rep(0, length(y_shade))),
 	col = rgb(1, 0, 0, alpha = 0.3), border = NA)
-abline(v = 30, lty = 3)            # dashed line at the cutoff
+
+# add dashed lines to plot
+abline(v = 30, lty = 3)            # dashed vertical line at the cutoff at 30 
+abline(h=0.04839414, lty = 3)      # dashed horizontal line to trace what 30 is in terms of plausibility
 
 # compute the plausibility for 30 mg/L when mu = 25 and sd = 5
 dnorm(30.0, mean = 25, sd = 5)
@@ -93,8 +96,8 @@ med_estimate <- qgamma(0.5, shape = shape, scale = scale)
 
 # Plot
 plot(x, y, type = "l", lwd = 2, col = "red",
-	main = "Gamma Distribution Plot: Ambient Anti-mosquito (DEET) Concentration in Households (mg/L)",
-	ylab = "Density", xlab = "DEET (microgram per cubic metre)")
+	main = "Gamma Distribution Plot: Ambient Anti-mosquito (DEET) Concentration in Households (microgram/cubic metre)",
+	ylab = "Probability Density (Plausibility)", xlab = "DEET (microgram per cubic metre)")
 
 # shade area for DEET >= 50
 x_shade <- x[x >= 50]
